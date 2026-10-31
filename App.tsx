@@ -57,6 +57,7 @@ import AcademicView from './components/AcademicView';
 import PlanWidget from './components/PlanWidget';
 import Toast from './components/Toast';
 import LandingPage from './components/LandingPage';
+import BrandMark from './components/BrandMark';
 
 // BYOK providers shown in Settings. Keys are kept in localStorage only.
 const API_KEY_PROVIDERS: { id: keyof ApiKeys; label: string; placeholder: string; keyUrl: string }[] = [
@@ -167,9 +168,10 @@ const App: React.FC = () => {
   const [tempProfile, setTempProfile] = useState<UserProfile>(userProfile);
 
   // UI State
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  // Sidebar starts collapsed on phones, where it overlays the content
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.innerWidth >= 768);
   const [currentView, setCurrentView] = useState<AppView>('chat');
-  const [isLabMenuOpen, setIsLabMenuOpen] = useState(true); // Default open for visibility
+  const [isLabMenuOpen, setIsLabMenuOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [exportMenuOpenId, setExportMenuOpenId] = useState<string | null>(null);
   const [showNotePicker, setShowNotePicker] = useState(false);
@@ -227,6 +229,12 @@ const App: React.FC = () => {
   }, [visibleModels, selectedModel]);
 
   const noApiKey = !hasAnyApiKey(apiKeys);
+
+  // Switch view; on small screens also close the overlay sidebar
+  const goTo = (view: AppView) => {
+    setCurrentView(view);
+    if (window.innerWidth < 768) setIsSidebarOpen(false);
+  };
   const openKeySettings = () => { setSettingsTab('general'); setIsSettingsOpen(true); };
 
   useEffect(() => {
@@ -836,16 +844,17 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar (overlays the content on small screens) */}
+      {isSidebarOpen && (
+        <div className="md:hidden fixed inset-0 z-30 bg-black/20" onClick={() => setIsSidebarOpen(false)} />
+      )}
       <aside 
-        className={`${isSidebarOpen ? 'w-[260px]' : 'w-0'} bg-[#F9F9FB] border-r border-gray-100/80 z-20 transition-[width] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] overflow-hidden flex flex-col`}
+        className={`${isSidebarOpen ? 'w-[260px]' : 'w-0'} bg-[#F9F9FB] border-r border-gray-100/80 z-20 max-md:z-40 max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:shadow-xl transition-[width] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] overflow-hidden flex flex-col`}
       >
         <div className="p-4 min-w-[260px]">
           <div className="px-2 py-2 mb-4 flex items-center justify-between">
              <div className="flex items-center gap-2.5 text-gray-900">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white shadow-lg shadow-black/20">
-                   <Sun size={18} className="text-white fill-white" />
-                </div>
+                <BrandMark size={32} className="rounded-lg shadow-lg shadow-black/20" />
                 <span className="text-xl font-semibold tracking-tight">Sidonie</span>
              </div>
              <button onClick={() => setIsSidebarOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-lg">
@@ -854,7 +863,7 @@ const App: React.FC = () => {
           </div>
 
           <button 
-            onClick={createNewSession}
+            onClick={() => { createNewSession(); if (window.innerWidth < 768) setIsSidebarOpen(false); }}
             className="w-full flex items-center gap-3 px-3 py-2.5 bg-white hover:bg-gray-50 text-gray-700 rounded-xl transition-all shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] border border-gray-200 hover:border-gray-300 group mb-6"
           >
             <Plus size={18} className="text-gray-400 group-hover:text-gray-600" />
@@ -865,37 +874,23 @@ const App: React.FC = () => {
              <div className="px-2 py-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-1">
                {t.workspace}
              </div>
-             <button 
-               onClick={() => setCurrentView('chat')}
-               className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${currentView === 'chat' ? 'bg-white text-gray-900 shadow-sm border border-gray-100' : 'text-gray-500 hover:bg-gray-200/50'}`}
-             >
-               <Bot size={18} strokeWidth={1.5} /> {t.agents}
-             </button>
-             <button 
-               onClick={() => setCurrentView('notes')}
-               className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${currentView === 'notes' ? 'bg-white text-gray-900 shadow-sm border border-gray-100' : 'text-gray-500 hover:bg-gray-200/50'}`}
-             >
-               <Library size={18} strokeWidth={1.5} /> {t.library}
-             </button>
+             {([
+               { view: 'chat', icon: <Bot size={18} strokeWidth={1.5} />, label: t.agents },
+               { view: 'study', icon: <GraduationCap size={18} strokeWidth={1.5} />, label: t.study },
+               { view: 'academic', icon: <Radar size={18} strokeWidth={1.5} />, label: t.academicTitle },
+               { view: 'notes', icon: <Library size={18} strokeWidth={1.5} />, label: t.library },
+             ] as { view: AppView; icon: React.ReactNode; label: string }[]).map(item => (
+               <button
+                 key={item.view}
+                 onClick={() => goTo(item.view)}
+                 className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${currentView === item.view ? 'bg-white text-gray-900 shadow-sm border border-gray-100' : 'text-gray-500 hover:bg-gray-200/50'}`}
+               >
+                 {item.icon} {item.label}
+               </button>
+             ))}
 
-             {/* Painting Menu (Embedded) */}
-             <button 
-               onClick={() => setCurrentView('painting')}
-               className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${currentView === 'painting' ? 'bg-white text-gray-900 shadow-sm border border-gray-100' : 'text-gray-500 hover:bg-gray-200/50'}`}
-             >
-               <Palette size={18} strokeWidth={1.5} /> {t.painting}
-             </button>
-
-             {/* Blog Menu */}
-             <button 
-               onClick={() => window.open('http://blog.fantasyailab.com/', '_blank')}
-               className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-500 hover:bg-gray-200/50 hover:text-gray-900"
-             >
-               <Book size={18} strokeWidth={1.5} /> {t.blog}
-             </button>
-
-             {/* Lab Menu (Collapsible) */}
-             <div>
+             {/* FantasyAI Lab extras (Collapsible) */}
+             <div className="pt-2">
                <button 
                  onClick={() => setIsLabMenuOpen(!isLabMenuOpen)}
                  className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${isLabMenuOpen ? 'text-gray-900' : 'text-gray-500 hover:bg-gray-200/50'}`}
@@ -909,24 +904,22 @@ const App: React.FC = () => {
                {isLabMenuOpen && (
                  <div className="pl-4 space-y-0.5 mt-0.5 animate-fade-in-down">
                     <button 
+                      onClick={() => goTo('painting')}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${currentView === 'painting' ? 'bg-white text-gray-900 shadow-sm border border-gray-100' : 'text-gray-500 hover:bg-gray-200/50'}`}
+                    >
+                      <Palette size={16} strokeWidth={1.5} /> {t.painting}
+                    </button>
+                    <button 
                       onClick={() => window.open('http://lazybox.fantasyailab.com/', '_blank')}
                       className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-500 hover:bg-gray-200/50 hover:text-gray-900"
                     >
                       <Box size={16} strokeWidth={1.5} /> {t.lazybox}
                     </button>
-                    {/* Academic Module */}
                     <button 
-                      onClick={() => setCurrentView('academic')}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${currentView === 'academic' ? 'bg-white text-gray-900 shadow-sm border border-gray-100' : 'text-gray-500 hover:bg-gray-200/50'}`}
+                      onClick={() => window.open('http://blog.fantasyailab.com/', '_blank')}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors text-gray-500 hover:bg-gray-200/50 hover:text-gray-900"
                     >
-                      <Radar size={16} strokeWidth={1.5} /> {t.academicTitle}
-                    </button>
-                    {/* Study Module */}
-                    <button 
-                      onClick={() => setCurrentView('study')}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${currentView === 'study' ? 'bg-white text-gray-900 shadow-sm border border-gray-100' : 'text-gray-500 hover:bg-gray-200/50'}`}
-                    >
-                      <GraduationCap size={16} strokeWidth={1.5} /> {t.study}
+                      <Book size={16} strokeWidth={1.5} /> {t.blog}
                     </button>
                  </div>
                )}
@@ -945,7 +938,7 @@ const App: React.FC = () => {
                 .map((session: ChatSession) => (
                 <div 
                   key={session.id}
-                  onClick={() => loadSession(session.id)}
+                  onClick={() => { loadSession(session.id); if (window.innerWidth < 768) setIsSidebarOpen(false); }}
                   className={`group flex items-center justify-between px-3 py-2 text-sm rounded-lg cursor-pointer transition-colors
                     ${currentSessionId === session.id && currentView === 'chat' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-500 hover:bg-gray-100'}`}
                 >
@@ -997,30 +990,51 @@ const App: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col relative bg-white overflow-hidden w-full">
-        {currentView === 'notes' ? (
-           <NotesView 
-             notes={notes}
-             onUpdateNote={handleUpdateNote}
-             onCreateNote={handleCreateNote}
-             onDeleteNote={handleDeleteNote}
-             language={language}
-           />
-        ) : currentView === 'study' ? (
-           <StudyView 
-             language={language}
-             apiKeys={apiKeys}
-             userProfile={userProfile}
-             onOpenSettings={openKeySettings}
-           />
-        ) : currentView === 'academic' ? (
-           <AcademicView 
-             language={language}
-             apiKeys={apiKeys}
-             userProfile={userProfile}
-             onSaveNote={handleCreateNote}
-             onOpenSettings={openKeySettings}
-           />
+      <main className="flex-1 flex flex-col relative bg-white overflow-hidden w-full min-w-0">
+        {(currentView === 'notes' || currentView === 'study' || currentView === 'academic') ? (
+          <>
+            {/* Slim top bar so the sidebar can be reopened from any view */}
+            {!isSidebarOpen && (
+              <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100 bg-white shrink-0">
+                <button
+                  data-testid="open-sidebar"
+                  onClick={() => setIsSidebarOpen(true)}
+                  className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                  aria-label="Open sidebar"
+                >
+                  <Menu size={20} />
+                </button>
+                <BrandMark size={22} className="rounded-md" />
+                <span className="font-semibold tracking-tight text-gray-900">Sidonie</span>
+              </div>
+            )}
+            <div className="flex-1 min-h-0">
+              {currentView === 'notes' ? (
+                 <NotesView 
+                   notes={notes}
+                   onUpdateNote={handleUpdateNote}
+                   onCreateNote={handleCreateNote}
+                   onDeleteNote={handleDeleteNote}
+                   language={language}
+                 />
+              ) : currentView === 'study' ? (
+                 <StudyView 
+                   language={language}
+                   apiKeys={apiKeys}
+                   userProfile={userProfile}
+                   onOpenSettings={openKeySettings}
+                 />
+              ) : (
+                 <AcademicView 
+                   language={language}
+                   apiKeys={apiKeys}
+                   userProfile={userProfile}
+                   onSaveNote={handleCreateNote}
+                   onOpenSettings={openKeySettings}
+                 />
+              )}
+            </div>
+          </>
         ) : currentView === 'painting' ? (
             <div className="w-full h-full bg-white relative flex flex-col">
               <div className="flex flex-col">
@@ -1081,6 +1095,7 @@ const App: React.FC = () => {
             <div className="flex items-center px-6 py-4 bg-white/80 backdrop-blur-sm sticky top-0 z-20">
                {!isSidebarOpen && (
                  <button 
+                   data-testid="open-sidebar"
                    onClick={() => setIsSidebarOpen(true)}
                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors mr-3"
                  >
@@ -1179,15 +1194,14 @@ const App: React.FC = () => {
 
                   <div className="flex flex-wrap gap-3 justify-center w-full mt-8">
                      {[
-                       { icon: <Layout size={14} />, text: t.createPresentation, val: "Create presentation" },
-                       { icon: <Globe size={14} />, text: t.buildWebsite, val: "Build website" },
-                       { icon: <Grid size={14} />, text: t.developApp, val: "Develop app" },
-                       { icon: <Sparkles size={14} />, text: t.designLogo, val: "Design logo" },
-                       { icon: <MoreHorizontal size={14} />, text: t.more, val: "More" }
+                       { icon: <GraduationCap size={14} />, text: t.suggestion1 },
+                       { icon: <FlaskConical size={14} />, text: t.suggestion2 },
+                       { icon: <BookOpen size={14} />, text: t.suggestion3 },
+                       { icon: <FileText size={14} />, text: t.suggestion4 },
                      ].map((sug, i) => (
                        <button 
                          key={i} 
-                         onClick={() => sug.val !== "More" && handleSubmit(sug.val)}
+                         onClick={() => handleSubmit(sug.text)}
                          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm text-gray-600 rounded-full transition-all text-sm font-medium"
                        >
                           <span className="text-gray-400">{sug.icon}</span>

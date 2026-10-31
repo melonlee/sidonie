@@ -1,0 +1,20 @@
+import React from 'react';
+
+interface BrandMarkProps {
+  size?: number;
+  className?: string;
+}
+
+// Sidonie logo mark: a parent and a child (two warm suns) over an open book.
+// Source of truth: docs/assets/brand/logo-mark.svg
+const BrandMark: React.FC<BrandMarkProps> = ({ size = 32, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" className={className} aria-hidden="true">
+    <rect width="64" height="64" rx="15" fill="#1C1917" />
+    <circle cx="27" cy="23" r="6.5" fill="#F2B45C" />
+    <circle cx="39.5" cy="28" r="4.2" fill="#F7D3A1" />
+    <path d="M32 44C27 38.4 20.4 35.7 13 36M32 44C37 38.4 43.6 35.7 51 36" fill="none" stroke="#FFFCF9" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M32 50.5C27 44.9 20.4 42.2 13 42.5M32 50.5C37 44.9 43.6 42.2 51 42.5" fill="none" stroke="#A8A29E" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export default BrandMark;
