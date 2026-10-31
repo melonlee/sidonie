@@ -36,6 +36,7 @@ import {
   Key
 } from 'lucide-react';
 import { StudyState, StudyTopic, Message, Role, ApiKeys, UserProfile, Language, StudyActivity, SchoolNote, Course, TopicReviewData } from '../types';
+import { scheduleReview, newSrsState } from '../services/srs';
 import { 
   DEFAULT_MATH_SYLLABUS, 
   STUDY_BADGES, 
@@ -631,47 +632,9 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
   };
 
   const calculateSpacedRepetition = (topicId: string, isCorrect: boolean): TopicReviewData => {
-     const currentData = studyState.reviewData?.[topicId] || {
-        topicId,
-        lastReviewed: 0,
-        nextReview: 0,
-        interval: 0,
-        easeFactor: 2.5,
-        streak: 0
-     };
-
-     let { interval, easeFactor, streak } = currentData;
-
-     if (isCorrect) {
-        // Simplified SM-2 Algorithm
-        if (streak === 0) {
-           interval = 1; // 1 day
-        } else if (streak === 1) {
-           interval = 3; // 3 days
-        } else {
-           interval = Math.round(interval * easeFactor);
-        }
-        streak += 1;
-        // Ease factor adjustment (boost slightly for success)
-        easeFactor = Math.min(easeFactor + 0.1, 5.0); 
-     } else {
-        // Reset on failure
-        streak = 0;
-        interval = 0; // Review immediately/tomorrow
-        // Penalty for failure
-        easeFactor = Math.max(easeFactor - 0.2, 1.3);
-     }
-
-     const nextReview = Date.now() + (interval * 24 * 60 * 60 * 1000);
-
-     return {
-        topicId,
-        lastReviewed: Date.now(),
-        nextReview,
-        interval,
-        easeFactor,
-        streak
-     };
+     // Simplified SM-2, shared with Paper Radar flashcards (services/srs.ts)
+     const currentData: TopicReviewData = studyState.reviewData?.[topicId] || { topicId, ...newSrsState() };
+     return scheduleReview(currentData, isCorrect);
   };
 
   const handleQuizAnswer = (index: number) => {
