@@ -66,6 +66,16 @@ const API_KEY_PROVIDERS: { id: keyof ApiKeys; label: string; placeholder: string
   { id: 'qwen', label: 'Qwen (DashScope) API Key', placeholder: 'sk-...', keyUrl: 'https://bailian.console.aliyun.com/?apiKey=1' },
 ];
 
+// Read a JSON value from localStorage, falling back on missing/corrupt data
+function readStoredJSON<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 // Helper for ID generation
 const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
 
@@ -124,22 +134,35 @@ const App: React.FC = () => {
   const [useSearch, setUseSearch] = useState(false);
 
   // User & Settings
-  const [userName, setUserName] = useState<string>('User');
-  const [language, setLanguage] = useState<Language>('zh');
+  // Persisted values are read synchronously in lazy initializers. Loading them in an
+  // effect raced with the "save" effects below and wiped notes/profile on reload
+  // under React StrictMode (dev).
+  const [userName, setUserName] = useState<string>(() => {
+    const saved = localStorage.getItem('app_username');
+    if (saved) return saved;
+    const randomName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
+    localStorage.setItem('app_username', randomName);
+    return randomName;
+  });
+  const [language, setLanguage] = useState<Language>(() => {
+    const saved = localStorage.getItem('app_language');
+    return saved === 'en' || saved === 'zh' ? saved : 'zh';
+  });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isDocsOpen, setIsDocsOpen] = useState(false);
   const [settingsTab, setSettingsTab] = useState<'general' | 'personalization'>('general');
   
   // API Keys
-  const [apiKeys, setApiKeys] = useState<ApiKeys>({});
+  const [apiKeys, setApiKeys] = useState<ApiKeys>(() => readStoredJSON<ApiKeys>('app_api_keys', {}));
 
   // Personalization Profile
-  const [userProfile, setUserProfile] = useState<UserProfile>({
+  const [userProfile, setUserProfile] = useState<UserProfile>(() => ({
     nickname: '',
     profession: '',
     about: '',
-    customInstructions: ''
-  });
+    customInstructions: '',
+    ...readStoredJSON<Partial<UserProfile>>('gemini_user_profile', {})
+  }));
   // Temp state for editing profile
   const [tempProfile, setTempProfile] = useState<UserProfile>(userProfile);
 
@@ -151,7 +174,7 @@ const App: React.FC = () => {
   const [exportMenuOpenId, setExportMenuOpenId] = useState<string | null>(null);
   const [showNotePicker, setShowNotePicker] = useState(false);
   const [modalImage, setModalImage] = useState<string | null>(null);
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<Note[]>(() => readStoredJSON<Note[]>('gemini_notes', []));
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -160,34 +183,11 @@ const App: React.FC = () => {
 
   const t = TRANSLATIONS[language];
 
-  // Initialize Data
+  // Initialize chat sessions (once, even under StrictMode's double effects)
+  const didInitSessions = useRef(false);
   useEffect(() => {
-    const savedLang = localStorage.getItem('app_language') as Language;
-    if (savedLang && (savedLang === 'en' || savedLang === 'zh')) setLanguage(savedLang);
-
-    const savedName = localStorage.getItem('app_username');
-    if (savedName) setUserName(savedName);
-    else {
-      const randomName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
-      setUserName(randomName);
-      localStorage.setItem('app_username', randomName);
-    }
-    
-    // Load API Keys
-    const savedKeys = localStorage.getItem('app_api_keys');
-    if (savedKeys) {
-      try { setApiKeys(JSON.parse(savedKeys)); } catch(e) {}
-    }
-
-    // Load User Profile
-    const savedProfile = localStorage.getItem('gemini_user_profile');
-    if (savedProfile) {
-      try { 
-        const parsed = JSON.parse(savedProfile);
-        setUserProfile(parsed);
-        setTempProfile(parsed);
-      } catch(e) {}
-    }
+    if (didInitSessions.current) return;
+    didInitSessions.current = true;
 
     const savedSessions = localStorage.getItem('gemini_sessions');
     if (savedSessions) {
@@ -199,11 +199,6 @@ const App: React.FC = () => {
         else createNewSession();
       } catch (e) { createNewSession(); }
     } else { createNewSession(); }
-
-    const savedNotes = localStorage.getItem('gemini_notes');
-    if (savedNotes) {
-      try { setNotes(JSON.parse(savedNotes)); } catch(e) {}
-    }
   }, []);
 
   // Compute available models based on configured keys

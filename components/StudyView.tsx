@@ -86,29 +86,68 @@ const parseMessageWithPlan = (rawText: string) => {
   return { plan: planContent, thought: thoughtContent, text: cleanText.trim() };
 };
 
-const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, onOpenSettings }) => {
-  const t = TRANSLATIONS[language];
-  
-  // --- State ---
-  const [viewMode, setViewMode] = useState<'map' | 'session' | 'calendar' | 'homework'>('map');
-  const [studyState, setStudyState] = useState<StudyState>({
+const defaultCourse = (language: Language): Course => ({
+  id: 'default_math',
+  name: language === 'zh' ? '数学 (默认)' : 'Math (Default)',
+  subject: 'math',
+  grade: 'All',
+  stages: DEFAULT_MATH_SYLLABUS,
+  createdAt: Date.now()
+});
+
+// Load saved study progress from localStorage and migrate older shapes
+const loadStudyState = (language: Language): StudyState => {
+  const fallback: StudyState = {
     xp: 0,
     level: 1,
     badges: STUDY_BADGES,
     activityLog: [],
     schoolNotes: [],
-    // Initialize with default course immediately to prevent "undefined" error on first render
-    courses: [{
-        id: 'default_math',
-        name: language === 'zh' ? '数学 (默认)' : 'Math (Default)',
-        subject: 'math',
-        grade: 'All',
-        stages: DEFAULT_MATH_SYLLABUS,
-        createdAt: Date.now()
-    }],
+    courses: [defaultCourse(language)],
     activeCourseId: 'default_math',
-    reviewData: {} // Initialize spaced repetition data
-  });
+    reviewData: {} // spaced repetition data
+  };
+
+  const saved = localStorage.getItem('sidonie_study_state_v2');
+  if (!saved) return fallback;
+
+  try {
+    const parsed = JSON.parse(saved);
+
+    // Migration: Ensure courses exist
+    if (!parsed.courses || parsed.courses.length === 0) {
+      parsed.courses = [defaultCourse(language)];
+      parsed.activeCourseId = 'default_math';
+    }
+
+    if (!parsed.activityLog) parsed.activityLog = [];
+    if (!parsed.schoolNotes) parsed.schoolNotes = [];
+    if (!parsed.reviewData) parsed.reviewData = {};
+
+    // Migration: keep 'unlocked' from saved badges, take definitions from constants
+    if (parsed.badges) {
+      parsed.badges = STUDY_BADGES.map(defaultBadge => {
+        const savedBadge = parsed.badges.find((b: any) => b.id === defaultBadge.id);
+        return savedBadge ? { ...defaultBadge, unlocked: savedBadge.unlocked } : defaultBadge;
+      });
+    } else {
+      parsed.badges = STUDY_BADGES;
+    }
+
+    return { ...fallback, ...parsed };
+  } catch (e) {
+    console.error("Failed to load study state, resetting to default.");
+    return fallback;
+  }
+};
+
+const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, onOpenSettings }) => {
+  const t = TRANSLATIONS[language];
+  
+  // --- State ---
+  const [viewMode, setViewMode] = useState<'map' | 'session' | 'calendar' | 'homework'>('map');
+  // Loaded synchronously so the save effect below can never overwrite saved progress
+  const [studyState, setStudyState] = useState<StudyState>(() => loadStudyState(language));
 
   const [activeTopic, setActiveTopic] = useState<StudyTopic | null>(null);
   
@@ -157,49 +196,6 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
 
   const canvasRef = useRef<any>(null);
   const chatBottomRef = useRef<HTMLDivElement>(null);
-
-  // Load state and handle migration/defaults
-  useEffect(() => {
-    const saved = localStorage.getItem('sidonie_study_state_v2');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        
-        // Migration: Ensure courses exist
-        if (!parsed.courses || parsed.courses.length === 0) {
-           parsed.courses = [{
-             id: 'default_math',
-             name: language === 'zh' ? '数学 (默认)' : 'Math (Default)',
-             subject: 'math',
-             grade: 'All',
-             stages: DEFAULT_MATH_SYLLABUS,
-             createdAt: Date.now()
-           }];
-           parsed.activeCourseId = 'default_math';
-        }
-        
-        if (!parsed.schoolNotes) parsed.schoolNotes = [];
-        if (!parsed.reviewData) parsed.reviewData = {}; 
-
-        // Migration: Ensure Badges are up-to-date with new bilingual structure
-        // We preserve the 'unlocked' status from saved state, but use the definition from constants
-        if (parsed.badges) {
-           const updatedBadges = STUDY_BADGES.map(defaultBadge => {
-              const savedBadge = parsed.badges.find((b: any) => b.id === defaultBadge.id);
-              return savedBadge ? { ...defaultBadge, unlocked: savedBadge.unlocked } : defaultBadge;
-           });
-           parsed.badges = updatedBadges;
-        } else {
-           parsed.badges = STUDY_BADGES;
-        }
-        
-        setStudyState(parsed);
-      } catch (e) { 
-        console.error("Failed to load study state, resetting to default.");
-        // Error handling preserves default state set in useState
-      }
-    }
-  }, []);
 
   // Save state
   useEffect(() => {
