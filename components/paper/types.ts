@@ -39,6 +39,7 @@ export interface SavedPaper {
   notes: string; // my markdown notes
   highlights: Highlight[];
   hasFullText?: boolean; // full text is cached in IndexedDB
+  needsMetadata?: boolean; // added by ID while the arXiv API was unreachable; filled in later
 }
 
 export interface Flashcard extends SrsState {

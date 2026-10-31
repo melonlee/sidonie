@@ -107,3 +107,21 @@ describe('study stats', () => {
     expect(papersReadThisWeek(papers, now)).toBe(1);
   });
 });
+
+describe('offline add by ID', () => {
+  it('creates a placeholder and fills title/abstract from the extracted PDF', async () => {
+    const { placeholderArxivPaper, metadataFromDoc } = await import('../components/paper/paperStore');
+    const p = placeholderArxivPaper('1706.03762', 'v7');
+    expect(p).toMatchObject({ title: 'arXiv:1706.03762', needsMetadata: true, arxivVersion: 'v7', summary: '' });
+    const meta = metadataFromDoc({
+      pageCount: 15, source: 'arxiv', extractedAt: 0,
+      sections: [
+        { id: 'f-s0', title: '', paragraphs: [{ id: 'x', text: 'Provided proper attribution…' }] },
+        { id: 'f-s1', title: 'Attention Is All You Need', paragraphs: [{ id: 'y', text: 'Ashish Vaswani' }] },
+        { id: 'f-s2', title: 'Abstract', paragraphs: [{ id: 'z', text: 'The dominant sequence transduction models…' }] },
+        { id: 'f-s3', title: '1 Introduction', paragraphs: [{ id: 'w', text: '…' }] },
+      ],
+    });
+    expect(meta).toEqual({ title: 'Attention Is All You Need', summary: 'The dominant sequence transduction models…' });
+  });
+});

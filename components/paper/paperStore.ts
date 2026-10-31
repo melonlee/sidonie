@@ -4,7 +4,7 @@ import { newSrsState, scheduleReview } from '../../services/srs';
 import { parseArxivId } from './arxiv';
 import {
   PAPER_STATUSES, HIGHLIGHT_COLORS,
-  type Flashcard, type Highlight, type PaperStatus, type PaperStudyStore, type SavedPaper,
+  type ExtractedDoc, type Flashcard, type Highlight, type PaperStatus, type PaperStudyStore, type SavedPaper,
 } from './types';
 import { dayKey } from './stats';
 
@@ -65,6 +65,7 @@ const migratePaper = (p: unknown): SavedPaper | null => {
     notes: str(p.notes),
     highlights: (Array.isArray(p.highlights) ? p.highlights : []).map(migrateHighlight).filter((h): h is Highlight => !!h),
     hasFullText: p.hasFullText === true,
+    needsMetadata: p.needsMetadata === true || undefined,
   };
 };
 
@@ -139,6 +140,39 @@ export const savedPaperFromArxiv = (paper: Paper, status: PaperStatus = 'toread'
     addedAt: Date.now(),
     notes: '',
     highlights: [],
+  };
+};
+
+/**
+ * Placeholder entry for an arXiv id when the metadata API is unreachable (e.g. a static
+ * deployment whose CORS proxy is down). arxiv.org/pdf allows CORS, so the full text — and
+ * with it the title and abstract — can still be loaded.
+ */
+export const placeholderArxivPaper = (id: string, version?: string): SavedPaper => ({
+  id,
+  source: 'arxiv',
+  arxivVersion: version,
+  title: `arXiv:${id}`,
+  authors: [],
+  summary: '',
+  link: `https://arxiv.org/abs/${id}`,
+  pdfLink: `https://arxiv.org/pdf/${id}`,
+  status: 'toread',
+  tags: [],
+  addedAt: Date.now(),
+  notes: '',
+  highlights: [],
+  needsMetadata: true,
+});
+
+/** Title and abstract guessed from extracted full text (for placeholder entries). */
+export const metadataFromDoc = (doc: ExtractedDoc): { title?: string; summary?: string } => {
+  const isAbstract = (t: string) => /^(\d+\.?\s*)?abstract$/i.test(t.trim());
+  const titleSection = doc.sections.find(s => s.title && !isAbstract(s.title) && !/^\d/.test(s.title));
+  const abstract = doc.sections.find(s => isAbstract(s.title));
+  return {
+    title: doc.pdfTitle || titleSection?.title,
+    summary: abstract?.paragraphs.map(p => p.text).join('\n\n'),
   };
 };
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchArxivPdf } from './arxiv';
 import { paperCache } from './paperCache';
-import type { PaperStudyApi } from './paperStore';
+import { metadataFromDoc, type PaperStudyApi } from './paperStore';
 import { extractPdf } from './pdfText';
 import type { ExtractedDoc, SavedPaper } from './types';
 
@@ -34,7 +34,11 @@ export function useFullText(paper: SavedPaper, study: PaperStudyApi) {
       setDoc(result);
       setStatus('ready');
       setError(null);
-      study.updatePaper(paperId, { hasFullText: true });
+      study.updatePaper(paperId, p => {
+        if (!p.needsMetadata) return { hasFullText: true };
+        const meta = metadataFromDoc(result);
+        return { hasFullText: true, title: meta.title || p.title, summary: p.summary || meta.summary || '' };
+      });
       study.markActivity();
     } catch (e) {
       console.error('PDF text extraction failed', e);

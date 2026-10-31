@@ -83,3 +83,16 @@ describe('GB/T 7714', () => {
     expect(toGbt7714(zh, new Date(2026, 10, 1, 12))).toBe('张三, 李四, 王五, 等. 大模型综述[EB/OL]. (2024-01-02)[2026-11-01].');
   });
 });
+
+describe('GB/T 7714 without a date', () => {
+  it('omits the publication date but keeps the access date', () => {
+    const local: CitablePaper = { id: 'local-3', source: 'local', title: 'Notes', authors: [] };
+    expect(toGbt7714(local, new Date(2026, 10, 1, 12))).toBe('Notes[EB/OL]. [2026-11-01].');
+  });
+});
+
+describe('year fallback', () => {
+  it('derives the year from a new-style arXiv id when the date is unknown', () => {
+    expect(toBibtex({ id: '2401.01234', source: 'arxiv', title: 'X', authors: ['A B'] })).toContain('year = {2024}');
+  });
+});

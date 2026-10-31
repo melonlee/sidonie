@@ -39,7 +39,10 @@ const initial = (given: string) =>
 
 export const yearOf = (p: CitablePaper) => {
   const d = p.publishedAt ? new Date(p.publishedAt) : null;
-  return d && !Number.isNaN(d.getTime()) ? String(d.getUTCFullYear()) : 'n.d.';
+  if (d && !Number.isNaN(d.getTime())) return String(d.getUTCFullYear());
+  // New-style arXiv ids start with YYMM of the first submission
+  const m = p.source === 'arxiv' ? p.id.match(/^(\d{2})\d{2}\.\d{4,5}$/) : null;
+  return m ? `20${m[1]}` : 'n.d.';
 };
 
 const isoDate = (iso?: string) => {
@@ -142,7 +145,7 @@ export function toGbt7714(p: CitablePaper, accessed: Date = new Date()): string 
   const parts = [
     `${authors ? authors + '. ' : ''}${tidyTitle(p.title)}[EB/OL].`,
     p.source === 'arxiv' ? ` arXiv:${p.id}.` : '',
-    published || access ? ` (${published || yearOf(p)})[${access}].` : '',
+    published ? ` (${published})[${access}].` : ` [${access}].`,
     url ? ` ${url}.` : '',
   ];
   return parts.join('').trim();

@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { BookOpen, Brain, FileUp, Loader2, Plus, Tag, Trash2, X, ArrowUpRight, Users } from 'lucide-react';
 import type { Language } from '../../types';
 import { fetchArxivPaperById, parseArxivId } from './arxiv';
-import { generateId, savedPaperFromArxiv, type PaperStudyApi } from './paperStore';
+import { generateId, placeholderArxivPaper, savedPaperFromArxiv, type PaperStudyApi } from './paperStore';
 import { paperCache } from './paperCache';
 import { extractPdf } from './pdfText';
 import { dueCards } from './stats';
@@ -62,7 +62,10 @@ const ReadingList: React.FC<ReadingListProps> = ({ api, language, onOpen, onStar
       setAddInput('');
       notify(t.paperSavedToast);
     } catch {
-      setAddError(t.paperAddFailed);
+      // Metadata API unreachable: add by ID anyway; title/abstract come from the PDF later
+      api.addPaper(placeholderArxivPaper(parsed.id, parsed.version));
+      setAddInput('');
+      notify(t.paperAddedById);
     } finally {
       setAdding(false);
     }

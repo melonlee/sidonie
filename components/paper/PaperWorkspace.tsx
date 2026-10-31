@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, BookOpenText, Brain, ExternalLink, FileText, MessagesSquare, NotebookPen, Sparkles } from 'lucide-react';
 import type { ApiKeys, Language, UserProfile } from '../../types';
 import AnalysisPanel from './AnalysisPanel';
@@ -7,7 +7,8 @@ import CitationMenu from './CitationMenu';
 import FlashcardsPanel from './FlashcardsPanel';
 import NotesPanel from './NotesPanel';
 import { paperCache } from './paperCache';
-import type { PaperStudyApi } from './paperStore';
+import { fetchArxivPaperById } from './arxiv';
+import { savedPaperFromArxiv, type PaperStudyApi } from './paperStore';
 import ReaderPanel from './ReaderPanel';
 import { buildReaderSections } from './reader';
 import { PAPER_STATUSES, type Highlight, type SavedPaper } from './types';
@@ -46,6 +47,21 @@ const PaperWorkspace: React.FC<WorkspaceProps> = ({
   const order = useMemo(() => sections.flatMap(s => s.paragraphs.map(p => p.id)), [sections]);
   const hasFullText = !!fullText.doc?.sections.length;
   const cardCount = study.store.cards.filter(c => c.paperId === paper.id).length;
+
+  // Entries added while the arXiv API was unreachable: try to complete their metadata now
+  useEffect(() => {
+    if (!paper.needsMetadata || paper.source !== 'arxiv') return;
+    let cancelled = false;
+    fetchArxivPaperById(paper.id).then(found => {
+      if (!found || cancelled) return;
+      const full = savedPaperFromArxiv(found);
+      study.updatePaper(paper.id, {
+        title: full.title, authors: full.authors, summary: full.summary, publishedAt: full.publishedAt,
+        category: full.category, arxivVersion: full.arxivVersion, needsMetadata: undefined,
+      });
+    }).catch(() => { /* still offline: keep what the PDF gave us */ });
+    return () => { cancelled = true; };
+  }, [paper.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const go = (next: Tab) => { setTab(next); setVisited(v => (v.has(next) ? v : new Set(v).add(next))); };
   const jump = (h: Highlight) => { go('read'); setJumpTo(h.id); };
