@@ -4,7 +4,8 @@
 
 <h3>Sidonie 伴学：本地优先的家庭 AI 学习伴侣</h3>
 
-陪孩子每天学一点，大人的研究也不落下。<br />
+一个地方，两件事：<b>帮孩子学</b>，每天进步一点；<b>大人的论文学习</b>，<br />
+从发现、收藏、阅读、理解、标注、复习到引用，一条龙完成。<br />
 全部运行在你的浏览器里，用你自己的 API Key，无需账号，没有服务器。
 
 [![CI](https://github.com/melonlee/sidonie/actions/workflows/ci.yml/badge.svg)](https://github.com/melonlee/sidonie/actions/workflows/ci.yml)
@@ -13,7 +14,7 @@
 ![React 19](https://img.shields.io/badge/React-19-57534E.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-57534E.svg)
 
-**[在线体验](https://melonlee.github.io/sidonie/)** · [功能](#功能) · [隐私](#隐私与数据) · [快速开始](#快速开始) · [常见问题](#常见问题) · [English](./README.md)
+**[在线体验](https://melonlee.github.io/sidonie/)** · [功能](#功能) · [论文学习](#大人的论文学习从雷达到引用) · [隐私](#隐私与数据) · [快速开始](#快速开始) · [常见问题](#常见问题) · [English](./README.md)
 
 <sub>由 <a href="https://fantasyailab.com/">FantasyAI Lab</a> 出品</sub>
 
@@ -25,11 +26,16 @@
 
 Sidonie 伴学（英文名 Sidonie）以我太太的名字命名，灵感来自我们的孩子。每天看着她们用 AI，我发现这些工具并不是为她们设计的：辅导孩子功课时太泛，想跟上研究进展的大人又要在好几个工具间来回切换。所以我把这些需求收进了一个地方。它最先服务的是我身边最亲近的人；如果对她们有用，也许对你的家庭也有用。
 
-它的不同之处：
+两大支柱，一个共同的基础：
 
-- **围绕孩子的学习闭环设计**：先学概念，再做小测验，到期了再复习。它不只是一个聊天框。
-- **给大人留一个研究角**：学术雷达把 arXiv 最新论文放在手边，并配有通俗解读。
-- **默认保护隐私**：对话、笔记、孩子的学习进度和你的 Key 都只保存在浏览器本地。
+| | 给谁 | 能做什么 |
+| --- | --- | --- |
+| **帮孩子学**（帮帮孩子） | 孩子，家长陪伴 | 课程地图、概念与小测验卡片、间隔复习。先学概念，再做练习，到期了再复习。它不只是一个聊天框。 |
+| **大人的论文学习**（学术雷达） | 大人 | 学术雷达发现 arXiv 新论文；阅读清单和论文工作台陪你从初读一路走到高亮、术语卡片和现成的引用。 |
+| **对话 + 笔记** | 全家 | 多模型对话，以及两大功能都能保存进去的笔记。 |
+
+- **默认保护隐私**：对话、笔记、孩子的学习进度、你的论文和 Key 都只保存在浏览器本地。
+- **自带 Key**：支持 Gemini、DeepSeek、Kimi、通义千问。阅读、高亮、笔记和卡片复习不需要 Key。
 
 ## 功能
 
@@ -54,13 +60,44 @@ Sidonie 伴学（英文名 Sidonie）以我太太的名字命名，灵感来自�
   </tr>
 </table>
 
-### 学术雷达：大人的研究角
+### 大人的论文学习：从雷达到引用
 
-<img src="docs/screenshots/zh-paper-radar.png" alt="学术雷达：arXiv 最新论文列表" width="100%" />
+学术雷达过去只是「刷 arXiv 新论文」，现在是一套给大人的完整学习流程：
 
-- 按主题（LLM、视觉、Agent、机器人、机器学习）浏览 arXiv 最新论文，也可以搜索自定义关键词。
-- **AI 深度解读**：把论文翻译成中文或英文并总结要点。**每日简报**：归纳当前列表中的研究趋势。
-- 论文和解读可以一键保存到笔记。
+**发现 → 收藏 → 阅读 → 理解 → 标注 → 复习 → 引用**
+
+<img src="docs/screenshots/paper-bilingual-zh.png" alt="论文工作台：原文与中文译文逐段对照，右侧是高亮与批注" width="100%" />
+
+| 环节 | Sidonie 伴学能做什么 |
+| --- | --- |
+| **发现** | 按主题（LLM、视觉、Agent、机器人、机器学习）浏览 arXiv 最新论文，或搜索关键词。**AI 深度解读** 和 **每日简报** 支持中英文。 |
+| **收藏** | 阅读清单：**待读 / 在读 / 已读**、标签、筛选与排序。可从论文流加入、输入 **arXiv 编号或链接** 添加，或 **导入本地 PDF**。顶部统计来自真实数据：清单篇数、本周已读、待复习卡片、连续学习天数。 |
+| **阅读** | 在浏览器里从 PDF 提取全文（pdf.js 随应用打包，不走 CDN），按章节排版并带目录。**对照翻译** 把中文或英文译文逐段排在原文旁边。 |
+| **理解** | 一键 **结构化精读分析**（一句话总结、研究问题、方法、贡献、实验结果、局限、前置知识、适合谁读）。**与论文对话**：在本地用 BM25 检索段落，回答注明出处章节。 |
+| **标注** | 划词即可四色高亮、写批注，或让 AI 解释、翻译这段话。每篇论文一份 Markdown 笔记，**导出到笔记** 一次汇总。 |
+| **复习** | 提取关键 **术语卡片**，沿用「帮帮孩子」的间隔重复规则复习；有到期卡片时会提示「今天有 8 张卡片要复习」。 |
+| **引用** | 一键复制 **BibTeX**、**APA 7** 或 **GB/T 7714-2015**。 |
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/paper-reading-list-zh.png" alt="阅读清单：状态、标签、学习统计与复习提醒" /></td>
+    <td width="50%"><img src="docs/screenshots/paper-analysis-zh.png" alt="结构化精读分析" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>阅读清单：状态、标签与学习统计</sub></td>
+    <td align="center"><sub>基于全文的结构化精读分析</sub></td>
+  </tr>
+</table>
+
+使用须知：
+
+- **学习本身不需要 Key**：阅读、高亮、笔记、阅读清单、卡片复习和引用都不需要 API Key；点 AI 按钮时会提示如何配置。
+- **全文提取是启发式的**：能处理双栏排版、标题和断词，但公式、表格和图中文字可能错乱；扫描版 PDF（纯图片）没有可提取的文字，只能使用「仅摘要模式」。
+- **纯文本模型**（DeepSeek、Kimi、通义千问）收到的是提取后的文字，并按模型上下文自动裁剪。
+- **数据存放**：阅读清单、高亮和卡片存于 `localStorage`；PDF、提取的全文、翻译、精读分析和对话存于 IndexedDB。
+- 以上截图中的 AI 面板（解释、精读分析、翻译、术语卡片）是手写的演示文本，不是真实的模型输出。
+
+每个功能的详细说明见 **[docs/paper-study.md](./docs/paper-study.md#中文)**。
 
 ### 对话与笔记：共同的基础
 
@@ -91,16 +128,17 @@ Sidonie 伴学（英文名 Sidonie）以我太太的名字命名，灵感来自�
 
 ## 隐私与数据
 
-Sidonie 是一个纯静态网页应用：**没有 Sidonie 后端，不需要账号，也没有任何统计埋点**。
+Sidonie 伴学是一个纯静态网页应用：**没有 Sidonie 后端，不需要账号，也没有任何统计埋点**。
 
 | 内容 | 存在哪里 / 发往哪里 |
 | --- | --- |
-| 对话、笔记、孩子的学习进度、设置 | 仅保存在当前浏览器的 `localStorage` |
+| 对话、笔记、孩子的学习进度、设置、阅读清单、高亮、卡片 | 仅保存在当前浏览器的 `localStorage` |
+| 论文 PDF、提取的全文、翻译、精读分析、论文对话 | 仅保存在当前浏览器的 IndexedDB |
 | API Key | 保存在浏览器 `localStorage`，只会发给你选择的模型服务商，**绝不会**被打包进应用代码 |
 | AI 请求 | 从浏览器直接发往 Google Gemini、DeepSeek、Moonshot（Kimi）或阿里云百炼（通义千问） |
-| 学术雷达搜索 | 发往 arXiv。arXiv API 不允许浏览器直接调用（CORS），详见下文 |
+| 学术雷达搜索与 PDF | 发往 arXiv。arXiv 元数据接口不允许浏览器直接调用（CORS），详见下文 |
 
-**学术雷达与 CORS**：使用 `npm run dev` 或 `npm run preview` 时，搜索请求会经过本地 Vite 服务器内置的代理。GitHub Pages 这类静态部署无法运行代理，此时 Sidonie 会先尝试你自己的代理（若设置了 `VITE_ARXIV_PROXY`），再回退到公共代理 [allorigins.win](https://allorigins.win)。这个第三方服务只会看到你的搜索关键词，使用时界面上也会注明。公共代理可能变慢或不可用，想要最稳定的学术雷达，建议在本地运行。
+**学术雷达与 CORS**：使用 `npm run dev` 或 `npm run preview` 时，搜索请求会经过本地 Vite 服务器内置的代理。GitHub Pages 这类静态部署无法运行代理，此时 Sidonie 会先尝试你自己的代理（若设置了 `VITE_ARXIV_PROXY`），再回退到公共代理 [allorigins.win](https://allorigins.win)。这个第三方服务只会看到你的搜索关键词，使用时界面上也会注明。公共代理可能变慢或不可用，想要最稳定的学术雷达，建议在本地运行。arXiv 的 PDF 允许跨域，所以静态部署上也能获取全文；元数据接口不可用时，**按编号添加** 仍能把论文加入清单。
 
 小贴士：尽量使用设置了额度上限的 API Key。在公共电脑上用完后，请在「设置 → 从此浏览器删除所有 Key」中清除。清空浏览器站点数据会删除所有内容，目前还没有云端同步。
 
@@ -132,6 +170,7 @@ npm run dev        # http://localhost:3000
 npm run build      # 生产构建，输出到 dist/
 npm run preview    # 本地预览构建结果（包含 arXiv 代理）
 npm run typecheck  # tsc --noEmit
+npm test           # vitest（间隔复习、BM25、引用格式、章节切分、论文存储）
 ```
 
 ### 部署自己的版本
@@ -146,12 +185,14 @@ npm run typecheck  # tsc --noEmit
 
 ## 技术栈
 
-React 19 · TypeScript · Vite 6 · Tailwind CSS 3（+ typography）· `@google/genai` + OpenAI 兼容接口 · react-markdown · Mermaid · mammoth（Word 解析）· localStorage
+React 19 · TypeScript · Vite 6 · Tailwind CSS 3（+ typography）· `@google/genai` + OpenAI 兼容接口 · react-markdown · Mermaid · mammoth（Word 解析）· pdf.js · localStorage + IndexedDB（idb-keyval）· Vitest
 
 ```
 App.tsx                      应用外壳：侧边栏、对话、设置
 components/StudyView.tsx     帮帮孩子（课程、卡片、测验、复习、每日作业）
-components/AcademicView.tsx  学术雷达（arXiv）
+components/AcademicView.tsx  学术雷达（arXiv 论文流、阅读清单、工作台入口）
+components/paper/            论文学习：阅读器、PDF 提取、精读分析、问答（BM25）、术语卡片、引用
+services/srs.ts              间隔复习调度，帮帮孩子与论文卡片共用
 components/NotesView.tsx     笔记
 services/geminiService.ts    模型路由、流式输出、BYOK Key 处理
 constants.ts                 模型、提示词、默认课程、中英文文案
@@ -168,14 +209,14 @@ website/                     项目官网（纯静态，可独立部署，见 we
 - [ ] 更多内置课程（语文、英语、科学）
 - [ ] 可安装的 PWA，离线查看已保存内容
 - [ ] 单文件 arXiv 代理模板（如 Cloudflare Worker）
-- [ ] 复习调度与模型路由的自动化测试
+- [ ] 模型路由的自动化测试（复习调度和论文工具已有测试）
 
 ## 常见问题
 
 <details>
 <summary><b>收费吗？</b></summary>
 
-Sidonie 本身免费开源（MIT）。模型调用费用由你自己的 Key 向服务商支付，很多服务商都有免费额度。
+Sidonie 伴学本身免费开源（MIT）。模型调用费用由你自己的 Key 向服务商支付，很多服务商都有免费额度。
 </details>
 
 <details>
@@ -213,7 +254,7 @@ arXiv 不允许浏览器直接请求，在线体验依赖的公共 CORS 代理�
 欢迎提交 Issue 和 Pull Request。提交 PR 前请先运行：
 
 ```bash
-npm run typecheck && npm run build
+npm run typecheck && npm test && npm run build
 ```
 
 ## 关于作者

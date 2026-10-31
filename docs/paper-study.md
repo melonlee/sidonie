@@ -1,7 +1,13 @@
 # Paper study workflow / 论文学习工作流
 
-> Draft feature guide for the README. Screenshots live in `docs/screenshots/paper-*.png` (`-zh` for Chinese).
-> AI panels in the screenshots show hand-written demo content; no model output is included.
+> The full guide behind the paper study section of the [README](../README.md) / [中文 README](../README_zh.md).
+> Screenshots live in `docs/screenshots/paper-*.png` (`-zh` for Chinese). AI panels in the screenshots show
+> hand-written demo content; no model output is included. / 截图中的 AI 面板为手写演示文本，并非真实模型输出。
+
+<p align="center">
+  <img src="screenshots/paper-bilingual.png" alt="Bilingual reading view with highlights" width="49%" />
+  <img src="screenshots/paper-flashcards-zh.png" alt="术语卡片" width="49%" />
+</p>
 
 ---
 

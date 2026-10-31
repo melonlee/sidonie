@@ -4,7 +4,8 @@
 
 <h3>Sidonie: a local-first AI learning companion for families</h3>
 
-Help your child learn a little every day and keep the grown-ups' research within reach.<br />
+Two things in one place: <b>help your child learn</b> a little every day, and give the grown-ups<br />
+a proper <b>paper study workflow</b>: find, save, read, understand, annotate, review and cite.<br />
 It all runs in your browser with your own API key. No account, no server.
 
 [![CI](https://github.com/melonlee/sidonie/actions/workflows/ci.yml/badge.svg)](https://github.com/melonlee/sidonie/actions/workflows/ci.yml)
@@ -13,7 +14,7 @@ It all runs in your browser with your own API key. No account, no server.
 ![React 19](https://img.shields.io/badge/React-19-57534E.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-57534E.svg)
 
-**[Live demo](https://melonlee.github.io/sidonie/)** · [Features](#features) · [Privacy](#privacy--your-data) · [Quick start](#quick-start) · [FAQ](#faq) · [中文](./README_zh.md)
+**[Live demo](https://melonlee.github.io/sidonie/)** · [Features](#features) · [Paper study](#paper-study-from-radar-to-citation) · [Privacy](#privacy--your-data) · [Quick start](#quick-start) · [FAQ](#faq) · [中文](./README_zh.md)
 
 <sub>by <a href="https://fantasyailab.com/">FantasyAI Lab</a></sub>
 
@@ -25,11 +26,16 @@ It all runs in your browser with your own API key. No account, no server.
 
 Sidonie (Chinese name: 伴学, "learning companion") is named after my wife and inspired by our child. Every day I watched the two of them use AI tools that weren't really built for them. The tools were too generic for a child's homework and too scattered for a parent who still wants to keep up with research. So I built one place for both. It started with the people closest to me, and if it works for them it may work for your family too.
 
-What makes it different:
+Two pillars, one shared foundation:
 
-- **Built around a child's learning loop.** Learn a concept, practise with a quiz, and review when it's due. It isn't just a chat box.
-- **A corner for the grown-ups.** Paper Radar keeps the latest arXiv research a click away, with plain-language summaries.
-- **Private by default.** Everything (chats, notes, your child's progress and your keys) stays in your browser's storage.
+| | For | What you get |
+| --- | --- | --- |
+| **Help Child** (帮孩子学) | your child, with you alongside | A curriculum map, concept and quiz cards, and spaced review. Learn a concept, practise, and come back when it's due. It isn't just a chat box. |
+| **Paper study** (大人的论文学习) | the grown-ups | Paper Radar finds new arXiv papers; a reading list and a paper workspace take you from first skim to highlights, flashcards and a ready-made citation. |
+| **Chat + Notes** | everyone | Multi-model chat and notes that both pillars save into. |
+
+- **Private by default.** Chats, notes, your child's progress, your papers and your keys stay in your browser's storage.
+- **Bring your own key.** Gemini, DeepSeek, Kimi or Qwen. Reading, highlighting, notes and flashcard review work without any key.
 
 ## Features
 
@@ -56,13 +62,44 @@ What makes it different:
 
 <img src="docs/assets/brand/how-it-works.png" alt="The Help Child loop and where your data goes" width="100%" />
 
-### Paper Radar: the grown-ups' research corner
+### Paper study: from radar to citation
 
-<img src="docs/screenshots/paper-radar.png" alt="Paper Radar listing the newest arXiv papers" width="100%" />
+Paper Radar used to be a feed of new arXiv papers. It is now a full study loop for the grown-ups:
 
-- Browse the newest arXiv papers by topic (LLM, Vision, Agents, Robotics, ML) or search your own keywords.
-- **AI Deep Read** translates and summarises a paper in English or Chinese. A **Daily Briefing** spots themes across the current list.
-- Save any paper and its summary to Notes.
+**find → save → read → understand → annotate → review → cite**
+
+<img src="docs/screenshots/paper-workspace.png" alt="Paper workspace: extracted full text with contents, highlights, notes and an AI explanation" width="100%" />
+
+| Step | What Sidonie does |
+| --- | --- |
+| **Find** | Browse the newest arXiv papers by topic (LLM, Vision, Agents, Robotics, ML) or search keywords. **AI Deep Read** and a **Daily Briefing** summarise in English or Chinese. |
+| **Save** | A reading list with *To read / Reading / Read*, tags, filters and sorting. Add papers from the feed, by **arXiv ID or URL**, or **import a local PDF**. The header shows real stats: papers, read this week, cards due, study streak. |
+| **Read** | Full text extracted from the PDF in the browser (pdf.js, bundled, no CDN) into sections with a contents sidebar. **Bilingual mode** puts a paragraph-by-paragraph Chinese or English translation next to the original. |
+| **Understand** | One-click **structured analysis** (TL;DR, question, method, contributions, results, limitations, prerequisites, who should read it). **Ask the paper**: answers cite the sections they used, retrieved locally with BM25. |
+| **Annotate** | Select text to highlight in four colours, add a note, or have AI explain or translate the passage. A Markdown note per paper, and **Export to Notes** collects it all. |
+| **Review** | Key-term **flashcards** reviewed on the same spaced-repetition schedule as Help Child. Due cards show up as "8 cards to review today". |
+| **Cite** | Copy **BibTeX**, **APA 7** or **GB/T 7714-2015** in one click. |
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/paper-reading-list.png" alt="Reading list with status, tags, study stats and a due-cards banner" /></td>
+    <td width="50%"><img src="docs/screenshots/paper-analysis.png" alt="Structured close-reading analysis of a paper" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Reading list with status, tags and study stats</sub></td>
+    <td align="center"><sub>Structured analysis, grounded in the full text</sub></td>
+  </tr>
+</table>
+
+Good to know:
+
+- **No key needed to study.** Reading, highlighting, notes, the reading list, flashcard review and citations all work without an API key. AI buttons explain how to add one.
+- **Full-text extraction is heuristic.** Two-column layouts, headings and hyphenation are handled, but formulas, tables and figure text can come out garbled. Scanned PDFs (images only) have no text to extract, so you get abstract-only mode.
+- **Text-only providers** (DeepSeek, Kimi, Qwen) receive extracted text, trimmed to fit the model's context.
+- **Where it's stored.** The reading list, highlights and flashcards live in `localStorage`; PDFs, extracted text, translations, analyses and chats live in IndexedDB.
+- The AI panels in these screenshots (explanation, analysis, translation, flashcards) show hand-written demo text, not real model output.
+
+Full guide with every tab explained: **[docs/paper-study.md](./docs/paper-study.md)**.
 
 ### Chat and Notes: the shared foundation
 
@@ -97,12 +134,13 @@ Sidonie is a static web app. There is **no Sidonie backend, no account and no an
 
 | What | Where it lives / where it goes |
 | --- | --- |
-| Chats, notes, your child's progress, settings | `localStorage` in your current browser only |
+| Chats, notes, your child's progress, settings, reading list, highlights, flashcards | `localStorage` in your current browser only |
+| Paper PDFs, extracted text, translations, analyses, paper chats | IndexedDB in your current browser only |
 | API keys | `localStorage` in your browser. They are sent only to the provider you pick and are **never** built into the app bundle |
 | AI requests | Straight from your browser to Google Gemini, DeepSeek, Moonshot (Kimi) or Alibaba DashScope (Qwen) |
-| Paper Radar searches | arXiv. Its API doesn't allow direct browser calls (CORS), so see below |
+| Paper Radar searches and PDFs | arXiv. Its metadata API doesn't allow direct browser calls (CORS), so see below |
 
-**Paper Radar and CORS.** With `npm run dev` or `npm run preview`, searches go through a small proxy built into the local Vite server. A static deployment such as GitHub Pages can't run a proxy. There, Sidonie first tries your own proxy (`VITE_ARXIV_PROXY`, if set) and then falls back to the public [allorigins.win](https://allorigins.win) proxy. That third-party service sees your search keywords and nothing else, and the app tells you when it was used. Public proxies can be slow or down, so run Sidonie locally for the most reliable Paper Radar.
+**Paper Radar and CORS.** With `npm run dev` or `npm run preview`, searches go through a small proxy built into the local Vite server. A static deployment such as GitHub Pages can't run a proxy. There, Sidonie first tries your own proxy (`VITE_ARXIV_PROXY`, if set) and then falls back to the public [allorigins.win](https://allorigins.win) proxy. That third-party service sees your search keywords and nothing else, and the app tells you when it was used. Public proxies can be slow or down, so run Sidonie locally for the most reliable Paper Radar. arXiv PDFs do allow cross-origin requests, so full-text reading works on static hosting too, and **Add by ID** still saves a paper when the metadata API is unreachable.
 
 Tips: use API keys with spending limits. On a shared computer, use **Settings → Remove all keys** when you're done. Clearing your browser's site data deletes everything, and there is no cloud sync yet.
 
@@ -134,6 +172,7 @@ Other scripts:
 npm run build      # production build into dist/
 npm run preview    # serve the build locally (includes the arXiv proxy)
 npm run typecheck  # tsc --noEmit
+npm test           # vitest (SRS, BM25, citations, text sections, paper store)
 ```
 
 ### Deploy your own copy
@@ -148,12 +187,14 @@ The app is fully static, so any static host works.
 
 ## Tech stack
 
-React 19 · TypeScript · Vite 6 · Tailwind CSS 3 (+ typography) · `@google/genai` + OpenAI-compatible fetch · react-markdown · Mermaid · mammoth (Word parsing) · localStorage
+React 19 · TypeScript · Vite 6 · Tailwind CSS 3 (+ typography) · `@google/genai` + OpenAI-compatible fetch · react-markdown · Mermaid · mammoth (Word parsing) · pdf.js · localStorage + IndexedDB (idb-keyval) · Vitest
 
 ```
 App.tsx                      app shell: sidebar, chat, settings
 components/StudyView.tsx     Help Child (curriculum, cards, quizzes, review, daily notes)
-components/AcademicView.tsx  Paper Radar (arXiv)
+components/AcademicView.tsx  Paper Radar (arXiv feed, reading list, workspace entry)
+components/paper/            paper study: reader, PDF text, analysis, Q&A (BM25), flashcards, citations
+services/srs.ts              spaced-repetition scheduler shared by Help Child and paper flashcards
 components/NotesView.tsx     Notes
 services/geminiService.ts    model routing, streaming, BYOK key handling
 constants.ts                 models, prompts, default curriculum, en/zh strings
@@ -170,7 +211,7 @@ Ideas we'd like to build next. None of these exist yet, and contributions are we
 - [ ] More built-in curricula (Chinese, English, science)
 - [ ] Installable PWA with offline access to saved content
 - [ ] A one-file arXiv proxy (e.g. Cloudflare Worker) template
-- [ ] Automated tests for the review scheduler and model routing
+- [ ] Automated tests for model routing (the review scheduler and paper tools are covered)
 
 ## FAQ
 
@@ -215,7 +256,7 @@ It's designed for a parent and child to use together. AI-generated explanations 
 Issues and pull requests are welcome. Before opening a PR, please run:
 
 ```bash
-npm run typecheck && npm run build
+npm run typecheck && npm test && npm run build
 ```
 
 ## About
