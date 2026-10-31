@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sidonie 伴学 · 陪孩子每天学一点的家庭 AI 学习伴侣</title>
-  <meta name="description" content="Sidonie 伴学是一个本地优先、开源免费的家庭 AI 学习伴侣：概念卡、小测验、间隔复习、课程地图与经验值徽章，陪孩子每天学一点；数据只留在你的浏览器里，用你自己的 API Key，无需注册。">
+  <meta name="description" content="Sidonie 伴学是一个本地优先、开源免费的家庭 AI 学习伴侣：概念卡、小测验、间隔复习和课程地图，陪孩子每天学一点；阅读清单、全文对照翻译、精读分析、术语卡片和一键引用，陪大人读完一篇论文。数据只留在你的浏览器里，用你自己的 API Key，无需注册。">
   <meta name="theme-color" content="#FFFCF9">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -17,14 +17,14 @@
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:title" content="Sidonie 伴学 · 陪孩子每天学一点">
-  <meta property="og:description" content="本地优先的家庭 AI 学习伴侣：概念卡、小测验、间隔复习。数据只留在你的浏览器里，开源免费。">
+  <meta property="og:description" content="本地优先的家庭 AI 学习伴侣：帮孩子学（概念卡、小测验、间隔复习），也陪大人学论文（精读、标注、复习、引用）。数据只留在你的浏览器里，开源免费。">
   <meta property="og:image" content="https://raw.githubusercontent.com/melonlee/sidonie/main/website/assets/og-image.jpg">
   <meta property="og:image:width" content="1280">
   <meta property="og:image:height" content="640">
   <meta property="og:image:alt" content="Sidonie 伴学：家庭 AI 学习伴侣">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Sidonie 伴学 · 陪孩子每天学一点">
-  <meta name="twitter:description" content="本地优先的家庭 AI 学习伴侣：概念卡、小测验、间隔复习。数据只留在你的浏览器里，开源免费。">
+  <meta name="twitter:description" content="本地优先的家庭 AI 学习伴侣：帮孩子学（概念卡、小测验、间隔复习），也陪大人学论文（精读、标注、复习、引用）。数据只留在你的浏览器里，开源免费。">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/melonlee/sidonie/main/website/assets/og-image.jpg">
 
   <link rel="preload" href="assets/fonts/Fraunces-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
@@ -41,7 +41,7 @@
       </a>
       <nav class="nav" aria-label="页面导航">
         <a href="#loop">学习闭环</a>
-        <a href="#radar">学术雷达</a>
+        <a href="#papers">论文学习</a>
         <a href="#privacy">隐私</a>
         <a href="#models">模型</a>
         <a href="#faq">常见问题</a>
@@ -60,7 +60,7 @@
         <div class="hero-copy">
           <span class="eyebrow"><span class="dot"></span>开源 · 本地优先的家庭 AI 学习伴侣</span>
           <h1 id="hero-title">陪孩子，<span class="hl">每天学一点</span></h1>
-          <p class="lead">一张概念卡、一道小测验，到期了再复习。Sidonie 伴学是孩子身边耐心的 AI 小老师，大人的研究也不落下，所有记录都只留在你自己的浏览器里。</p>
+          <p class="lead">一张概念卡、一道小测验，到期了再复习：Sidonie 伴学是孩子身边耐心的 AI 小老师。孩子睡着后，它也陪大人把一篇论文从读懂、标注到复习、引用。所有记录都只留在你自己的浏览器里。</p>
           <div class="cta-row">
             <a class="btn btn-primary" href="https://melonlee.github.io/sidonie/" rel="noopener">
               在线体验
@@ -90,6 +90,22 @@
           <div class="phone">
             <img src="assets/img/zh-mobile-map.png" width="780" height="1688" alt="手机上的课程地图">
           </div>
+        </div>
+
+        <!-- Two pillars -->
+        <div class="pillars">
+          <a class="pillar reveal" href="#loop">
+            <span class="kicker">帮孩子学</span>
+            <h3>概念卡、小测验、间隔复习</h3>
+            <p>内置从小学到大学的数学路径，也能为任意学科生成课程。学一点、练一点，快忘的时候再复习。</p>
+            <span class="more">看看学习闭环 →</span>
+          </a>
+          <a class="pillar reveal" href="#papers">
+            <span class="kicker">大人的论文学习</span>
+            <h3>发现、精读、标注、复习、引用</h3>
+            <p>阅读清单加论文工作台：全文对照翻译、结构化精读、划词批注、术语卡片和一键引用。</p>
+            <span class="more">看看论文学习 →</span>
+          </a>
         </div>
       </div>
     </section>
@@ -206,6 +222,7 @@
             <ul class="checks">
               <li><span><b>中文 / 英文界面</b>，一键切换。</span></li>
               <li><span><b>开源可自部署</b>：可以在自己电脑上运行，或部署成一个静态网站。</span></li>
+              <li><span><b>对话与笔记</b>：多会话对话，支持上传 PDF、Word、图片；好内容一键存进笔记。</span></li>
             </ul>
           </div>
           <div class="phones">
@@ -216,26 +233,57 @@
       </div>
     </section>
 
-    <!-- Paper Radar -->
-    <section class="section section-alt" id="radar" aria-labelledby="radar-title">
+    <!-- Paper study -->
+    <section class="section section-alt" id="papers" aria-labelledby="papers-title">
       <div class="wrap">
-        <div class="feature-row flip reveal">
-          <div class="feature-text">
-            <span class="kicker">给大人的研究角</span>
-            <h2 id="radar-title">孩子睡着后，补上最新的研究</h2>
-            <p>学术雷达把 arXiv 最新论文放在手边，看不懂的英文论文，也能先读一份通俗解读。</p>
+        <div class="section-head center reveal">
+          <span class="kicker">大人的论文学习</span>
+          <h2 id="papers-title">孩子睡着后，好好读完一篇论文</h2>
+          <p>学术雷达不只是刷新论文。从发现到引用，一篇论文该走的路，它陪你一步步走完；全文、批注和卡片都留在你的浏览器里。</p>
+        </div>
+
+        <ol class="flow reveal" aria-label="论文学习的七个环节">
+          <li><b><i>1</i>发现</b><span>按主题浏览 arXiv 新论文，或搜索关键词</span></li>
+          <li><b><i>2</i>收藏</b><span>阅读清单：待读 / 在读 / 已读，加标签</span></li>
+          <li><b><i>3</i>阅读</b><span>浏览器内提取全文，逐段对照翻译</span></li>
+          <li><b><i>4</i>理解</b><span>结构化精读；向论文提问，回答注明出处</span></li>
+          <li><b><i>5</i>标注</b><span>划词高亮、写批注，让 AI 解释这段话</span></li>
+          <li><b><i>6</i>复习</b><span>术语卡片，按间隔复习巩固</span></li>
+          <li><b><i>7</i>引用</b><span>一键复制 BibTeX、APA、GB/T 7714</span></li>
+        </ol>
+
+        <div class="window reveal">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+          <img src="assets/img/zh-paper-workspace.webp" width="1920" height="1200" loading="lazy" alt="论文工作台：《Attention Is All You Need》原文与中文译文逐段对照，左侧是目录，右侧是彩色高亮和批注">
+        </div>
+
+        <div class="paper-grid">
+          <figure class="paper-card reveal">
+            <img src="assets/img/zh-paper-list.webp" width="1200" height="610" loading="lazy" alt="阅读清单：篇数、本周已读、待复习卡片和连续学习天数，下面是带状态和标签的论文列表">
+            <figcaption>
+              <h3>阅读清单</h3>
+              <p>按编号或链接添加 arXiv 论文，也能导入本地 PDF。本周读了几篇、几张卡片要复习，一目了然。</p>
+            </figcaption>
+          </figure>
+          <figure class="paper-card reveal">
+            <img src="assets/img/zh-paper-cards.webp" width="1200" height="610" loading="lazy" alt="术语卡片：Transformer、自注意力、多头注意力等术语及通俗解释">
+            <figcaption>
+              <h3>术语卡片</h3>
+              <p>一键提取关键术语和通俗解释，和「帮帮孩子」用同一套间隔复习，读过的论文不再读完就忘。</p>
+            </figcaption>
+          </figure>
+          <div class="paper-card paper-more reveal">
+            <h3>还有这些</h3>
             <ul class="checks">
-              <li><span><b>按主题浏览</b>：LLM、视觉、Agent、机器人、机器学习，也可以搜索自己的关键词。</span></li>
-              <li><span><b>AI 深度解读</b>：翻译成中文或英文，并总结要点。</span></li>
-              <li><span><b>每日简报</b>：归纳当前列表里的研究趋势。</span></li>
-              <li><span><b>对话与笔记</b>：多会话对话，支持上传 PDF、Word、图片；好内容一键存进笔记。</span></li>
+              <li><span><b>结构化精读</b>：一句话总结、方法、贡献、局限、前置知识。</span></li>
+              <li><span><b>与论文对话</b>：本地检索相关段落，回答注明出处章节。</span></li>
+              <li><span><b>导出到笔记</b>：高亮、批注和引用一起带走。</span></li>
+              <li><span><b>不配 Key 也能用</b>：阅读、标注、复习和引用都不需要 Key。</span></li>
             </ul>
           </div>
-          <div class="window">
-            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
-            <img src="assets/img/zh-radar.png" width="1600" height="1000" loading="lazy" alt="学术雷达：按主题筛选的 arXiv 最新论文卡片列表">
-          </div>
         </div>
+
+        <p class="paper-note">说明：截图里的 AI 内容（译文、解释、术语卡片）是演示文本。全文提取是启发式的，公式和表格可能错乱，扫描版 PDF 无法提取文字。</p>
       </div>
     </section>
 
@@ -252,7 +300,7 @@
           <div class="p-card reveal">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div>
             <h3>本地优先</h3>
-            <p>对话、笔记、孩子的学习进度和设置，都只保存在当前浏览器里。</p>
+            <p>对话、笔记、孩子的学习进度、论文批注和设置，都只保存在当前浏览器里。</p>
           </div>
           <div class="p-card reveal">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></div>
@@ -277,9 +325,10 @@
               <caption>什么存在哪里</caption>
               <tbody>
                 <tr><th scope="row">对话、笔记、学习进度、设置</th><td>仅保存在当前浏览器的 localStorage</td></tr>
+                <tr><th scope="row">论文 PDF、全文、译文、批注与卡片</th><td>仅保存在当前浏览器（IndexedDB 和 localStorage）</td></tr>
                 <tr><th scope="row">API Key</th><td>保存在浏览器本地，只发给你选择的模型服务商</td></tr>
                 <tr><th scope="row">AI 请求</th><td>从浏览器直接发往 Google Gemini、DeepSeek、Moonshot（Kimi）或阿里云百炼（通义千问）</td></tr>
-                <tr><th scope="row">学术雷达搜索</th><td>发往 arXiv；在线版需经公共 CORS 代理，它只能看到搜索关键词</td></tr>
+                <tr><th scope="row">学术雷达搜索与 PDF</th><td>发往 arXiv；在线版的搜索需经公共 CORS 代理，它只能看到搜索关键词</td></tr>
               </tbody>
             </table>
             <p class="data-note">坦白说：Key 以明文保存在浏览器里，能使用这台电脑这个浏览器的人也能读到。建议使用设了额度上限的 Key，在公共电脑上用完即删。目前没有云端同步，清空浏览器数据会删除所有记录。</p>
@@ -364,7 +413,11 @@
           </details>
           <details>
             <summary>为什么在线体验里的学术雷达有时加载失败？</summary>
-            <p>arXiv 不允许浏览器直接请求，在线体验依赖公共 CORS 代理，它有时会变慢或不可用。在自己电脑上运行会更稳定。</p>
+            <p>arXiv 的检索接口不允许浏览器直接请求，在线体验依赖公共 CORS 代理，它有时会变慢或不可用。在自己电脑上运行会更稳定。论文 PDF 可以直接从 arXiv 下载，代理不可用时也能按编号把论文加入清单、读全文。</p>
+          </details>
+          <details>
+            <summary>论文全文提取准确吗？</summary>
+            <p>全文是在浏览器里从 PDF 提取的，能处理双栏排版、标题和断词，但公式、表格和图中文字可能错乱；扫描版 PDF（纯图片）没有文字可提取，只能看摘要。读到关键处，建议对照原 PDF。</p>
           </details>
           <details>
             <summary>为什么叫「Sidonie 伴学」？</summary>

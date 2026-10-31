@@ -41,4 +41,4 @@ Social crawlers need absolute URLs. `og:image` and `twitter:image` currently poi
 
 ## Updating screenshots
 
-The images in `assets/img/` are copies of the app screenshots, cropped and quantised (256-colour PNG) to keep the page light. When the UI changes, re-capture them from `docs/screenshots/` (or the app) at 2× and keep each file under about 200 KB.
+The images in `assets/img/` are copies of the app screenshots, cropped and quantised (256-colour PNG) or saved as WebP (the `*-paper-*.webp` paper study shots, from `docs/screenshots/paper-*.png`) to keep the page light. When the UI changes, re-capture them from `docs/screenshots/` (or the app) at 2× and keep each file under about 200 KB. The AI panels in the paper study shots show hand-written demo text, and the page says so.

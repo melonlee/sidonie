@@ -323,6 +323,41 @@ html[lang="en"] .feature-text h3 { letter-spacing: -.005em; line-height: 1.2; }
 .faq details p { padding: 0 4px 24px; color: var(--stone-600); max-width: 720px; }
 .faq code { font-size: .9em; background: var(--stone-100); padding: 1px 6px; border-radius: 6px; }
 
+/* Two pillars (bottom of the hero) */
+.pillars { max-width: 1080px; margin: 0 auto; padding-bottom: 88px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.pillar {
+  display: flex; flex-direction: column; text-decoration: none; color: inherit; background: #fff;
+  border: 1px solid var(--stone-200); border-radius: var(--radius); padding: 28px 30px; box-shadow: var(--shadow-sm);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s;
+}
+.pillar:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--stone-300); }
+.pillar .kicker { margin-bottom: 8px; }
+.pillar h3 { font-family: var(--serif); font-size: 24px; line-height: 1.35; color: var(--stone-900); }
+.pillar p { margin-top: 8px; font-size: 15.5px; line-height: 1.7; color: var(--stone-600); }
+.pillar .more { margin-top: auto; padding-top: 16px; font-size: 14px; font-weight: 600; color: var(--amber-ink); }
+
+/* Paper study: seven-step flow, screenshots, honest note */
+.flow { list-style: none; padding: 0; margin: 0 0 40px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+.flow li { position: relative; background: #fff; border: 1px solid var(--stone-200); border-radius: 14px; padding: 14px 14px 16px; box-shadow: var(--shadow-sm); }
+/* chevron between steps, sitting in the grid gap */
+.flow li:not(:last-child)::after {
+  content: ''; position: absolute; right: -10px; top: 24px; width: 7px; height: 7px; z-index: 1;
+  border-top: 1.5px solid var(--stone-400); border-right: 1.5px solid var(--stone-400); transform: rotate(45deg);
+}
+.flow b { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; color: var(--stone-900); }
+.flow b i { font-style: normal; flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; background: var(--amber-wash); color: var(--amber-ink); }
+.flow span { display: block; margin-top: 6px; font-size: 13px; line-height: 1.55; color: var(--stone-600); }
+.paper-grid { margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.paper-card { margin: 0; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--stone-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+.paper-card img { width: 100%; border-bottom: 1px solid var(--stone-200); }
+.paper-card figcaption { padding: 20px 22px 24px; }
+.paper-card h3 { font-size: 18px; color: var(--stone-900); }
+.paper-card p { margin-top: 6px; font-size: 15px; line-height: 1.7; color: var(--stone-600); }
+.paper-more { padding: 24px 24px 26px; background: var(--amber-wash); border-color: #F6E3C6; }
+.paper-more .checks { margin-top: 14px; gap: 10px; }
+.paper-more .checks li { font-size: 15px; line-height: 1.6; }
+.paper-note { margin: 28px auto 0; max-width: 920px; text-align: center; font-size: 14px; line-height: 1.7; color: var(--stone-500); }
+
 /* Closing CTA */
 .closing { padding-top: 0; padding-bottom: 96px; }
 .closing-card {
@@ -357,6 +392,10 @@ html[lang="en"] .feature-text h3 { letter-spacing: -.005em; line-height: 1.2; }
 @media (max-width: 1080px) {
   .nav { display: none; }
   .privacy-grid, .models { grid-template-columns: repeat(2, 1fr); }
+  .flow { grid-template-columns: repeat(4, 1fr); }
+  .flow li::after { display: none; }
+  .paper-grid { grid-template-columns: 1fr 1fr; }
+  .paper-more { grid-column: 1 / -1; }
 }
 @media (max-width: 900px) {
   .section { padding: 84px 0; }
@@ -372,6 +411,7 @@ html[lang="en"] .feature-text h3 { letter-spacing: -.005em; line-height: 1.2; }
   .data-flow { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .footer-about { grid-column: 1 / -1; }
+  .paper-grid { grid-template-columns: 1fr; max-width: 560px; margin-left: auto; margin-right: auto; }
 }
 @media (max-width: 640px) {
   body { font-size: 16px; }
@@ -407,7 +447,12 @@ html[lang="en"] .feature-text h3 { letter-spacing: -.005em; line-height: 1.2; }
   .faq summary { font-size: 16.5px; padding: 18px 2px; }
   .track b { font-size: 13px; white-space: normal; line-height: 1.3; }
   .track span { font-size: 12px; }
-  
+  .pillars { grid-template-columns: 1fr; gap: 14px; padding-bottom: 60px; }
+  .pillar { padding: 22px 22px 24px; }
+  .pillar h3 { font-size: 21px; }
+  .flow { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+  .flow li:last-child { grid-column: 1 / -1; }
+  .flow li { padding: 12px 12px 14px; }
   .closing { padding-bottom: 72px; }
   .closing-card { padding: 52px 18px; border-radius: 24px; }
   .closing-card h2 { font-size: 25px; }

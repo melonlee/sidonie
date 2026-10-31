@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sidonie · An AI learning companion for families</title>
-  <meta name="description" content="Sidonie is a free, open-source, local-first AI learning companion for families: concept cards, quizzes, spaced review, a curriculum map and XP badges to help your child learn a little every day. Everything stays in your browser, with your own API key and no account.">
+  <meta name="description" content="Sidonie is a free, open-source, local-first AI learning companion for families: concept cards, quizzes, spaced review and a curriculum map to help your child learn a little every day, plus a paper study workflow for the grown-ups: reading list, bilingual full text, structured analysis, flashcards and one-click citations. Everything stays in your browser, with your own API key and no account.">
   <meta name="theme-color" content="#FFFCF9">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
@@ -17,14 +17,14 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="zh_CN">
   <meta property="og:title" content="Sidonie · Help your child learn a little every day">
-  <meta property="og:description" content="A local-first AI learning companion for families: concept cards, quizzes and spaced review. Your data stays in your browser. Free and open source.">
+  <meta property="og:description" content="A local-first AI learning companion for families: help your child learn (concept cards, quizzes, spaced review) and study papers yourself (read, annotate, review, cite). Your data stays in your browser. Free and open source.">
   <meta property="og:image" content="https://raw.githubusercontent.com/melonlee/sidonie/main/website/assets/og-image.jpg">
   <meta property="og:image:width" content="1280">
   <meta property="og:image:height" content="640">
   <meta property="og:image:alt" content="Sidonie: an AI learning companion for families">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Sidonie · Help your child learn a little every day">
-  <meta name="twitter:description" content="A local-first AI learning companion for families: concept cards, quizzes and spaced review. Your data stays in your browser. Free and open source.">
+  <meta name="twitter:description" content="A local-first AI learning companion for families: help your child learn (concept cards, quizzes, spaced review) and study papers yourself (read, annotate, review, cite). Your data stays in your browser. Free and open source.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/melonlee/sidonie/main/website/assets/og-image.jpg">
 
   <link rel="preload" href="../assets/fonts/Fraunces-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
@@ -41,7 +41,7 @@
       </a>
       <nav class="nav" aria-label="Page sections">
         <a href="#loop">How it works</a>
-        <a href="#radar">Paper Radar</a>
+        <a href="#papers">Paper study</a>
         <a href="#privacy">Privacy</a>
         <a href="#models">Models</a>
         <a href="#faq">FAQ</a>
@@ -60,7 +60,7 @@
         <div class="hero-copy">
           <span class="eyebrow"><span class="dot"></span>Open source · local-first · made for families</span>
           <h1 id="hero-title">Help your child learn <span class="hl">a little every day</span></h1>
-          <p class="lead">One concept card, one short quiz, and a review when it's due. Sidonie is a patient AI tutor for your child and a research corner for you, and everything stays in your own browser.</p>
+          <p class="lead">One concept card, one short quiz, and a review when it's due: Sidonie is a patient AI tutor for your child. After bedtime, it helps you work through a research paper, from reading and annotating to reviewing and citing. Everything stays in your own browser.</p>
           <div class="cta-row">
             <a class="btn btn-primary" href="https://melonlee.github.io/sidonie/" rel="noopener">
               Try the live demo
@@ -90,6 +90,22 @@
           <div class="phone">
             <img src="../assets/img/en-mobile-map.png" width="780" height="1688" alt="The curriculum map on a phone">
           </div>
+        </div>
+
+        <!-- Two pillars -->
+        <div class="pillars">
+          <a class="pillar reveal" href="#loop">
+            <span class="kicker">Help Child</span>
+            <h3>Concept cards, quizzes, spaced review</h3>
+            <p>A built-in maths path from Grade 1 to university, or a course for any subject. Learn a little, practise, and review just before it's forgotten.</p>
+            <span class="more">See the learning loop →</span>
+          </a>
+          <a class="pillar reveal" href="#papers">
+            <span class="kicker">Paper study for grown-ups</span>
+            <h3>Find, read, annotate, review, cite</h3>
+            <p>A reading list and a paper workspace: bilingual full text, structured analysis, highlights and notes, flashcards and one-click citations.</p>
+            <span class="more">See paper study →</span>
+          </a>
         </div>
       </div>
     </section>
@@ -206,6 +222,7 @@
             <ul class="checks">
               <li><span><b>English and Chinese interface</b>, switch any time.</span></li>
               <li><span><b>Open source and self-hostable</b>: run it on your own computer or deploy it as a static site.</span></li>
+              <li><span><b>Chat and notes</b>: multi-session chat with PDF, Word and image uploads; save anything to notes.</span></li>
             </ul>
           </div>
           <div class="phones">
@@ -216,26 +233,57 @@
       </div>
     </section>
 
-    <!-- Paper Radar -->
-    <section class="section section-alt" id="radar" aria-labelledby="radar-title">
+    <!-- Paper study -->
+    <section class="section section-alt" id="papers" aria-labelledby="papers-title">
       <div class="wrap">
-        <div class="feature-row flip reveal">
-          <div class="feature-text">
-            <span class="kicker">For the grown-ups</span>
-            <h2 id="radar-title">After bedtime, catch up on research</h2>
-            <p>Paper Radar keeps the latest arXiv papers a click away, with a plain-language reading for the dense ones.</p>
+        <div class="section-head center reveal">
+          <span class="kicker">Paper study for grown-ups</span>
+          <h2 id="papers-title">After bedtime, actually finish that paper</h2>
+          <p>Paper Radar is more than a feed of new papers. It walks you through every step from finding a paper to citing it, and the full text, notes and flashcards stay in your browser.</p>
+        </div>
+
+        <ol class="flow reveal" aria-label="Seven steps of paper study">
+          <li><b><i>1</i>Find</b><span>Browse new arXiv papers by topic or search</span></li>
+          <li><b><i>2</i>Save</b><span>A reading list: to read, reading, read, tags</span></li>
+          <li><b><i>3</i>Read</b><span>Full text in the browser, side-by-side translation</span></li>
+          <li><b><i>4</i>Understand</b><span>Structured analysis; ask the paper, with sources</span></li>
+          <li><b><i>5</i>Annotate</b><span>Highlight, add notes, ask AI to explain a passage</span></li>
+          <li><b><i>6</i>Review</b><span>Key-term flashcards on a spaced schedule</span></li>
+          <li><b><i>7</i>Cite</b><span>Copy BibTeX, APA or GB/T 7714 in one click</span></li>
+        </ol>
+
+        <div class="window reveal">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+          <img src="../assets/img/en-paper-workspace.webp" width="1920" height="1200" loading="lazy" alt="Paper workspace: Attention Is All You Need with a paragraph-by-paragraph Chinese translation, a contents sidebar, and colour highlights with notes">
+        </div>
+
+        <div class="paper-grid">
+          <figure class="paper-card reveal">
+            <img src="../assets/img/en-paper-list.webp" width="1200" height="610" loading="lazy" alt="Reading list with papers in the list, read this week, cards due and study streak, above papers with status and tags">
+            <figcaption>
+              <h3>Reading list</h3>
+              <p>Add arXiv papers by ID or URL, or import a local PDF. See at a glance what you read this week and how many cards are due.</p>
+            </figcaption>
+          </figure>
+          <figure class="paper-card reveal">
+            <img src="../assets/img/en-paper-cards.webp" width="1200" height="610" loading="lazy" alt="Flashcards for key terms such as Transformer, self-attention and multi-head attention, with plain explanations">
+            <figcaption>
+              <h3>Flashcards</h3>
+              <p>Pull out the key terms with plain explanations, then review them on the same spaced schedule as Help Child, so a paper doesn't fade the week after.</p>
+            </figcaption>
+          </figure>
+          <div class="paper-card paper-more reveal">
+            <h3>Also included</h3>
             <ul class="checks">
-              <li><span><b>Browse by topic</b>: LLMs, vision, agents, robotics, machine learning, or search your own keywords.</span></li>
-              <li><span><b>AI deep reading</b>: translated into English or Chinese, with the key points summarised.</span></li>
-              <li><span><b>Daily briefing</b>: the research trends across the current list.</span></li>
-              <li><span><b>Chat and notes</b>: multi-session chat with PDF, Word and image uploads; save anything to notes.</span></li>
+              <li><span><b>Structured analysis</b>: TL;DR, method, contributions, limitations, prerequisites.</span></li>
+              <li><span><b>Ask the paper</b>: relevant passages found locally; answers cite their sections.</span></li>
+              <li><span><b>Export to Notes</b>: highlights, notes and the citation in one note.</span></li>
+              <li><span><b>Works without a key</b>: reading, annotating, reviewing and citing need no API key.</span></li>
             </ul>
           </div>
-          <div class="window">
-            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
-            <img src="../assets/img/en-radar.png" width="1600" height="1000" loading="lazy" alt="Paper Radar: a grid of the latest arXiv papers filtered by topic">
-          </div>
         </div>
+
+        <p class="paper-note">Note: AI content in these screenshots (translation, explanation, flashcards) is demo text. Full-text extraction is heuristic: formulas and tables may come out garbled, and scanned PDFs have no text to extract.</p>
       </div>
     </section>
 
@@ -252,7 +300,7 @@
           <div class="p-card reveal">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div>
             <h3>Local-first</h3>
-            <p>Chats, notes, your child's progress and settings are saved only in this browser.</p>
+            <p>Chats, notes, your child's progress, your paper annotations and settings are saved only in this browser.</p>
           </div>
           <div class="p-card reveal">
             <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></div>
@@ -277,9 +325,10 @@
               <caption>What lives where</caption>
               <tbody>
                 <tr><th scope="row">Chats, notes, progress, settings</th><td>Only in this browser's localStorage</td></tr>
+                <tr><th scope="row">Paper PDFs, full text, translations, notes and flashcards</th><td>Only in this browser (IndexedDB and localStorage)</td></tr>
                 <tr><th scope="row">API keys</th><td>In the browser, sent only to the model provider you choose</td></tr>
                 <tr><th scope="row">AI requests</th><td>Straight from your browser to Google Gemini, DeepSeek, Moonshot (Kimi) or Alibaba Cloud Bailian (Qwen)</td></tr>
-                <tr><th scope="row">Paper Radar searches</th><td>To arXiv; the online demo goes through a public CORS proxy, which sees only your search terms</td></tr>
+                <tr><th scope="row">Paper Radar searches and PDFs</th><td>To arXiv; searches in the online demo go through a public CORS proxy, which sees only your search terms</td></tr>
               </tbody>
             </table>
             <p class="data-note">To be clear: keys are stored in plain text in the browser, so anyone using this browser profile can read them. Use keys with spending limits and remove them on shared computers. There is no cloud sync yet, and clearing site data deletes everything.</p>
@@ -364,7 +413,11 @@
           </details>
           <details>
             <summary>Why does Paper Radar sometimes fail in the live demo?</summary>
-            <p>arXiv doesn't allow direct requests from browsers, so the demo relies on a public CORS proxy that is sometimes slow or down. Running it locally is more reliable.</p>
+            <p>arXiv's search API doesn't allow direct requests from browsers, so the demo relies on a public CORS proxy that is sometimes slow or down. Running it locally is more reliable. Paper PDFs download straight from arXiv, so you can still add a paper by its ID and read the full text when the proxy is down.</p>
+          </details>
+          <details>
+            <summary>How accurate is the full-text extraction?</summary>
+            <p>The text is extracted from the PDF in your browser. Two-column layouts, headings and hyphenation are handled, but formulas, tables and text inside figures can come out garbled, and scanned PDFs (images only) have no text to extract, so you get the abstract. For the parts that matter, check the original PDF.</p>
           </details>
           <details>
             <summary>Why "Sidonie"?</summary>
