@@ -1330,7 +1330,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
 
   const renderCalendarGrid = () => {
     const { daysInMonth, firstDay, year, month } = getDaysInMonth(calendarDate);
-    const monthName = calendarDate.toLocaleString(language === 'zh' ? 'zh-CN' : 'default', { month: 'long' });
+    const monthName = calendarDate.toLocaleString(language === 'zh' ? 'zh-CN' : 'en-US', { month: 'long' });
     const days = [];
 
     // Empty slots

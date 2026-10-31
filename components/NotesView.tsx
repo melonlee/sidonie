@@ -157,7 +157,7 @@ const NotesView: React.FC<NotesViewProps> = ({ notes, onUpdateNote, onCreateNote
 
   const renderCalendar = () => {
     const { daysInMonth, firstDay, year, month } = getDaysInMonth(currentDate);
-    const monthName = currentDate.toLocaleString(language === 'zh' ? 'zh-CN' : 'default', { month: 'long' });
+    const monthName = currentDate.toLocaleString(language === 'zh' ? 'zh-CN' : 'en-US', { month: 'long' });
     const days = [];
 
     // Empty slots for start of month
