@@ -147,7 +147,9 @@ const App: React.FC = () => {
   });
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('app_language');
-    return saved === 'en' || saved === 'zh' ? saved : 'zh';
+    if (saved === 'en' || saved === 'zh') return saved;
+    // First visit: follow the browser language (Chinese for zh-*, otherwise English)
+    return navigator.language?.toLowerCase().startsWith('zh') ? 'zh' : 'en';
   });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isDocsOpen, setIsDocsOpen] = useState(false);
