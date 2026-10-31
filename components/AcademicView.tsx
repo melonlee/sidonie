@@ -39,12 +39,52 @@ const CATEGORY_TAGS = [
   { id: 'cs.LG', label: 'Machine Learning', query: 'cat:cs.LG' },
 ];
 
+// --- arXiv access ---
+// The arXiv API doesn't send CORS headers, so browsers can't call it directly.
+// Sources are tried in order; the first that works is remembered for the session.
+//  1. same-origin proxy served by `npm run dev` / `npm run preview` (vite.config.ts)
+//  2. direct request (works if arXiv ever enables CORS, or via a browser extension)
+//  3. your own proxy, if built with VITE_ARXIV_PROXY (prefix; the arXiv URL is appended encoded)
+//  4. public fallback: api.allorigins.win — a third-party service that sees your search query
+type ArxivSource = { id: 'local' | 'direct' | 'custom' | 'public'; build: (qs: string) => string; timeoutMs: number };
+const ARXIV_API = 'https://export.arxiv.org/api/query';
+const PUBLIC_PROXY = 'https://api.allorigins.win/raw?url=';
+const ARXIV_SOURCES: ArxivSource[] = [
+  { id: 'local', build: qs => `${import.meta.env.BASE_URL}arxiv-api/query?${qs}`, timeoutMs: 20000 },
+  { id: 'direct', build: qs => `${ARXIV_API}?${qs}`, timeoutMs: 8000 },
+  ...(import.meta.env.VITE_ARXIV_PROXY
+    ? [{ id: 'custom' as const, build: (qs: string) => `${import.meta.env.VITE_ARXIV_PROXY}${encodeURIComponent(`${ARXIV_API}?${qs}`)}`, timeoutMs: 20000 }]
+    : []),
+  { id: 'public', build: qs => `${PUBLIC_PROXY}${encodeURIComponent(`${ARXIV_API}?${qs}`)}`, timeoutMs: 20000 },
+];
+let preferredArxivSource: ArxivSource['id'] | null = null;
+
+const fetchArxivFeed = async (qs: string): Promise<{ xml: string; source: ArxivSource['id'] }> => {
+  const ordered = preferredArxivSource
+    ? [...ARXIV_SOURCES.filter(s => s.id === preferredArxivSource), ...ARXIV_SOURCES.filter(s => s.id !== preferredArxivSource)]
+    : ARXIV_SOURCES;
+  for (const source of ordered) {
+    try {
+      const res = await fetch(source.build(qs), { signal: AbortSignal.timeout(source.timeoutMs) });
+      if (!res.ok) continue;
+      const xml = await res.text();
+      if (!xml.includes('<feed')) continue; // e.g. an HTML 404 page from a static host
+      preferredArxivSource = source.id;
+      return { xml, source: source.id };
+    } catch (e) {
+      console.warn(`arXiv source "${source.id}" failed`, e);
+    }
+  }
+  throw new Error('All arXiv sources failed');
+};
+
 const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProfile, onSaveNote, onOpenSettings }) => {
   const t = TRANSLATIONS[language];
   const [query, setQuery] = useState('');
   const [papers, setPapers] = useState<Paper[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [feedSource, setFeedSource] = useState<ArxivSource['id'] | null>(null);
   const [selectedPaper, setSelectedPaper] = useState<Paper | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
   const [startIndex, setStartIndex] = useState(0);
@@ -62,26 +102,10 @@ const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProf
     setLoading(true);
     setError(null);
     try {
-      // arXiv API URL (HTTPS)
-      // Query parameters: search_query, start, max_results, sortBy, sortOrder
-      const encodedQuery = encodeURIComponent(searchQuery);
-      // NOTE: We request 20 at a time
-      const baseUrl = `https://export.arxiv.org/api/query?search_query=${encodedQuery}&start=${offset}&max_results=20&sortBy=submittedDate&sortOrder=descending`;
-      
-      let response;
-      try {
-        // Try direct fetch first
-        response = await fetch(baseUrl);
-        if (!response.ok) throw new Error('Direct fetch failed');
-      } catch (directError) {
-        console.warn("Direct arXiv fetch failed (likely CORS), switching to proxy...", directError);
-        // Fallback: Use AllOrigins CORS Proxy
-        response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`);
-      }
-      
-      if (!response.ok) throw new Error('Failed to fetch from arXiv');
-      
-      const textData = await response.text();
+      // Query parameters: search_query, start, max_results (20 per page), sortBy, sortOrder
+      const qs = `search_query=${encodeURIComponent(searchQuery)}&start=${offset}&max_results=20&sortBy=submittedDate&sortOrder=descending`;
+      const { xml: textData, source } = await fetchArxivFeed(qs);
+      setFeedSource(source);
       
       // Parse XML response
       const parser = new DOMParser();
@@ -142,7 +166,7 @@ const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProf
       
     } catch (err) {
       console.error(err);
-      setError("Failed to load papers. Please check your connection.");
+      setError(t.radarFetchError);
     } finally {
       setLoading(false);
     }
@@ -302,6 +326,9 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                  {t.academicTitle}
                </h1>
                <p className="text-gray-500 text-sm mt-1">{t.academicSubtitle}</p>
+               {feedSource === 'public' && (
+                 <p className="text-[11px] text-gray-400 mt-1">{t.radarPublicProxyNote}</p>
+               )}
             </div>
 
             <div className="flex gap-2 items-center">
@@ -382,8 +409,9 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                   <p>Fetching latest research...</p>
                </div>
             ) : error ? (
-               <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+               <div className="flex flex-col items-center justify-center h-64 text-gray-400 text-center">
                   <p className="text-red-500 font-medium mb-2">{error}</p>
+                  <p className="text-xs text-gray-400 mb-4 max-w-lg">{t.radarFetchHint}</p>
                   <button onClick={() => fetchPapers(activeCategory === 'custom' ? query : CATEGORY_TAGS.find(c => c.id === activeCategory)?.query || '')} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 shadow-sm">
                      <RefreshCw size={16} /> Retry
                   </button>

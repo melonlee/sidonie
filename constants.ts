@@ -452,6 +452,9 @@ export const TRANSLATIONS = {
     published: "Published",
     authors: "Authors",
     categories: "Categories",
+    radarFetchError: "Couldn't reach arXiv right now.",
+    radarFetchHint: "arXiv's API can't be called directly from a browser (no CORS). Running locally (npm run dev) uses a built-in proxy; static deployments fall back to a public proxy that may be unavailable.",
+    radarPublicProxyNote: "Loaded via the public CORS proxy api.allorigins.win — only your search query is shared with it.",
   },
   zh: {
     newTask: "新对话",
@@ -628,5 +631,8 @@ export const TRANSLATIONS = {
     published: "发表于",
     authors: "作者",
     categories: "分类",
+    radarFetchError: "暂时无法连接 arXiv。",
+    radarFetchHint: "浏览器无法直接调用 arXiv API（不支持 CORS）。本地运行（npm run dev）会使用内置代理；静态部署则回退到公共代理，可能不稳定。",
+    radarPublicProxyNote: "通过公共 CORS 代理 api.allorigins.win 加载 —— 只有搜索关键词会经过它。",
   }
 };
