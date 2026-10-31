@@ -136,7 +136,8 @@ export function toGbt7714(p: CitablePaper, accessed: Date = new Date()): string 
   const names = p.authors.slice(0, 3).map(fmtAuthor);
   const authors = names.length ? names.join(', ') + (p.authors.length > 3 ? (chinese ? ', 等' : ', et al') : '') : '';
   const published = isoDate(p.publishedAt);
-  const access = accessed.toISOString().slice(0, 10);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const access = `${accessed.getFullYear()}-${pad(accessed.getMonth() + 1)}-${pad(accessed.getDate())}`; // local date
   const url = paperUrl(p);
   const parts = [
     `${authors ? authors + '. ' : ''}${tidyTitle(p.title)}[EB/OL].`,

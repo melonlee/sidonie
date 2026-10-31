@@ -604,6 +604,10 @@ export const TRANSLATIONS = {
     paperCopy: "Copy",
     paperMarkRead: "Mark as read",
     paperExportTag: "Paper",
+    paperExportStatus: "Status",
+    paperTagsLabel: "Tags",
+    paperExportLink: "Link",
+    paperSelectHint: "Select text to highlight, annotate, explain or translate",
   },
   zh: {
     newTask: "新对话",
@@ -932,5 +936,9 @@ export const TRANSLATIONS = {
     paperCopy: "复制",
     paperMarkRead: "标记为已读",
     paperExportTag: "论文",
+    paperExportStatus: "状态",
+    paperTagsLabel: "标签",
+    paperExportLink: "链接",
+    paperSelectHint: "选中文字即可高亮、批注、解释或翻译",
   }
 };

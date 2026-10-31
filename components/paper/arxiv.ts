@@ -24,7 +24,13 @@ const makeSources = (local: (t: string) => string, remote: (t: string) => string
 ];
 
 const FEED_SOURCES = makeSources(qs => `${BASE}arxiv-api/query?${qs}`, qs => `${ARXIV_API}?${qs}`, 20000);
-const PDF_SOURCES = makeSources(id => `${BASE}arxiv-pdf/${id}`, id => `${ARXIV_PDF}${id}`, 45000);
+// arxiv.org/pdf currently sends `Access-Control-Allow-Origin: *`, so try it directly first
+// (a CORS failure is immediate). Timeouts cover the whole download of a multi-MB file.
+const PDF_SOURCES = (() => {
+  const s = makeSources(id => `${BASE}arxiv-pdf/${id}`, id => `${ARXIV_PDF}${id}`, 90000);
+  const direct = { ...s.find(x => x.id === 'direct')!, timeoutMs: 90000 };
+  return [direct, ...s.filter(x => x.id !== 'direct')];
+})();
 
 const preferred: { feed: ArxivSourceId | null; pdf: ArxivSourceId | null } = { feed: null, pdf: null };
 const ordered = (sources: Source[], pref: ArxivSourceId | null) =>

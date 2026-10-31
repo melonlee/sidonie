@@ -73,13 +73,13 @@ describe('APA 7', () => {
 
 describe('GB/T 7714', () => {
   it('lists three authors then et al., upper-case surnames, [EB/OL] and dates', () => {
-    expect(toGbt7714(attention, new Date('2026-11-01T00:00:00Z'))).toBe(
+    expect(toGbt7714(attention, new Date(2026, 10, 1, 12))).toBe(
       'VASWANI A, SHAZEER N, PARMAR N, et al. Attention Is All You Need[EB/OL]. arXiv:1706.03762. (2017-06-12)[2026-11-01]. https://arxiv.org/abs/1706.03762.',
     );
   });
 
   it('uses 等 for Chinese author lists', () => {
     const zh: CitablePaper = { id: 'local-2', source: 'local', title: '大模型综述', authors: ['张三', '李四', '王五', '赵六'], publishedAt: '2024-01-02' };
-    expect(toGbt7714(zh, new Date('2026-11-01T00:00:00Z'))).toBe('张三, 李四, 王五, 等. 大模型综述[EB/OL]. (2024-01-02)[2026-11-01].');
+    expect(toGbt7714(zh, new Date(2026, 10, 1, 12))).toBe('张三, 李四, 王五, 等. 大模型综述[EB/OL]. (2024-01-02)[2026-11-01].');
   });
 });

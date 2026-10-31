@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Paper } from '../../types';
 import { newSrsState, scheduleReview } from '../../services/srs';
 import { parseArxivId } from './arxiv';
@@ -220,12 +220,13 @@ export function usePaperStudy() {
     setStore(s => ({ ...s, cards: s.cards.filter(c => c.id !== id) }));
   }, []);
 
-  return {
+  return useMemo(() => ({
     store,
     markActivity, addPaper, updatePaper, setStatus, removePaper,
     addHighlight, updateHighlight, removeHighlight,
     addCards, reviewCard, removeCard,
-  };
+  }), [store, markActivity, addPaper, updatePaper, setStatus, removePaper,
+    addHighlight, updateHighlight, removeHighlight, addCards, reviewCard, removeCard]);
 }
 
 export type PaperStudyApi = ReturnType<typeof usePaperStudy>;

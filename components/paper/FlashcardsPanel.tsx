@@ -1,8 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { Brain, Check, RotateCcw, X } from 'lucide-react';
+import { Brain, Check, Loader2, RotateCcw, Sparkles, Trash2, X } from 'lucide-react';
 import type { Language } from '../../types';
-import type { Flashcard, SavedPaper } from './types';
-import { fmt, getT } from './ui';
+import { isDue } from '../../services/srs';
+import { buildPaperContext, contextBudgetChars, flashcardPrompt, parseFlashcards, runAI, type AIContext } from './paperAI';
+import { generateId, type PaperStudyApi } from './paperStore';
+import type { DocSection, Flashcard, SavedPaper } from './types';
+import { describeAIError, ErrorNote, fmt, formatDate, getT, NoKeyPrompt } from './ui';
 
 /**
  * Review due flashcards one by one. A forgotten card goes to the back of the queue
@@ -80,3 +83,85 @@ export const ReviewSession: React.FC<{
     </div>
   );
 };
+
+/** The workspace tab: extract key terms into flashcards, list them, and review the due ones. */
+const FlashcardsPanel: React.FC<{
+  paper: SavedPaper;
+  sections: DocSection[];
+  hasFullText: boolean;
+  study: PaperStudyApi;
+  language: Language;
+  ai: AIContext;
+  onOpenSettings?: () => void;
+  onStartReview: (ids: string[]) => void;
+}> = ({ paper, sections, hasFullText, study, language, ai, onOpenSettings, onStartReview }) => {
+  const t = getT(language);
+  const [running, setRunning] = useState(false);
+  const [received, setReceived] = useState(0);
+  const [error, setError] = useState<{ noKey: boolean; message: string | null } | null>(null);
+  const cards = study.store.cards.filter(c => c.paperId === paper.id);
+  const due = cards.filter(c => isDue(c));
+
+  const generate = async () => {
+    setRunning(true);
+    setError(null);
+    setReceived(0);
+    try {
+      const context = hasFullText ? buildPaperContext(sections, Math.min(contextBudgetChars(ai.apiKeys), 60_000)) : paper.summary;
+      const text = await runAI(flashcardPrompt(paper.title, context, language), ai, s => setReceived(s.length));
+      const parsed = parseFlashcards(text);
+      if (!parsed.length) { setError({ noKey: false, message: t.paperCardsParseError }); return; }
+      study.addCards(parsed.map(c => ({ ...c, id: generateId(), paperId: paper.id, createdAt: Date.now() })));
+      study.markActivity();
+    } catch (e) {
+      setError(describeAIError(e, t));
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  return (
+    <div className="h-full overflow-y-auto custom-scrollbar" data-testid="cards-panel">
+      <div className="mx-auto max-w-3xl px-6 py-8">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <p className="max-w-lg text-sm text-gray-500">{cards.length ? fmt(t.paperCardCount, { n: cards.length }) : t.paperCardsEmpty}</p>
+          <div className="flex gap-2">
+            {due.length > 0 && (
+              <button data-testid="review-paper-cards" onClick={() => onStartReview(due.map(c => c.id))}
+                className="flex items-center gap-1.5 rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600">
+                <Brain size={15} /> {fmt(t.paperReview, { n: due.length })}
+              </button>
+            )}
+            <button data-testid="generate-cards" onClick={generate} disabled={running}
+              className="flex items-center gap-1.5 rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-60">
+              {running ? <Loader2 size={15} className="animate-spin" /> : <Sparkles size={15} />}
+              {running ? `${t.paperGeneratingCards}${received ? ` ${received}` : ''}` : t.paperGenerateCards}
+            </button>
+          </div>
+        </div>
+        {!hasFullText && !cards.length && <p className="mb-4 text-xs text-amber-800">{t.paperBasisAbstract}</p>}
+        {error && <div className="mb-5">{error.noKey ? <NoKeyPrompt t={t} onOpenSettings={onOpenSettings} /> : <ErrorNote message={error.message || ''} />}</div>}
+
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          {cards.map(c => (
+            <div key={c.id} data-testid="flashcard" className="group flex flex-col rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="mb-1 flex items-start justify-between gap-2">
+                <h3 className="font-semibold text-gray-900">{c.term}</h3>
+                <button onClick={() => study.removeCard(c.id)} title={t.paperDelete} className="rounded p-1 text-gray-300 opacity-0 hover:text-red-600 group-hover:opacity-100"><Trash2 size={13} /></button>
+              </div>
+              <p className="flex-1 text-sm leading-relaxed text-gray-600">{c.explanation}</p>
+              <div className="mt-3 flex items-center justify-between text-[11px] text-gray-400">
+                <span className="truncate">{c.where ? `${t.paperAppearsIn}: ${c.where}` : ''}</span>
+                <span className={`shrink-0 rounded-full px-2 py-0.5 ${isDue(c) ? 'bg-amber-50 text-amber-800' : 'bg-gray-100'}`}>
+                  {isDue(c) ? t.paperDueNow : fmt(t.paperNextReview, { date: formatDate(c.nextReview, language) })}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default FlashcardsPanel;

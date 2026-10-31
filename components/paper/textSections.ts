@@ -52,7 +52,7 @@ export function buildLines(items: PdfItem[], page: number): PdfLine[] {
 }
 
 const HEADING_WORDS =
-  /^(abstract|introduction|related work|related works|background|preliminaries|method|methods|methodology|approach|our approach|model|model architecture|experiments?|experimental setup|experimental results|evaluation|results|discussion|analysis|conclusions?|conclusion and future work|limitations|future work|references|bibliography|acknowledge?ments?|appendix|appendices)$/i;
+  /^(abstract|introduction|related work|related works|background|preliminaries|method|methods|methodology|approach|our approach|model architecture|experiments?|experimental setup|experimental results|evaluation|results|discussion|analysis|conclusions?|conclusion and future work|limitations|future work|references|bibliography|acknowledge?ments?|appendix|appendices)$/i;
 const NUMBERED_HEADING = /^((\d+(\.\d+){0,3})|[IVX]{1,5}|[A-H])\.?\s+([A-Z][^]{1,90})$/;
 const REFERENCES = /^(\d+\.?\s+)?(references|bibliography)$/i;
 
@@ -85,9 +85,14 @@ export function isHeading(line: PdfLine, body: number): boolean {
   if (text.length > 100 || text.length < 3 || /[.,;]$/.test(text) && !/^\d+(\.\d+)*\.$/.test(text)) return false;
   const stripped = text.replace(/^((\d+(\.\d+){0,3})|[IVX]{1,5}|[A-H])\.?\s+/, '');
   if (HEADING_WORDS.test(stripped)) return true;
+  const words = stripped.split(/\s+/).length;
   const bigger = line.fontSize >= body * 1.08;
-  if (NUMBERED_HEADING.test(text) && bigger && stripped.split(/\s+/).length <= 12) return true;
-  return line.fontSize >= body * 1.2 && /[A-Za-z]{3}/.test(text) && text.split(/\s+/).length <= 14;
+  if (NUMBERED_HEADING.test(text) && bigger && words <= 12) return true;
+  // Body-size sub-headings ("3.2 Multi-Head Attention", usually bold): dotted number, short, no digits in the title
+  if (/^\d+\.\d+(\.\d+)?\.?\s+[A-Z]/.test(text) && words <= 10 && !/\d/.test(stripped) && Math.abs(line.fontSize - body) < 1) return true;
+  // Larger-font headings without numbers (e.g. the paper title). Figure labels like "Layer5" are excluded.
+  return line.fontSize >= body * 1.2 && /[A-Za-z]{3}/.test(text) && text.split(/\s+/).length >= 2 && text.split(/\s+/).length <= 14
+    && !/\d$/.test(text) && (text.match(/\d/g) || []).length <= 1;
 }
 
 /** Join wrapped lines, removing end-of-line hyphenation ("transfor-" + "mer" -> "transformer"). */

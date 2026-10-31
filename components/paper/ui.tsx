@@ -2,6 +2,7 @@
 import React from 'react';
 import { KeyRound } from 'lucide-react';
 import { TRANSLATIONS } from '../../constants';
+import { isMissingApiKeyError } from '../../services/geminiService';
 import type { Language } from '../../types';
 import type { PaperStatus } from './types';
 
@@ -42,6 +43,13 @@ export const NoKeyPrompt: React.FC<{ t: T; onOpenSettings?: () => void }> = ({ t
     </div>
   </div>
 );
+
+/** Classify an AI failure: missing key (show the friendly prompt) or a readable error message. */
+export const describeAIError = (e: unknown, t: T): { noKey: boolean; message: string | null } => {
+  if (isMissingApiKeyError(e)) return { noKey: true, message: null };
+  const raw = e instanceof Error ? e.message : String(e);
+  return { noKey: false, message: fmt(t.paperAIError, { msg: raw.length > 240 ? raw.slice(0, 240) + '…' : raw }) };
+};
 
 export const ErrorNote: React.FC<{ message: string }> = ({ message }) => (
   <div role="alert" className="rounded-xl border border-red-100 bg-red-50 p-3 text-sm text-red-700">{message}</div>
