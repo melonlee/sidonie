@@ -385,12 +385,10 @@ const App: React.FC = () => {
         try {
           if (file.type.includes('wordprocessingml')) {
              const arrayBuffer = await file.arrayBuffer();
-             // @ts-ignore
-             if (window.mammoth) {
-               // @ts-ignore
-               const result = await window.mammoth.extractRawText({ arrayBuffer });
-               newAttachments.push({ name: file.name, mimeType: 'text/plain', data: result.value, size: file.size, originalFileType: 'docx' });
-             } else { alert("Parser not ready."); }
+             // Loaded on demand so the .docx parser doesn't weigh down the initial bundle
+             const mammoth = await import('mammoth');
+             const result = await mammoth.extractRawText({ arrayBuffer });
+             newAttachments.push({ name: file.name, mimeType: 'text/plain', data: result.value, size: file.size, originalFileType: 'docx' });
           } else if (file.type.startsWith('text')) {
              const text = await file.text();
              newAttachments.push({ name: file.name, mimeType: 'text/plain', data: text, size: file.size, originalFileType: 'txt' });
