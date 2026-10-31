@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sidonie 伴学 · 陪孩子每天学一点的家庭 AI 学习伴侣</title>
+  <meta name="description" content="Sidonie 伴学是一个本地优先、开源免费的家庭 AI 学习伴侣：概念卡、小测验、间隔复习、课程地图与经验值徽章，陪孩子每天学一点；数据只留在你的浏览器里，用你自己的 API Key，无需注册。">
+  <meta name="theme-color" content="#FFFCF9">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="alternate" hreflang="zh-CN" href="./">
+  <link rel="alternate" hreflang="en" href="en/">
+
+  <!-- Open Graph / Twitter. Crawlers need absolute image URLs: swap to your own domain once deployed (see README). -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sidonie 伴学">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:title" content="Sidonie 伴学 · 陪孩子每天学一点">
+  <meta property="og:description" content="本地优先的家庭 AI 学习伴侣：概念卡、小测验、间隔复习。数据只留在你的浏览器里，开源免费。">
+  <meta property="og:image" content="https://raw.githubusercontent.com/melonlee/sidonie/main/website/assets/og-image.jpg">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta property="og:image:alt" content="Sidonie 伴学：家庭 AI 学习伴侣">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sidonie 伴学 · 陪孩子每天学一点">
+  <meta name="twitter:description" content="本地优先的家庭 AI 学习伴侣：概念卡、小测验、间隔复习。数据只留在你的浏览器里，开源免费。">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/melonlee/sidonie/main/website/assets/og-image.jpg">
+
+  <link rel="preload" href="assets/fonts/Fraunces-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./" aria-label="Sidonie 伴学 首页">
+        <img src="assets/logo-mark.svg" alt="" width="34" height="34">
+        <span class="en">Sidonie</span><span class="sep" aria-hidden="true"></span><span class="zh-mark">伴学</span>
+      </a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#loop">学习闭环</a>
+        <a href="#radar">学术雷达</a>
+        <a href="#privacy">隐私</a>
+        <a href="#models">模型</a>
+        <a href="#faq">常见问题</a>
+      </nav>
+      <div class="header-actions">
+        <a class="lang-switch" href="en/" hreflang="en" lang="en">English</a>
+        <a class="btn btn-primary btn-sm" href="https://melonlee.github.io/sidonie/" rel="noopener">在线体验</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="dot"></span>开源 · 本地优先的家庭 AI 学习伴侣</span>
+          <h1 id="hero-title">陪孩子，<span class="hl">每天学一点</span></h1>
+          <p class="lead">一张概念卡、一道小测验，到期了再复习。Sidonie 伴学是孩子身边耐心的 AI 小老师，大人的研究也不落下，所有记录都只留在你自己的浏览器里。</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://melonlee.github.io/sidonie/" rel="noopener">
+              在线体验
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="https://github.com/melonlee/sidonie" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              GitHub 源码
+            </a>
+          </div>
+          <p class="hero-note">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>免费开源（MIT）</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>无需注册</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>用你自己的 API Key</span>
+          </p>
+        </div>
+
+        <div class="stage">
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="assets/img/zh-map.png" width="1920" height="1200" fetchpriority="high"
+                 alt="帮帮孩子：数学课程地图，知识点标记为已掌握、该复习了或继续学习，顶部显示待复习数、经验值和等级">
+          </div>
+          <div class="float-card quiz">
+            <img src="assets/img/zh-quiz.png" width="1200" height="814" alt="小测验卡片：一道两位数加法选择题，选对后显示解析和「已掌握」">
+          </div>
+          <div class="phone">
+            <img src="assets/img/zh-mobile-map.png" width="780" height="1688" alt="手机上的课程地图">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Story -->
+    <section class="section" aria-labelledby="story-title">
+      <div class="wrap story reveal">
+        <div class="story-mark" aria-hidden="true"><img src="assets/logo-mark.svg" alt="" width="64" height="64"></div>
+        <div>
+          <span class="kicker">名字背后的故事</span>
+          <h2 id="story-title">先做给自己的家人</h2>
+          <blockquote>
+            <p>Sidonie 是我太太的名字。每天看着她和孩子用 AI，我发现这些工具并不是为她们设计的：辅导功课时太泛，想跟上研究又要在好几个工具之间来回切换。</p>
+            <p>所以我做了 Sidonie 伴学，最先只给身边最亲近的两个人用 —— 让孩子有一个安静学习的地方，也让大人能继续思考。如果它对我们家有用，也许对你的家庭也有用。</p>
+          </blockquote>
+          <p class="sign">Melon（李辉），FantasyAI Lab 创始人</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning loop -->
+    <section class="section section-alt" id="loop" aria-labelledby="loop-title">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <span class="kicker">帮帮孩子</span>
+          <h2 id="loop-title">学习，是一个小小的闭环</h2>
+          <p>不是又一个聊天框。每个知识点都按「先理解、再练习、到期再复习」的节奏走，家长陪着一起看就好。</p>
+        </div>
+
+        <ol class="loop">
+          <li class="step reveal">
+            <div class="step-n"><b>1</b>概念卡</div>
+            <h3>用孩子听得懂的话讲清楚</h3>
+            <p>一个知识点一张卡：有生活里的例子、有小窍门，不懂的地方还可以继续追问。</p>
+            <div class="step-shot"><img src="assets/img/zh-concept.png" width="1200" height="715" loading="lazy" alt="概念卡：用三盒鸡蛋的例子解释乘法就是「几个几」，最后留一道试一试"></div>
+          </li>
+          <li class="step reveal">
+            <div class="step-n"><b>2</b>小测验</div>
+            <h3>马上练一练，当场看解析</h3>
+            <p>选择题即时判断对错并给出解析。答对、答错都会被记下，决定下一次什么时候复习。</p>
+            <div class="step-shot"><img src="assets/img/zh-quiz.png" width="1200" height="814" loading="lazy" alt="小测验：小明有 27 张贴纸又得到 15 张，选出正确答案 42 并显示解析"></div>
+          </li>
+          <li class="step step-wide reveal">
+            <div class="step-copy">
+              <div class="step-n"><b>3</b>间隔复习</div>
+              <h3>快忘的时候，它会回来</h3>
+              <p>每次答题后自动安排下次复习：答对了，间隔一次比一次长；答错了，这个知识点会立刻回到「该复习了」。</p>
+            </div>
+            <figure class="timeline">
+              <ol class="track">
+                <li class="now"><b>今天</b><span>学会</span></li>
+                <li><b>1 天后</b><span>复习</span></li>
+                <li><b>3 天后</b><span>复习</span></li>
+                <li><b>8 天后</b><span>复习</span></li>
+                <li><b>22 天后</b><span>复习</span></li>
+              </ol>
+              <figcaption>连续答对时的复习间隔（默认设置）</figcaption>
+            </figure>
+            <div class="step-shot"><img src="assets/img/zh-review.png" width="1380" height="263" loading="lazy" alt="课程地图上的知识点卡片：一张已掌握，两张标记为该复习了"></div>
+          </li>
+        </ol>
+
+        <ul class="loop-facts reveal">
+          <li><b>内置数学路径</b><span>从小学一年级一直到大学</span></li>
+          <li><b>任意学科都能建</b><span>让 AI 按学科和年级生成课程大纲</span></li>
+          <li><b>三种学习卡片</b><span>概念讲解、小测验、可动手的可视化演示</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" aria-labelledby="features-title">
+      <div class="wrap">
+        <h2 id="features-title" class="sr-only">更多功能</h2>
+
+        <div class="feature-row reveal">
+          <div class="feature-text">
+            <span class="kicker">每日作业</span>
+            <h3>老师布置的作业，也接得住</h3>
+            <p>把老师发的作业要求记下来，文字或照片都可以。晚上陪孩子写作业时，心里有数。</p>
+            <ul class="checks">
+              <li><span><b>按天、按学科记录</b>，回头翻看很方便。</span></li>
+              <li><span><b>AI 帮家长解读重点</b>：这道题到底在考什么。</span></li>
+              <li><span><b>生成几道练习题</b>：同类型再练一练。</span></li>
+            </ul>
+          </div>
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="assets/img/zh-homework.png" width="1920" height="840" loading="lazy" alt="每日作业：按日期记录的数学、语文、英语作业卡片">
+          </div>
+        </div>
+
+        <div class="feature-row flip reveal">
+          <div class="feature-text">
+            <span class="kicker">经验值与徽章</span>
+            <h3>每一点坚持，都被看见</h3>
+            <p>学完一个知识点得经验值、升等级、解锁徽章；学习日历记下每一次学习。不靠催，靠一点点成就感。</p>
+            <ul class="checks">
+              <li><span><b>经验值、等级与成就徽章</b>，孩子自己看得懂。</span></li>
+              <li><span><b>学习日历</b>，家长随时回看这周学了什么。</span></li>
+            </ul>
+          </div>
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="assets/img/zh-progress.png" width="1920" height="1200" loading="lazy" alt="成长档案：已解锁和未解锁的成就徽章，以及标注了学习记录的月历">
+          </div>
+        </div>
+
+        <div class="feature-row reveal">
+          <div class="feature-text">
+            <span class="kicker">随手可用</span>
+            <h3>手机上也能用</h3>
+            <p>Sidonie 伴学是一个网页应用，电脑和手机浏览器打开即可，不用安装 App，也不用注册账号。</p>
+            <ul class="checks">
+              <li><span><b>中文 / 英文界面</b>，一键切换。</span></li>
+              <li><span><b>开源可自部署</b>：可以在自己电脑上运行，或部署成一个静态网站。</span></li>
+            </ul>
+          </div>
+          <div class="phones">
+            <div class="phone"><img src="assets/img/zh-mobile-map.png" width="780" height="1688" loading="lazy" alt="手机上的帮帮孩子课程地图"></div>
+            <div class="phone"><img src="assets/img/zh-mobile-quiz.png" width="780" height="1688" loading="lazy" alt="手机上的小测验"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Paper Radar -->
+    <section class="section section-alt" id="radar" aria-labelledby="radar-title">
+      <div class="wrap">
+        <div class="feature-row flip reveal">
+          <div class="feature-text">
+            <span class="kicker">给大人的研究角</span>
+            <h2 id="radar-title">孩子睡着后，补上最新的研究</h2>
+            <p>学术雷达把 arXiv 最新论文放在手边，看不懂的英文论文，也能先读一份通俗解读。</p>
+            <ul class="checks">
+              <li><span><b>按主题浏览</b>：LLM、视觉、Agent、机器人、机器学习，也可以搜索自己的关键词。</span></li>
+              <li><span><b>AI 深度解读</b>：翻译成中文或英文，并总结要点。</span></li>
+              <li><span><b>每日简报</b>：归纳当前列表里的研究趋势。</span></li>
+              <li><span><b>对话与笔记</b>：多会话对话，支持上传 PDF、Word、图片；好内容一键存进笔记。</span></li>
+            </ul>
+          </div>
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="assets/img/zh-radar.png" width="1600" height="1000" loading="lazy" alt="学术雷达：按主题筛选的 arXiv 最新论文卡片列表">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section class="section section-dark" id="privacy" aria-labelledby="privacy-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">隐私与数据</span>
+          <h2 id="privacy-title">学习记录，只留在你家的浏览器里</h2>
+          <p>Sidonie 伴学是一个纯静态网页应用：没有 Sidonie 后端，不需要账号，也没有任何统计埋点。</p>
+        </div>
+
+        <div class="privacy-grid">
+          <div class="p-card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div>
+            <h3>本地优先</h3>
+            <p>对话、笔记、孩子的学习进度和设置，都只保存在当前浏览器里。</p>
+          </div>
+          <div class="p-card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></div>
+            <h3>自带 Key</h3>
+            <p>用你自己的模型 API Key。它只发给你选择的服务商，绝不会被打包进应用代码。</p>
+          </div>
+          <div class="p-card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 2h13a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-5"/><path d="M10 10 2.5 2.5C2 2 2 2.5 2 5v3a2 2 0 0 0 2 2h6z"/><path d="M22 17v-1a2 2 0 0 0-2-2h-1"/><path d="M4 14a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16.5l1-.5.5.5-8-8H4z"/><path d="M6 18h.01"/><path d="m2 2 20 20"/></svg></div>
+            <h3>没有服务器</h3>
+            <p>不注册、不登录。没有 Sidonie 后端，我们也接触不到你的任何数据。</p>
+          </div>
+          <div class="p-card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></div>
+            <h3>没有埋点</h3>
+            <p>应用里不接入任何统计或广告追踪，这个官网也一样。</p>
+          </div>
+        </div>
+
+        <div class="data-flow reveal">
+          <div>
+            <table class="data-table">
+              <caption>什么存在哪里</caption>
+              <tbody>
+                <tr><th scope="row">对话、笔记、学习进度、设置</th><td>仅保存在当前浏览器的 localStorage</td></tr>
+                <tr><th scope="row">API Key</th><td>保存在浏览器本地，只发给你选择的模型服务商</td></tr>
+                <tr><th scope="row">AI 请求</th><td>从浏览器直接发往 Google Gemini、DeepSeek、Moonshot（Kimi）或阿里云百炼（通义千问）</td></tr>
+                <tr><th scope="row">学术雷达搜索</th><td>发往 arXiv；在线版需经公共 CORS 代理，它只能看到搜索关键词</td></tr>
+              </tbody>
+            </table>
+            <p class="data-note">坦白说：Key 以明文保存在浏览器里，能使用这台电脑这个浏览器的人也能读到。建议使用设了额度上限的 Key，在公共电脑上用完即删。目前没有云端同步，清空浏览器数据会删除所有记录。</p>
+          </div>
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="assets/img/zh-settings.png" width="1200" height="1220" loading="lazy" alt="设置中的模型配置：填写 Gemini、DeepSeek、Kimi、通义千问的 API Key，并提示 Key 只保存在当前浏览器">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Models -->
+    <section class="section" id="models" aria-labelledby="models-title">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <span class="kicker">支持的模型</span>
+          <h2 id="models-title">用你自己的模型 Key</h2>
+          <p>至少配置一家即可开始，费用直接由你向服务商支付，很多服务商都有免费额度。</p>
+        </div>
+        <div class="models">
+          <div class="model reveal">
+            <h3>Google Gemini</h3>
+            <p class="vendor">Google AI Studio</p>
+            <ul><li>Gemini 3 Flash</li><li>Gemini 3 Pro</li><li>Flash Lite</li><li>图片生成</li></ul>
+            <a href="https://aistudio.google.com/apikey" rel="noopener">获取 Key →</a>
+          </div>
+          <div class="model reveal">
+            <h3>DeepSeek</h3>
+            <p class="vendor">深度求索</p>
+            <ul><li>DeepSeek V3</li><li>DeepSeek R1</li></ul>
+            <a href="https://platform.deepseek.com/api_keys" rel="noopener">获取 Key →</a>
+          </div>
+          <div class="model reveal">
+            <h3>Kimi</h3>
+            <p class="vendor">月之暗面 Moonshot</p>
+            <ul><li>moonshot-v1-8k</li></ul>
+            <a href="https://platform.moonshot.cn/console/api-keys" rel="noopener">获取 Key →</a>
+          </div>
+          <div class="model reveal">
+            <h3>通义千问</h3>
+            <p class="vendor">阿里云百炼 DashScope</p>
+            <ul><li>Qwen Plus</li><li>Qwen Max</li></ul>
+            <a href="https://bailian.console.aliyun.com/?apiKey=1" rel="noopener">获取 Key →</a>
+          </div>
+        </div>
+        <p class="models-note">配置了 Gemini Key 时，帮帮孩子和学术雷达会优先使用 Gemini；否则自动改用你配置的其他服务商。</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-alt" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <span class="kicker">常见问题</span>
+          <h2 id="faq-title">家长常问的几件事</h2>
+        </div>
+        <div class="faq reveal">
+          <details>
+            <summary>收费吗？</summary>
+            <p>Sidonie 伴学本身免费开源（MIT 协议）。模型调用费用由你自己的 Key 直接向服务商支付，很多服务商都有免费额度。</p>
+          </details>
+          <details>
+            <summary>需要注册账号或安装 App 吗？</summary>
+            <p>都不需要。打开在线体验，在「设置 → 模型配置」里填一个 API Key 就能开始。也可以在自己电脑上运行（<code>npm run dev</code>），或把它部署成一个静态网站。</p>
+          </details>
+          <details>
+            <summary>适合什么年龄、什么学科？</summary>
+            <p>内置的是从小学低年级到大学的数学学习路径。「创建课程」可以让模型为任意学科和年级生成课程大纲。</p>
+          </details>
+          <details>
+            <summary>孩子可以自己用吗？</summary>
+            <p>它的设计初衷是家长陪孩子一起用。AI 生成的讲解和题目可能有错，请和孩子一起核对。</p>
+          </details>
+          <details>
+            <summary>我的 API Key 安全吗？</summary>
+            <p>Key 只保存在你的浏览器里，只会发送给对应的服务商，Sidonie 伴学没有服务器，接触不到它。但它是以明文保存的，能使用这个浏览器的人也能读到，所以建议使用设了额度上限的 Key，在共享设备上用完即删。</p>
+          </details>
+          <details>
+            <summary>换一台电脑或手机，学习记录还在吗？</summary>
+            <p>不在。所有数据都只保存在当前浏览器里，目前没有云端同步。数据导出 / 导入已经在路线图上。</p>
+          </details>
+          <details>
+            <summary>为什么在线体验里的学术雷达有时加载失败？</summary>
+            <p>arXiv 不允许浏览器直接请求，在线体验依赖公共 CORS 代理，它有时会变慢或不可用。在自己电脑上运行会更稳定。</p>
+          </details>
+          <details>
+            <summary>为什么叫「Sidonie 伴学」？</summary>
+            <p>Sidonie 是作者太太的名字，这个项目最先就是为她和孩子做的；「伴学」是它想做的事：陪着孩子学，也陪着大人学。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="section closing" aria-labelledby="closing-title">
+      <div class="wrap">
+        <div class="closing-card reveal">
+          <h2 id="closing-title">今晚，和孩子一起学一张概念卡</h2>
+          <p>免费、开源，打开浏览器就能开始。</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://melonlee.github.io/sidonie/" rel="noopener">
+              在线体验
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="https://github.com/melonlee/sidonie" rel="noopener">在 GitHub 上查看</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="./" aria-label="Sidonie 伴学 首页">
+            <img src="assets/logo-mark.svg" alt="" width="34" height="34">
+            <span class="en">Sidonie</span><span class="sep" aria-hidden="true"></span><span class="zh-mark">伴学</span>
+          </a>
+          <p>本地优先的家庭 AI 学习伴侣。由 Melon（李辉）为自己的家人打造，基于 MIT 协议开源。</p>
+        </div>
+        <div>
+          <h3>产品</h3>
+          <ul>
+            <li><a href="https://melonlee.github.io/sidonie/" rel="noopener">在线体验</a></li>
+            <li><a href="https://github.com/melonlee/sidonie" rel="noopener">GitHub 源码</a></li>
+            <li><a href="https://github.com/melonlee/sidonie/issues" rel="noopener">问题反馈</a></li>
+            <li><a href="en/" hreflang="en" lang="en">English</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>关于</h3>
+          <ul>
+            <li><a href="https://fantasyailab.com/" rel="noopener">FantasyAI Lab</a></li>
+            <li><a href="https://fantasyailab.com/melon-lihui.html" rel="noopener">维护者：Melon（李辉）</a></li>
+            <li><a href="https://github.com/melonlee/sidonie/blob/main/LICENSE" rel="noopener">MIT 许可证</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> Melon（李辉）· FantasyAI Lab</span>
+        <span>AI 生成的内容可能有误，请家长陪孩子一起核对。</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

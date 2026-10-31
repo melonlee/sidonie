@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sidonie · An AI learning companion for families</title>
+  <meta name="description" content="Sidonie is a free, open-source, local-first AI learning companion for families: concept cards, quizzes, spaced review, a curriculum map and XP badges to help your child learn a little every day. Everything stays in your browser, with your own API key and no account.">
+  <meta name="theme-color" content="#FFFCF9">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="alternate" hreflang="zh-CN" href="../">
+  <link rel="alternate" hreflang="en" href="./">
+
+  <!-- Open Graph / Twitter. Crawlers need absolute image URLs: swap to your own domain once deployed (see README). -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sidonie">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <meta property="og:title" content="Sidonie · Help your child learn a little every day">
+  <meta property="og:description" content="A local-first AI learning companion for families: concept cards, quizzes and spaced review. Your data stays in your browser. Free and open source.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/melonlee/sidonie/main/website/assets/og-image.jpg">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta property="og:image:alt" content="Sidonie: an AI learning companion for families">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sidonie · Help your child learn a little every day">
+  <meta name="twitter:description" content="A local-first AI learning companion for families: concept cards, quizzes and spaced review. Your data stays in your browser. Free and open source.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/melonlee/sidonie/main/website/assets/og-image.jpg">
+
+  <link rel="preload" href="../assets/fonts/Fraunces-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./" aria-label="Sidonie home">
+        <img src="../assets/logo-mark.svg" alt="" width="34" height="34">
+        <span class="en">Sidonie</span>
+      </a>
+      <nav class="nav" aria-label="Page sections">
+        <a href="#loop">How it works</a>
+        <a href="#radar">Paper Radar</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#models">Models</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="header-actions">
+        <a class="lang-switch" href="../" hreflang="zh-CN" lang="zh-CN">中文</a>
+        <a class="btn btn-primary btn-sm" href="https://melonlee.github.io/sidonie/" rel="noopener">Try the demo</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="dot"></span>Open source · local-first · made for families</span>
+          <h1 id="hero-title">Help your child learn <span class="hl">a little every day</span></h1>
+          <p class="lead">One concept card, one short quiz, and a review when it's due. Sidonie is a patient AI tutor for your child and a research corner for you, and everything stays in your own browser.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://melonlee.github.io/sidonie/" rel="noopener">
+              Try the live demo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="https://github.com/melonlee/sidonie" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              View on GitHub
+            </a>
+          </div>
+          <p class="hero-note">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Free &amp; open source (MIT)</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No account</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Bring your own API key</span>
+          </p>
+        </div>
+
+        <div class="stage">
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="../assets/img/en-map.png" width="1920" height="1200" fetchpriority="high"
+                 alt="Help Child: a maths curriculum map with topics marked mastered, review due or in progress, plus review count, XP and level">
+          </div>
+          <div class="float-card quiz">
+            <img src="../assets/img/en-quiz.png" width="1200" height="816" alt="Quiz card: a two-digit addition question answered correctly, with an explanation and Mastery Achieved">
+          </div>
+          <div class="phone">
+            <img src="../assets/img/en-mobile-map.png" width="780" height="1688" alt="The curriculum map on a phone">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Story -->
+    <section class="section" aria-labelledby="story-title">
+      <div class="wrap story reveal">
+        <div class="story-mark" aria-hidden="true"><img src="../assets/logo-mark.svg" alt="" width="64" height="64"></div>
+        <div>
+          <span class="kicker">The story behind the name</span>
+          <h2 id="story-title">Built for my own family first</h2>
+          <blockquote>
+            <p>Sidonie is my wife's name. Every day I watched her and our child use AI tools that weren't really built for them: too generic for a child's homework, too scattered for a parent who still wants to keep up with research.</p>
+            <p>So I built Sidonie, at first just for the two people closest to me: a calm place for a child to learn and for a grown-up to keep thinking. If it works for our family, it may work for yours too.</p>
+          </blockquote>
+          <p class="sign">Melon (李辉), founder of FantasyAI Lab</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning loop -->
+    <section class="section section-alt" id="loop" aria-labelledby="loop-title">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <span class="kicker">Help Child</span>
+          <h2 id="loop-title">Learning, as a small loop</h2>
+          <p>Not just another chat box. Every topic follows the same rhythm: understand it, practise it, and review it when it's due. A parent sitting alongside is all it needs.</p>
+        </div>
+
+        <ol class="loop">
+          <li class="step reveal">
+            <div class="step-n"><b>1</b>Concept card</div>
+            <h3>Explained in words a child gets</h3>
+            <p>One idea per card, with an everyday example and a tip. Anything unclear? Keep asking follow-up questions.</p>
+            <div class="step-shot"><img src="../assets/img/en-concept.png" width="1200" height="716" loading="lazy" alt="Concept card explaining multiplication as groups of, using three boxes of four eggs, ending with a try-it question"></div>
+          </li>
+          <li class="step reveal">
+            <div class="step-n"><b>2</b>Quiz</div>
+            <h3>Practise now, see why right away</h3>
+            <p>Multiple-choice questions with instant feedback and an explanation. Right or wrong, the answer decides when the topic comes back.</p>
+            <div class="step-shot"><img src="../assets/img/en-quiz.png" width="1200" height="816" loading="lazy" alt="Quiz: Leo has 27 stickers and gets 15 more; the correct answer 42 is selected with an explanation"></div>
+          </li>
+          <li class="step step-wide reveal">
+            <div class="step-copy">
+              <div class="step-n"><b>3</b>Spaced review</div>
+              <h3>It comes back just before it's forgotten</h3>
+              <p>Every answer reschedules the next review. Get it right and the gap grows; get it wrong and the topic is due again straight away.</p>
+            </div>
+            <figure class="timeline">
+              <ol class="track">
+                <li class="now"><b>Today</b><span>learn</span></li>
+                <li><b>+1 day</b><span>review</span></li>
+                <li><b>+3 days</b><span>review</span></li>
+                <li><b>+8 days</b><span>review</span></li>
+                <li><b>+22 days</b><span>review</span></li>
+              </ol>
+              <figcaption>Review gaps after consecutive correct answers (default settings)</figcaption>
+            </figure>
+            <div class="step-shot"><img src="../assets/img/en-review.png" width="1380" height="305" loading="lazy" alt="Topic cards on the curriculum map: one mastered, two marked review due"></div>
+          </li>
+        </ol>
+
+        <ul class="loop-facts reveal">
+          <li><b>Built-in maths path</b><span>From first grade all the way to university</span></li>
+          <li><b>Any subject</b><span>Ask the AI for a course for any subject and grade</span></li>
+          <li><b>Three card types</b><span>Concepts, quizzes and hands-on interactive visuals</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" aria-labelledby="features-title">
+      <div class="wrap">
+        <h2 id="features-title" class="sr-only">More features</h2>
+
+        <div class="feature-row reveal">
+          <div class="feature-text">
+            <span class="kicker">Daily notes</span>
+            <h3>Keeps up with the teacher's homework, too</h3>
+            <p>Jot down what the teacher sent home, as text or a photo, so homework time in the evening starts with a plan.</p>
+            <ul class="checks">
+              <li><span><b>Logged by day and subject</b>, easy to look back on.</span></li>
+              <li><span><b>The AI explains the key points</b> to the parent: what is this task really about?</span></li>
+              <li><span><b>A few practice questions</b> of the same kind, on request.</span></li>
+            </ul>
+          </div>
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="../assets/img/en-homework.png" width="1920" height="840" loading="lazy" alt="Daily notes: homework cards for maths, Chinese and English, each with a date">
+          </div>
+        </div>
+
+        <div class="feature-row flip reveal">
+          <div class="feature-text">
+            <span class="kicker">XP &amp; badges</span>
+            <h3>Every bit of effort, made visible</h3>
+            <p>Finishing a topic earns XP, levels and badges, and a learning calendar records every session. Less nagging, more small wins.</p>
+            <ul class="checks">
+              <li><span><b>XP, levels and achievement badges</b> a child can read at a glance.</span></li>
+              <li><span><b>A learning calendar</b> so parents can see what this week looked like.</span></li>
+            </ul>
+          </div>
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="../assets/img/en-progress.png" width="1920" height="1200" loading="lazy" alt="Progress: unlocked and locked achievement badges above a monthly learning calendar">
+          </div>
+        </div>
+
+        <div class="feature-row reveal">
+          <div class="feature-text">
+            <span class="kicker">Anywhere</span>
+            <h3>Works on a phone, too</h3>
+            <p>Sidonie is a web app: open it in any desktop or phone browser. Nothing to install, no account to create.</p>
+            <ul class="checks">
+              <li><span><b>English and Chinese interface</b>, switch any time.</span></li>
+              <li><span><b>Open source and self-hostable</b>: run it on your own computer or deploy it as a static site.</span></li>
+            </ul>
+          </div>
+          <div class="phones">
+            <div class="phone"><img src="../assets/img/en-mobile-map.png" width="780" height="1688" loading="lazy" alt="Help Child curriculum map on a phone"></div>
+            <div class="phone"><img src="../assets/img/en-mobile-quiz.png" width="780" height="1688" loading="lazy" alt="A quiz on a phone"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Paper Radar -->
+    <section class="section section-alt" id="radar" aria-labelledby="radar-title">
+      <div class="wrap">
+        <div class="feature-row flip reveal">
+          <div class="feature-text">
+            <span class="kicker">For the grown-ups</span>
+            <h2 id="radar-title">After bedtime, catch up on research</h2>
+            <p>Paper Radar keeps the latest arXiv papers a click away, with a plain-language reading for the dense ones.</p>
+            <ul class="checks">
+              <li><span><b>Browse by topic</b>: LLMs, vision, agents, robotics, machine learning, or search your own keywords.</span></li>
+              <li><span><b>AI deep reading</b>: translated into English or Chinese, with the key points summarised.</span></li>
+              <li><span><b>Daily briefing</b>: the research trends across the current list.</span></li>
+              <li><span><b>Chat and notes</b>: multi-session chat with PDF, Word and image uploads; save anything to notes.</span></li>
+            </ul>
+          </div>
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="../assets/img/en-radar.png" width="1600" height="1000" loading="lazy" alt="Paper Radar: a grid of the latest arXiv papers filtered by topic">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section class="section section-dark" id="privacy" aria-labelledby="privacy-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">Privacy &amp; your data</span>
+          <h2 id="privacy-title">Your child's learning stays in your browser</h2>
+          <p>Sidonie is a purely static web app: there is no Sidonie backend, no account and no analytics.</p>
+        </div>
+
+        <div class="privacy-grid">
+          <div class="p-card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div>
+            <h3>Local-first</h3>
+            <p>Chats, notes, your child's progress and settings are saved only in this browser.</p>
+          </div>
+          <div class="p-card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></div>
+            <h3>Bring your own key</h3>
+            <p>Use your own model API key. It goes only to the provider you pick and is never bundled into the app.</p>
+          </div>
+          <div class="p-card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 2h13a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-5"/><path d="M10 10 2.5 2.5C2 2 2 2.5 2 5v3a2 2 0 0 0 2 2h6z"/><path d="M22 17v-1a2 2 0 0 0-2-2h-1"/><path d="M4 14a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16.5l1-.5.5.5-8-8H4z"/><path d="M6 18h.01"/><path d="m2 2 20 20"/></svg></div>
+            <h3>No server</h3>
+            <p>No sign-up, no login. With no Sidonie backend, we never see any of your data.</p>
+          </div>
+          <div class="p-card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></div>
+            <h3>No tracking</h3>
+            <p>No analytics or ad trackers in the app, and none on this website either.</p>
+          </div>
+        </div>
+
+        <div class="data-flow reveal">
+          <div>
+            <table class="data-table">
+              <caption>What lives where</caption>
+              <tbody>
+                <tr><th scope="row">Chats, notes, progress, settings</th><td>Only in this browser's localStorage</td></tr>
+                <tr><th scope="row">API keys</th><td>In the browser, sent only to the model provider you choose</td></tr>
+                <tr><th scope="row">AI requests</th><td>Straight from your browser to Google Gemini, DeepSeek, Moonshot (Kimi) or Alibaba Cloud Bailian (Qwen)</td></tr>
+                <tr><th scope="row">Paper Radar searches</th><td>To arXiv; the online demo goes through a public CORS proxy, which sees only your search terms</td></tr>
+              </tbody>
+            </table>
+            <p class="data-note">To be clear: keys are stored in plain text in the browser, so anyone using this browser profile can read them. Use keys with spending limits and remove them on shared computers. There is no cloud sync yet, and clearing site data deletes everything.</p>
+          </div>
+          <div class="window">
+            <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="../assets/img/en-settings.png" width="1200" height="1220" loading="lazy" alt="Settings, model configuration: fields for Gemini, DeepSeek, Kimi and Qwen API keys, with a note that keys stay in this browser">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Models -->
+    <section class="section" id="models" aria-labelledby="models-title">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <span class="kicker">Supported models</span>
+          <h2 id="models-title">Use your own model key</h2>
+          <p>Configure at least one provider to start. You pay the provider directly, and many offer a free tier.</p>
+        </div>
+        <div class="models">
+          <div class="model reveal">
+            <h3>Google Gemini</h3>
+            <p class="vendor">Google AI Studio</p>
+            <ul><li>Gemini 3 Flash</li><li>Gemini 3 Pro</li><li>Flash Lite</li><li>Image generation</li></ul>
+            <a href="https://aistudio.google.com/apikey" rel="noopener">Get a key →</a>
+          </div>
+          <div class="model reveal">
+            <h3>DeepSeek</h3>
+            <p class="vendor">DeepSeek Platform</p>
+            <ul><li>DeepSeek V3</li><li>DeepSeek R1</li></ul>
+            <a href="https://platform.deepseek.com/api_keys" rel="noopener">Get a key →</a>
+          </div>
+          <div class="model reveal">
+            <h3>Kimi</h3>
+            <p class="vendor">Moonshot AI</p>
+            <ul><li>moonshot-v1-8k</li></ul>
+            <a href="https://platform.moonshot.cn/console/api-keys" rel="noopener">Get a key →</a>
+          </div>
+          <div class="model reveal">
+            <h3>Qwen</h3>
+            <p class="vendor">Alibaba Cloud Bailian (DashScope)</p>
+            <ul><li>Qwen Plus</li><li>Qwen Max</li></ul>
+            <a href="https://bailian.console.aliyun.com/?apiKey=1" rel="noopener">Get a key →</a>
+          </div>
+        </div>
+        <p class="models-note">With a Gemini key, Help Child and Paper Radar use Gemini first; otherwise they fall back to the other provider you configured.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-alt" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <span class="kicker">FAQ</span>
+          <h2 id="faq-title">What parents usually ask</h2>
+        </div>
+        <div class="faq reveal">
+          <details>
+            <summary>Does it cost anything?</summary>
+            <p>Sidonie itself is free and open source (MIT). Model usage is billed by the provider to your own key, and many providers have a free tier.</p>
+          </details>
+          <details>
+            <summary>Do I need an account or an app?</summary>
+            <p>Neither. Open the live demo, paste an API key under Settings → Models, and start. You can also run it on your own computer (<code>npm run dev</code>) or deploy it as a static site.</p>
+          </details>
+          <details>
+            <summary>What ages and subjects does it cover?</summary>
+            <p>The built-in path is maths from the early primary years to university. "Create course" asks the model to draft a course for any subject and grade.</p>
+          </details>
+          <details>
+            <summary>Can my child use it alone?</summary>
+            <p>It is designed for a parent and child to use together. AI-generated explanations and questions can be wrong, so check them with your child.</p>
+          </details>
+          <details>
+            <summary>Is my API key safe?</summary>
+            <p>Your key stays in your browser and is sent only to its provider; Sidonie has no server that could see it. It is stored in plain text, though, so anyone with access to this browser profile can read it. Prefer keys with spending limits and remove them on shared devices.</p>
+          </details>
+          <details>
+            <summary>Will my child's progress follow us to another device?</summary>
+            <p>No. Everything lives in the current browser and there is no cloud sync yet. Data export and import is on the roadmap.</p>
+          </details>
+          <details>
+            <summary>Why does Paper Radar sometimes fail in the live demo?</summary>
+            <p>arXiv doesn't allow direct requests from browsers, so the demo relies on a public CORS proxy that is sometimes slow or down. Running it locally is more reliable.</p>
+          </details>
+          <details>
+            <summary>Why "Sidonie"?</summary>
+            <p>Sidonie is the author's wife's name; the project was built for her and their child first. Its Chinese name, 伴学 (bàn xué), means "learning alongside": keeping a child company while they learn.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="section closing" aria-labelledby="closing-title">
+      <div class="wrap">
+        <div class="closing-card reveal">
+          <h2 id="closing-title">Tonight, try one concept card together</h2>
+          <p>Free, open source, and it starts in your browser.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://melonlee.github.io/sidonie/" rel="noopener">
+              Try the live demo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a class="btn btn-secondary" href="https://github.com/melonlee/sidonie" rel="noopener">View on GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="./" aria-label="Sidonie home">
+            <img src="../assets/logo-mark.svg" alt="" width="34" height="34">
+            <span class="en">Sidonie</span><span class="sep" aria-hidden="true"></span><span class="zh-mark" lang="zh-CN">伴学</span>
+          </a>
+          <p>A local-first AI learning companion for families. Built by Melon (李辉) for his own family, open source under the MIT license.</p>
+        </div>
+        <div>
+          <h3>Product</h3>
+          <ul>
+            <li><a href="https://melonlee.github.io/sidonie/" rel="noopener">Live demo</a></li>
+            <li><a href="https://github.com/melonlee/sidonie" rel="noopener">Source on GitHub</a></li>
+            <li><a href="https://github.com/melonlee/sidonie/issues" rel="noopener">Feedback &amp; issues</a></li>
+            <li><a href="../" hreflang="zh-CN" lang="zh-CN">中文</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>About</h3>
+          <ul>
+            <li><a href="https://fantasyailab.com/" rel="noopener">FantasyAI Lab</a></li>
+            <li><a href="https://fantasyailab.com/melon-lihui.html" rel="noopener">Maintainer: Melon (李辉)</a></li>
+            <li><a href="https://github.com/melonlee/sidonie/blob/main/LICENSE" rel="noopener">MIT License</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> Melon (李辉) · FantasyAI Lab</span>
+        <span>AI-generated content can be wrong. Please check it with your child.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js" defer></script>
+</body>
+</html>

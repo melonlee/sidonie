@@ -144,6 +144,8 @@ The app is fully static, so any static host works.
 - **Elsewhere:** run `VITE_BASE=/your/sub/path/ npm run build`, or leave `VITE_BASE` unset to serve from the root.
 - **Optional:** set `VITE_ARXIV_PROXY` to a CORS proxy you control (a prefix to which the encoded arXiv URL is appended) so Paper Radar doesn't depend on a public proxy. On GitHub, add it as a repository *variable*.
 
+**Project website:** the marketing site (Chinese + English) lives in [`website/`](./website/). It is plain HTML/CSS with no build step and deploys on its own; see [website/README.md](./website/README.md).
+
 ## Tech stack
 
 React 19 · TypeScript · Vite 6 · Tailwind CSS 3 (+ typography) · `@google/genai` + OpenAI-compatible fetch · react-markdown · Mermaid · mammoth (Word parsing) · localStorage
@@ -156,6 +158,7 @@ components/NotesView.tsx     Notes
 services/geminiService.ts    model routing, streaming, BYOK key handling
 constants.ts                 models, prompts, default curriculum, en/zh strings
 docs/assets/brand/           logo (incl. 伴学 wordmark), banner, posters (+ HTML/SVG sources)
+website/                     static project website, deployable on its own (see website/README.md)
 ```
 
 ## Roadmap

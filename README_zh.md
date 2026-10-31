@@ -142,6 +142,8 @@ npm run typecheck  # tsc --noEmit
 - **其他平台**：运行 `VITE_BASE=/你的子路径/ npm run build`。部署在根路径时不用设置。
 - **可选**：把 `VITE_ARXIV_PROXY` 设为你自己的 CORS 代理（代理地址前缀，后面会拼接编码后的 arXiv URL），这样学术雷达就不依赖公共代理。在 GitHub 上把它添加为仓库 *Variable* 即可。
 
+**项目官网**：中英文官网位于 [`website/`](./website/)，纯 HTML/CSS，无需构建，可以单独部署，详见 [website/README.md](./website/README.md)。
+
 ## 技术栈
 
 React 19 · TypeScript · Vite 6 · Tailwind CSS 3（+ typography）· `@google/genai` + OpenAI 兼容接口 · react-markdown · Mermaid · mammoth（Word 解析）· localStorage
@@ -154,6 +156,7 @@ components/NotesView.tsx     笔记
 services/geminiService.ts    模型路由、流式输出、BYOK Key 处理
 constants.ts                 模型、提示词、默认课程、中英文文案
 docs/assets/brand/           Logo（含中文字标）、横幅、海报（含 HTML/SVG 源文件）
+website/                     项目官网（纯静态，可独立部署，见 website/README.md）
 ```
 
 ## 路线图
