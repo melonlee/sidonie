@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sidonie"><title>Sidonie</title>
+  <rect width="64" height="64" rx="15" fill="#1C1917"/>
+  <circle cx="27" cy="23" r="6.5" fill="#F2B45C"/>
+  <circle cx="39.5" cy="28" r="4.2" fill="#F7D3A1"/>
+  <path d="M32 44C27 38.4 20.4 35.7 13 36M32 44C37 38.4 43.6 35.7 51 36" fill="none" stroke="#FFFCF9" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M32 50.5C27 44.9 20.4 42.2 13 42.5M32 50.5C37 44.9 43.6 42.2 51 42.5" fill="none" stroke="#A8A29E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
