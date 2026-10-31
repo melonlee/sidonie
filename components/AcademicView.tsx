@@ -59,6 +59,15 @@ const ARXIV_SOURCES: ArxivSource[] = [
 ];
 let preferredArxivSource: ArxivSource['id'] | null = null;
 
+// Free-text searches become a phrase match across all fields. Without this, arXiv treats
+// "spaced repetition" loosely and the newest-first sort surfaces unrelated papers.
+// Queries that already use arXiv syntax (e.g. `cat:cs.CL`, `ti:agent`) are passed through.
+const toArxivQuery = (input: string) => {
+  const q = input.trim();
+  if (/\b[a-z]{2,4}:/i.test(q) || /\b(AND|OR|ANDNOT)\b/.test(q)) return q;
+  return `all:"${q.replace(/"/g, '')}"`;
+};
+
 const fetchArxivFeed = async (qs: string): Promise<{ xml: string; source: ArxivSource['id'] }> => {
   const ordered = preferredArxivSource
     ? [...ARXIV_SOURCES.filter(s => s.id === preferredArxivSource), ...ARXIV_SOURCES.filter(s => s.id !== preferredArxivSource)]
@@ -182,7 +191,7 @@ const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProf
     if (query.trim()) {
       setActiveCategory('custom');
       setStartIndex(0);
-      fetchPapers(query, 0, false);
+      fetchPapers(toArxivQuery(query), 0, false);
     }
   };
 
@@ -196,7 +205,7 @@ const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProf
   const handleLoadMore = () => {
     const nextOffset = startIndex + 20;
     setStartIndex(nextOffset);
-    const q = activeCategory === 'custom' ? query : CATEGORY_TAGS.find(c => c.id === activeCategory)?.query || '';
+    const q = activeCategory === 'custom' ? toArxivQuery(query) : CATEGORY_TAGS.find(c => c.id === activeCategory)?.query || '';
     fetchPapers(q, nextOffset, true);
   };
 
@@ -412,7 +421,7 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                <div className="flex flex-col items-center justify-center h-64 text-gray-400 text-center">
                   <p className="text-red-500 font-medium mb-2">{error}</p>
                   <p className="text-xs text-gray-400 mb-4 max-w-lg">{t.radarFetchHint}</p>
-                  <button onClick={() => fetchPapers(activeCategory === 'custom' ? query : CATEGORY_TAGS.find(c => c.id === activeCategory)?.query || '')} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 shadow-sm">
+                  <button onClick={() => fetchPapers(activeCategory === 'custom' ? toArxivQuery(query) : CATEGORY_TAGS.find(c => c.id === activeCategory)?.query || '')} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 shadow-sm">
                      <RefreshCw size={16} /> {t.retry}
                   </button>
                </div>
