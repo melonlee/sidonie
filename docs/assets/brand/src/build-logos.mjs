@@ -1,6 +1,11 @@
+// Regenerates the logo SVGs in docs/assets/brand.
+// usage (from this folder): npm i --no-save opentype.js@1 && node build-logos.mjs [outDir=..]
 import opentype from 'opentype.js';
 import fs from 'node:fs';
-const out = process.argv[2];
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const here = path.dirname(fileURLToPath(import.meta.url));
+const out = process.argv[2] || path.join(here, '..');
 fs.mkdirSync(out, { recursive: true });
 
 const markInner = (tile, tileStroke, sun, child, page1, page2) => `
@@ -19,13 +24,12 @@ const svg = (vb, body, title) => `<svg xmlns="http://www.w3.org/2000/svg" viewBo
 fs.writeFileSync(`${out}/logo-mark.svg`, svg('0 0 64 64', DARK, 'Sidonie'));
 fs.writeFileSync(`${out}/logo-mark-light.svg`, svg('0 0 64 64', LIGHT, 'Sidonie'));
 
-const font = opentype.loadSync('fraunces600.ttf');
+const font = opentype.loadSync(path.join(here, 'fonts/Fraunces-SemiBold.ttf'));
 const fontSize = 54;
 const p = font.getPath('Sidonie', 0, 0, fontSize, { kerning: true });
 const bb = p.getBoundingBox();
 // place text: mark 64x64 at x=0; text starts at x=80; vertically center cap-height area on 32
 const textW = bb.x2 - bb.x1;
-const capTop = bb.y1, base = 0;
 const tx = 82 - bb.x1;
 const ty = 32 - (bb.y1 + bb.y2) / 2 + 1.5;
 const d = font.getPath('Sidonie', tx, ty, fontSize, { kerning: true }).toPathData(2);
