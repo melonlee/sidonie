@@ -1,0 +1,61 @@
+<!doctype html>
+<!-- Feature infographic for README · 1280x620 -->
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+  body { width: 1280px; height: 620px; background: var(--cream); padding: 40px 48px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+  .panel { background: #fff; border: 1px solid var(--stone-200); border-radius: 22px; padding: 30px 34px; position: relative; }
+  h2 { font-size: 30px; font-weight: 600; letter-spacing: -0.01em; }
+  .lead { margin-top: 6px; font-size: 16px; color: var(--stone-500); }
+  .loop { margin-top: 30px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; position: relative; }
+  .step { background: var(--stone-100); border-radius: 16px; padding: 18px 16px 16px; min-height: 200px; position: relative; }
+  .step .n { width: 30px; height: 30px; border-radius: 50%; background: var(--stone-900); color: var(--cream); font-size: 14px; font-weight: 600; display: grid; place-items: center; }
+  .step h3 { margin-top: 14px; font-size: 19px; font-weight: 600; }
+  .step p { margin-top: 6px; font-size: 14.5px; line-height: 1.5; color: var(--stone-600); }
+  .step.hl { background: #FDF3E4; }
+  .step.hl .n { background: var(--amber); }
+  .arrow { position: absolute; top: 30px; right: -11px; width: 10px; height: 10px; border-top: 2px solid var(--stone-400); border-right: 2px solid var(--stone-400); transform: rotate(45deg); }
+  .back { margin-top: 18px; display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--stone-600); }
+  .back .line { flex: 1; height: 2px; background: repeating-linear-gradient(90deg, var(--stone-300) 0 8px, transparent 8px 14px); }
+  .intervals { display: flex; gap: 8px; }
+  .intervals span { padding: 4px 10px; border-radius: 999px; background: #FDF3E4; color: #9A5B12; font-size: 13px; font-weight: 600; }
+  /* data flow */
+  .flow { margin-top: 24px; display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .browser { border: 2px solid var(--stone-900); border-radius: 18px; padding: 16px 18px; }
+  .browser .t { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--stone-500); }
+  .browser .items { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .browser .items span { padding: 6px 12px; border-radius: 10px; background: var(--stone-100); font-size: 14.5px; font-weight: 500; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .dest { border: 1px solid var(--stone-200); border-radius: 16px; padding: 14px 16px; background: #fff; }
+  .dest b { font-size: 16px; font-weight: 600; display: block; }
+  .dest small { display: block; margin-top: 4px; font-size: 13.5px; line-height: 1.45; color: var(--stone-600); }
+  .none { margin-top: 2px; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 14px; background: #F0FDF4; color: #166534; font-size: 15px; font-weight: 500; }
+  .none i { width: 22px; height: 22px; border-radius: 50%; background: #16A34A; display: inline-grid; place-items: center; color: #fff; font-style: normal; font-size: 13px; font-weight: 700; }
+  .down { font-size: 13px; color: var(--stone-500); text-align: center; letter-spacing: .04em; }
+</style></head>
+<body>
+  <div class="panel">
+    <h2 class="serif">The Help Child loop</h2>
+    <div class="lead">Short sessions that come back at the right time.</div>
+    <div class="loop">
+      <div class="step"><div class="n">1</div><h3>Learn</h3><p>A concept card for the topic, with everyday examples. Ask follow-up questions.</p><span class="arrow"></span></div>
+      <div class="step"><div class="n">2</div><h3>Practice</h3><p>A quick quiz or an interactive visual. Correct answers earn XP.</p><span class="arrow"></span></div>
+      <div class="step hl"><div class="n">3</div><h3>Review when due</h3><p>Spaced repetition schedules the next review; struggling topics come back sooner.</p><span class="arrow"></span></div>
+      <div class="step"><div class="n">4</div><h3>See progress</h3><p>Mastered topics, badges and a calendar of every session.</p></div>
+    </div>
+    <div class="back"><span>Next review</span><div class="intervals"><span>1 day</span><span>3 days</span><span>then longer</span></div><div class="line"></div><span>↺ back to 2</span></div>
+  </div>
+  <div class="panel">
+    <h2 class="serif">Where your data goes</h2>
+    <div class="lead">No account, no Sidonie server.</div>
+    <div class="flow">
+      <div class="browser"><div class="t">Your browser · localStorage</div>
+        <div class="items"><span>Chats</span><span>Notes</span><span>Child's progress</span><span>API keys</span></div></div>
+      <div class="down">requests go straight from your browser to ↓</div>
+      <div class="row">
+        <div class="dest"><b>Your AI provider</b><small>Gemini, DeepSeek, Kimi or Qwen — with the key you entered</small></div>
+        <div class="dest"><b>arXiv</b><small>Paper Radar search, via the local dev proxy (or a public proxy on static hosts)</small></div>
+      </div>
+      <div class="none"><i>✓</i>Nothing is sent to us. Keys never leave this browser except to the provider.</div>
+    </div>
+  </div>
+</body></html>

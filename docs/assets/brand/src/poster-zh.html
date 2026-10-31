@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- 小红书风格海报（家长向）· 1080x1440 -->
+<html lang="zh-CN"><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+  body { width: 1080px; height: 1440px; position: relative; font-family: 'PingFang SC', 'Inter', sans-serif; background:
+    radial-gradient(760px 520px at 0% 0%, rgba(242,180,92,.22), transparent 70%),
+    radial-gradient(760px 620px at 100% 70%, rgba(247,211,161,.30), transparent 70%), var(--cream); }
+  header { position: absolute; left: 72px; right: 72px; top: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand img { width: 54px; height: 54px; }
+  .brand span { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 600; }
+  .tag { font-size: 21px; color: var(--stone-600); padding: 8px 18px; border: 1px solid var(--stone-200); border-radius: 999px; background: rgba(255,255,255,.7); }
+  h1 { position: absolute; left: 72px; top: 158px; font-size: 100px; line-height: 1.18; letter-spacing: 0.03em; }
+  h1 .hl { position: relative; z-index: 0; }
+  h1 .hl::after { content: ''; position: absolute; left: -6px; right: -6px; bottom: 8px; height: 30px; background: rgba(242,180,92,.42); z-index: -1; border-radius: 6px; }
+  .sub { position: absolute; left: 74px; top: 426px; font-size: 32px; color: var(--stone-600); letter-spacing: .04em; }
+  .shot { position: absolute; left: 72px; top: 494px; width: 820px; }
+  .quiz { position: absolute; right: 44px; top: 742px; width: 430px; border-radius: 18px; overflow: hidden; background: #fff;
+    border: 1px solid var(--stone-200); box-shadow: 0 24px 60px rgba(28,25,23,.20), 0 4px 12px rgba(28,25,23,.06); }
+  .quiz img { display: block; width: 100%; }
+  .grid { position: absolute; left: 72px; right: 72px; top: 1080px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: rgba(255,255,255,.88); border: 1px solid var(--stone-200); border-radius: 18px; padding: 20px 24px; }
+  .card b { display: flex; align-items: center; gap: 10px; font-size: 26px; font-weight: 600; color: var(--stone-900); }
+  .card b .dot { width: 9px; height: 9px; }
+  .card p { margin-top: 6px; font-size: 20px; color: var(--stone-600); line-height: 1.5; }
+  footer { position: absolute; left: 72px; right: 72px; bottom: 46px; display: flex; justify-content: space-between; align-items: center; font-size: 19px; color: var(--stone-500); }
+</style></head>
+<body>
+  <header>
+    <div class="brand"><img src="../logo-mark.svg"><span>Sidonie</span></div>
+    <div class="tag">开源 · 本地优先 · 用自己的 API Key</div>
+  </header>
+  <h1 class="zh-serif">陪孩子<br><span class="hl">每天学一点</span></h1>
+  <div class="sub">一个本地优先的家庭 AI 学习伴侣</div>
+  <div class="shot window"><div class="bar"><i></i><i></i><i></i></div><img src="../../../screenshots/zh-help-child.png"></div>
+  <div class="quiz"><img src="img/quiz-card-zh.png"></div>
+  <div class="grid">
+    <div class="card"><b><span class="dot"></span>课程地图 + 互动卡片</b><p>概念讲解、小测验、可视化演示</p></div>
+    <div class="card"><b><span class="dot"></span>到期提醒复习</b><p>按遗忘曲线安排，经验值和徽章看得见</p></div>
+    <div class="card"><b><span class="dot"></span>每日作业记录</b><p>记下老师的要求，AI 帮忙解读、出练习</p></div>
+    <div class="card"><b><span class="dot"></span>数据留在自己家</b><p>记录只存在浏览器里，无需注册</p></div>
+  </div>
+  <footer><span>最初是为我太太和孩子做的 —— Melon（李辉）</span><span>github.com/melonlee/FantasyAILab</span></footer>
+</body></html>
