@@ -148,7 +148,8 @@ export interface Paper {
   title: string;
   summary: string;
   authors: string[];
-  published: string;
+  published: string; // display date (locale formatted)
+  publishedAt?: string; // ISO timestamp from arXiv, used for citations
   link: string;
   pdfLink: string;
   category: string;
