@@ -1,12 +1,39 @@
 {
   "name": "sidonie",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A local-first AI learning companion for families: help your child learn, keep research in reach, all in the browser with your own API keys.",
+  "keywords": [
+    "ai",
+    "learning",
+    "education",
+    "family",
+    "local-first",
+    "byok",
+    "gemini",
+    "deepseek",
+    "arxiv",
+    "react"
+  ],
+  "author": "Melon (李辉) (https://fantasyailab.com/)",
+  "license": "MIT",
+  "homepage": "https://melonlee.github.io/FantasyAILab/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melonlee/FantasyAILab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/melonlee/FantasyAILab/issues"
+  },
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^1.41.0",

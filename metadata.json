@@ -1,7 +1,0 @@
-{
-  "name": "Sidonie",
-  "description": "Your elegant intelligent companion for creativity and clarity.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
-}
