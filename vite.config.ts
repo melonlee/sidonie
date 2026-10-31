@@ -6,12 +6,19 @@ import react from '@vitejs/plugin-react';
 const base = process.env.VITE_BASE || '/';
 
 // arXiv's API sends no CORS headers, so the browser can't call it directly.
-// `npm run dev` and `npm run preview` proxy it same-origin at <base>arxiv-api/*.
+// `npm run dev` and `npm run preview` proxy it same-origin at <base>arxiv-api/*,
+// and paper PDFs (for full-text reading) at <base>arxiv-pdf/<id>.
 const arxivProxy: Record<string, ProxyOptions> = {
   [`${base}arxiv-api`]: {
     target: 'https://export.arxiv.org',
     changeOrigin: true,
     rewrite: (p) => p.replace(/^.*?\/arxiv-api/, '/api'),
+  },
+  [`${base}arxiv-pdf`]: {
+    target: 'https://arxiv.org',
+    changeOrigin: true,
+    followRedirects: true,
+    rewrite: (p) => p.replace(/^.*?\/arxiv-pdf/, '/pdf'),
   },
 };
 

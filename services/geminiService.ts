@@ -234,12 +234,15 @@ const streamOpenAICompatibleResponse = async (
 
       if (!reader) throw new Error("No response body");
 
+      // SSE events can be split across network chunks: keep the trailing partial line
+      // (and partial multi-byte characters) until the next read completes it.
+      let buffered = "";
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n').filter(line => line.trim() !== '');
+        buffered += done ? decoder.decode() : decoder.decode(value, { stream: true });
+        const parts = buffered.split('\n');
+        buffered = done ? "" : parts.pop() ?? "";
+        const lines = parts.filter(line => line.trim() !== '');
 
         for (const line of lines) {
           if (line.startsWith('data: ')) {
@@ -255,10 +258,11 @@ const streamOpenAICompatibleResponse = async (
                 onChunk(fullText);
               }
             } catch (e) {
-              // ignore parse errors for partial chunks
+              // ignore malformed events
             }
           }
         }
+        if (done) break;
       }
 
       return fullText;

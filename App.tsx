@@ -371,7 +371,7 @@ const App: React.FC = () => {
     showToast(t.noteSaved);
   };
 
-  const handleCreateNote = (title: string, content: string) => {
+  const handleCreateNote = (title: string, content: string, tags?: string[]) => {
     const newNote: Note = {
       id: generateId(),
       title: title || "Untitled Note",
@@ -379,7 +379,7 @@ const App: React.FC = () => {
       createdAt: Date.now(),
       updatedAt: Date.now(),
       theme: ['blue', 'yellow', 'green', 'purple', 'default'][Math.floor(Math.random() * 5)] as any,
-      tags: ['New Note']
+      tags: tags?.length ? tags : ['New Note']
     };
     setNotes(prev => [newNote, ...prev]);
     showToast(t.noteSaved);
@@ -1039,6 +1039,7 @@ const App: React.FC = () => {
                    userProfile={userProfile}
                    onSaveNote={handleCreateNote}
                    onOpenSettings={openKeySettings}
+                   onNotify={showToast}
                  />
               )}
             </div>

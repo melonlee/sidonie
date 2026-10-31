@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Search, 
   BookOpen, 
@@ -13,6 +13,8 @@ import {
   Tag,
   RefreshCw,
   Bookmark,
+  BookmarkPlus,
+  BookmarkCheck,
   ChevronDown,
   ChevronUp,
   Radar
@@ -21,13 +23,21 @@ import { Language, Paper, ApiKeys, UserProfile, Role, Message } from '../types';
 import { TRANSLATIONS, DEFAULT_MODEL } from '../constants';
 import { streamChatResponse, isMissingApiKeyError } from '../services/geminiService';
 import MarkdownRenderer from './MarkdownRenderer';
+import { fetchArxivFeed, parseArxivFeed, toArxivQuery, type ArxivSourceId } from './paper/arxiv';
+import { usePaperStudy, savedPaperFromArxiv, paperKey } from './paper/paperStore';
+import { computeStreak, dueCards, papersReadThisWeek } from './paper/stats';
+import ReadingList from './paper/ReadingList';
+import PaperWorkspace from './paper/PaperWorkspace';
+import { ReviewSession } from './paper/FlashcardsPanel';
+import { PaperErrorBoundary } from './paper/ui';
 
 interface AcademicViewProps {
   language: Language;
   apiKeys: ApiKeys;
   userProfile: UserProfile;
-  onSaveNote: (title: string, content: string) => void;
+  onSaveNote: (title: string, content: string, tags?: string[]) => void;
   onOpenSettings?: () => void;
+  onNotify?: (message: string, type?: 'success' | 'error') => void;
 }
 
 const CATEGORY_TAGS = [
@@ -39,61 +49,25 @@ const CATEGORY_TAGS = [
   { id: 'cs.LG', label: 'Machine Learning', query: 'cat:cs.LG' },
 ];
 
-// --- arXiv access ---
-// The arXiv API doesn't send CORS headers, so browsers can't call it directly.
-// Sources are tried in order; the first that works is remembered for the session.
-//  1. same-origin proxy served by `npm run dev` / `npm run preview` (vite.config.ts)
-//  2. direct request (works if arXiv ever enables CORS, or via a browser extension)
-//  3. your own proxy, if built with VITE_ARXIV_PROXY (prefix; the arXiv URL is appended encoded)
-//  4. public fallback: api.allorigins.win — a third-party service that sees your search query
-type ArxivSource = { id: 'local' | 'direct' | 'custom' | 'public'; build: (qs: string) => string; timeoutMs: number };
-const ARXIV_API = 'https://export.arxiv.org/api/query';
-const PUBLIC_PROXY = 'https://api.allorigins.win/raw?url=';
-const ARXIV_SOURCES: ArxivSource[] = [
-  { id: 'local', build: qs => `${import.meta.env.BASE_URL}arxiv-api/query?${qs}`, timeoutMs: 20000 },
-  { id: 'direct', build: qs => `${ARXIV_API}?${qs}`, timeoutMs: 8000 },
-  ...(import.meta.env.VITE_ARXIV_PROXY
-    ? [{ id: 'custom' as const, build: (qs: string) => `${import.meta.env.VITE_ARXIV_PROXY}${encodeURIComponent(`${ARXIV_API}?${qs}`)}`, timeoutMs: 20000 }]
-    : []),
-  { id: 'public', build: qs => `${PUBLIC_PROXY}${encodeURIComponent(`${ARXIV_API}?${qs}`)}`, timeoutMs: 20000 },
-];
-let preferredArxivSource: ArxivSource['id'] | null = null;
-
-// Free-text searches become a phrase match across all fields. Without this, arXiv treats
-// "spaced repetition" loosely and the newest-first sort surfaces unrelated papers.
-// Queries that already use arXiv syntax (e.g. `cat:cs.CL`, `ti:agent`) are passed through.
-const toArxivQuery = (input: string) => {
-  const q = input.trim();
-  if (/\b[a-z]{2,4}:/i.test(q) || /\b(AND|OR|ANDNOT)\b/.test(q)) return q;
-  return `all:"${q.replace(/"/g, '')}"`;
-};
-
-const fetchArxivFeed = async (qs: string): Promise<{ xml: string; source: ArxivSource['id'] }> => {
-  const ordered = preferredArxivSource
-    ? [...ARXIV_SOURCES.filter(s => s.id === preferredArxivSource), ...ARXIV_SOURCES.filter(s => s.id !== preferredArxivSource)]
-    : ARXIV_SOURCES;
-  for (const source of ordered) {
-    try {
-      const res = await fetch(source.build(qs), { signal: AbortSignal.timeout(source.timeoutMs) });
-      if (!res.ok) continue;
-      const xml = await res.text();
-      if (!xml.includes('<feed')) continue; // e.g. an HTML 404 page from a static host
-      preferredArxivSource = source.id;
-      return { xml, source: source.id };
-    } catch (e) {
-      console.warn(`arXiv source "${source.id}" failed`, e);
-    }
-  }
-  throw new Error('All arXiv sources failed');
-};
-
-const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProfile, onSaveNote, onOpenSettings }) => {
+const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProfile, onSaveNote, onOpenSettings, onNotify }) => {
   const t = TRANSLATIONS[language];
+  const notify = (message: string, type: 'success' | 'error' = 'success') => onNotify?.(message, type);
+
+  // Reading list / study state (persisted locally)
+  const study = usePaperStudy();
+  const { store } = study;
+  const [tab, setTab] = useState<'discover' | 'library'>('discover');
+  const [openPaperId, setOpenPaperId] = useState<string | null>(null);
+  const [reviewIds, setReviewIds] = useState<string[] | null>(null);
+  const savedIds = useMemo(() => new Set(store.papers.map(p => p.id)), [store.papers]);
+  const openPaper = openPaperId ? store.papers.find(p => p.id === openPaperId) : undefined;
+  const dueCount = dueCards(store.cards).length;
+
   const [query, setQuery] = useState('');
   const [papers, setPapers] = useState<Paper[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [feedSource, setFeedSource] = useState<ArxivSource['id'] | null>(null);
+  const [feedSource, setFeedSource] = useState<ArxivSourceId | null>(null);
   const [selectedPaper, setSelectedPaper] = useState<Paper | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
   const [startIndex, setStartIndex] = useState(0);
@@ -116,57 +90,8 @@ const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProf
       const { xml: textData, source } = await fetchArxivFeed(qs);
       setFeedSource(source);
       
-      // Parse XML response
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(textData, "text/xml");
-      const entries = xmlDoc.getElementsByTagName("entry");
-      
-      const parsedPapers: Paper[] = [];
-      
-      for (let i = 0; i < entries.length; i++) {
-        const entry = entries[i];
-        // Ensure unique ID generation based on arxiv ID if possible, else fallback to index
-        const arxivId = entry.getElementsByTagName("id")[0]?.textContent || '';
-        const id = arxivId ? arxivId.split('/').pop() : `paper-${offset}-${i}`;
-        
-        const title = entry.getElementsByTagName("title")[0]?.textContent?.replace(/\n/g, ' ').trim() || 'Untitled';
-        const summary = entry.getElementsByTagName("summary")[0]?.textContent?.trim() || '';
-        const published = entry.getElementsByTagName("published")[0]?.textContent || '';
-        
-        // Extract authors
-        const authorNodes = entry.getElementsByTagName("author");
-        const authors = [];
-        for (let j = 0; j < authorNodes.length; j++) {
-           authors.push(authorNodes[j].getElementsByTagName("name")[0]?.textContent || 'Unknown');
-        }
+      const parsedPapers = parseArxivFeed(textData, offset);
 
-        // Links (alternate is usually the abstract page, pdf is explicitly linked)
-        let link = '';
-        let pdfLink = '';
-        const linkNodes = entry.getElementsByTagName("link");
-        for (let k = 0; k < linkNodes.length; k++) {
-           const rel = linkNodes[k].getAttribute("rel");
-           const href = linkNodes[k].getAttribute("href");
-           const title = linkNodes[k].getAttribute("title");
-           if (rel === 'alternate') link = href || '';
-           if (title === 'pdf' || (href && href.includes('/pdf/'))) pdfLink = href || '';
-        }
-        
-        // Category
-        const category = entry.getElementsByTagName("category")[0]?.getAttribute("term") || 'General';
-
-        parsedPapers.push({
-          id: id || `local-${i}`,
-          title,
-          summary,
-          authors,
-          published: new Date(published).toLocaleDateString(),
-          link,
-          pdfLink,
-          category
-        });
-      }
-      
       if (append) {
         setPapers(prev => [...prev, ...parsedPapers]);
       } else {
@@ -324,22 +249,110 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
     onSaveNote(`Paper: ${selectedPaper.title.substring(0, 30)}...`, content);
   };
 
+  // --- Reading list ---
+  const savePaper = (paper: Paper) => {
+    if (savedIds.has(paperKey(paper))) return;
+    study.addPaper(savedPaperFromArxiv(paper));
+    notify(t.paperSavedToast);
+  };
+
+  const openInWorkspace = (id: string) => {
+    study.updatePaper(id, p => ({ lastOpenedAt: Date.now(), status: p.status === 'toread' ? 'reading' : p.status }));
+    study.markActivity();
+    setSelectedPaper(null);
+    setOpenPaperId(id);
+  };
+
+  const reviewSession = reviewIds && (
+    <ReviewSession
+      cards={store.cards.filter(c => reviewIds.includes(c.id))}
+      papers={store.papers}
+      language={language}
+      onAnswer={study.reviewCard}
+      onClose={() => setReviewIds(null)}
+    />
+  );
+
+  if (openPaper) {
+    const back = () => { setOpenPaperId(null); setTab('library'); };
+    return (
+      <PaperErrorBoundary key={openPaper.id} fallback={() => (
+        <div className="flex h-full flex-col items-center justify-center gap-4 bg-gray-50 text-sm text-gray-600">
+          <p>{t.paperCrashed}</p>
+          <button onClick={back} className="rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-800">{t.paperBack}</button>
+        </div>
+      )}>
+        <PaperWorkspace
+          paper={openPaper}
+          study={study}
+          language={language}
+          apiKeys={apiKeys}
+          userProfile={userProfile}
+          onBack={back}
+          onSaveNote={onSaveNote}
+          onOpenSettings={onOpenSettings}
+          notify={notify}
+          onStartReview={ids => setReviewIds(ids)}
+        />
+        {reviewSession}
+      </PaperErrorBoundary>
+    );
+  }
+
+  const stats = [
+    { value: store.papers.length, label: t.paperStatsSaved },
+    { value: papersReadThisWeek(store.papers), label: t.paperStatsReadWeek },
+    { value: dueCount, label: t.paperStatsDue },
+    { value: computeStreak(store.activityDays), label: t.paperStatsStreak },
+  ];
+
   return (
-    <div className="h-full flex flex-col bg-slate-50 relative">
+    <div className="h-full flex flex-col bg-gray-50 relative">
       {/* Header */}
       <div className="px-8 py-6 bg-white border-b border-gray-200">
          <div className="max-w-6xl mx-auto space-y-4">
-            <div>
-               <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                 <div className="p-2 bg-black text-white rounded-lg"><ExternalLink size={20} /></div>
-                 {t.academicTitle}
-               </h1>
-               <p className="text-gray-500 text-sm mt-1">{t.academicSubtitle}</p>
-               {feedSource === 'public' && (
-                 <p className="text-[11px] text-gray-400 mt-1">{t.radarPublicProxyNote}</p>
-               )}
+            <div className="flex flex-wrap items-start justify-between gap-4">
+               <div>
+                 <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                   <div className="p-2 bg-black text-white rounded-lg"><ExternalLink size={20} /></div>
+                   {t.academicTitle}
+                 </h1>
+                 <p className="text-gray-500 text-sm mt-1">{t.academicSubtitle}</p>
+                 {feedSource === 'public' && tab === 'discover' && (
+                   <p className="text-[11px] text-gray-400 mt-1">{t.radarPublicProxyNote}</p>
+                 )}
+               </div>
+               {/* Study progress: real numbers computed from the local reading list */}
+               <div data-testid="paper-stats" className="flex items-stretch divide-x divide-gray-200 rounded-xl border border-gray-200 bg-gray-50">
+                 {stats.map(st => (
+                   <div key={st.label} className="px-4 py-2 text-center">
+                     <div className="text-lg font-semibold leading-tight text-gray-900">{st.value}</div>
+                     <div className="text-[11px] text-gray-500 whitespace-nowrap">{st.label}</div>
+                   </div>
+                 ))}
+               </div>
             </div>
 
+            <div className="flex gap-1 border-b border-gray-100 -mb-2">
+               {([['discover', t.paperTabDiscover, Search], ['library', t.paperTabLibrary, BookOpen]] as const).map(([id, label, Icon]) => (
+                 <button
+                   key={id}
+                   data-testid={`paper-tab-${id}`}
+                   onClick={() => setTab(id)}
+                   className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${tab === id ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+                 >
+                   <Icon size={15} /> {label}
+                   {id === 'library' && store.papers.length > 0 && (
+                     <span className="ml-0.5 rounded-full bg-gray-900 px-1.5 py-px text-[10px] font-semibold text-white">{store.papers.length}</span>
+                   )}
+                   {id === 'library' && dueCount > 0 && (
+                     <span className="rounded-full bg-amber-100 px-1.5 py-px text-[10px] font-semibold text-amber-800">{dueCount}</span>
+                   )}
+                 </button>
+               ))}
+            </div>
+
+            {tab === 'discover' && <>
             <div className="flex gap-2 items-center">
                <form onSubmit={handleSearch} className="relative flex-1 max-w-xl">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -364,13 +377,22 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                  </button>
                ))}
             </div>
+            </>}
          </div>
       </div>
 
       {/* Grid Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar px-8 py-8">
          <div className="max-w-6xl mx-auto space-y-8">
-            
+            {tab === 'library' ? (
+              <ReadingList
+                api={study}
+                language={language}
+                onOpen={openInWorkspace}
+                onStartReview={() => setReviewIds(dueCards(store.cards).map(c => c.id))}
+                notify={notify}
+              />
+            ) : <>
             {/* Research Radar Briefing Section */}
             {papers.length > 0 && (
                 <div className="bg-white rounded-2xl border border-blue-100 shadow-sm overflow-hidden">
@@ -456,9 +478,16 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                                {paper.summary}
                             </p>
 
-                            <div className="flex items-center justify-end text-xs font-medium text-gray-400 gap-2 border-t border-gray-50 pt-3 mt-auto">
-                               <span className="group-hover:text-black transition-colors">{t.readMore}</span>
-                               <ExternalLink size={14} />
+                            <div className="flex items-center justify-between text-xs font-medium text-gray-400 gap-2 border-t border-gray-50 pt-3 mt-auto">
+                               <button
+                                 data-testid="save-paper"
+                                 onClick={(e) => { e.stopPropagation(); savePaper(paper); }}
+                                 className={`flex items-center gap-1 rounded-md px-2 py-1 -ml-2 transition-colors ${savedIds.has(paperKey(paper)) ? 'text-amber-700' : 'hover:bg-gray-100 hover:text-gray-800'}`}
+                               >
+                                 {savedIds.has(paperKey(paper)) ? <BookmarkCheck size={14} /> : <BookmarkPlus size={14} />}
+                                 {savedIds.has(paperKey(paper)) ? t.paperSaved : t.paperSave}
+                               </button>
+                               <span className="flex items-center gap-2 group-hover:text-black transition-colors">{t.readMore} <ExternalLink size={14} /></span>
                             </div>
                          </div>
                       ))}
@@ -477,6 +506,7 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                    </div>
                </>
             )}
+            </>}
          </div>
       </div>
 
@@ -524,6 +554,15 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                      
                      <div className="flex-1" />
 
+                     <button
+                        data-testid="modal-open-workspace"
+                        onClick={() => savedIds.has(paperKey(selectedPaper)) ? openInWorkspace(paperKey(selectedPaper)) : savePaper(selectedPaper)}
+                        className="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg hover:bg-amber-100 transition-colors font-medium text-sm"
+                     >
+                        {savedIds.has(paperKey(selectedPaper)) ? <BookmarkCheck size={16} /> : <BookmarkPlus size={16} />}
+                        {savedIds.has(paperKey(selectedPaper)) ? t.paperOpen : t.paperSave}
+                     </button>
+
                      <button 
                         onClick={handleSaveToNote}
                         className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm"
@@ -568,6 +607,7 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
             </div>
          </div>
       )}
+      {reviewSession}
     </div>
   );
 };
