@@ -21,8 +21,10 @@ export interface Message {
   isStreaming?: boolean;
   isError?: boolean;
   errorMessage?: string;
+  errorCode?: 'NO_API_KEY';
   groundingMetadata?: any; // For Google Search Grounding results
   plan?: string; // Extracted plan content
+  thought?: string; // Extracted <thought> content
 }
 
 export interface ChatSession {
@@ -48,7 +50,10 @@ export interface Note {
   theme?: 'blue' | 'yellow' | 'green' | 'purple' | 'default'; 
 }
 
+// User-provided keys (BYOK). Stored only in this browser's localStorage and
+// sent directly to the corresponding provider — there is no Sidonie backend.
 export interface ApiKeys {
+  gemini?: string;
   deepseek?: string;
   kimi?: string;
   qwen?: string;

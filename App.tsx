@@ -40,10 +40,11 @@ import {
   ExternalLink,
   AlertTriangle,
   RefreshCw,
-  Radar
+  Radar,
+  ShieldCheck
 } from 'lucide-react';
 import { Message, Role, Attachment, ChatSession, Note, AppView, Language, ApiKeys, UserProfile } from './types';
-import { streamChatResponse, generateImage } from './services/geminiService';
+import { streamChatResponse, generateImage, hasAnyApiKey, isMissingApiKeyError } from './services/geminiService';
 import { ALLOWED_MIME_TYPES, MAX_FILE_SIZE, AVAILABLE_MODELS, THIRD_PARTY_MODELS, DEFAULT_MODEL, TRANSLATIONS, RANDOM_NAMES } from './constants';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import FilePreview from './components/FilePreview';
@@ -56,6 +57,14 @@ import AcademicView from './components/AcademicView';
 import PlanWidget from './components/PlanWidget';
 import Toast from './components/Toast';
 import LandingPage from './components/LandingPage';
+
+// BYOK providers shown in Settings. Keys are kept in localStorage only.
+const API_KEY_PROVIDERS: { id: keyof ApiKeys; label: string; placeholder: string; keyUrl: string }[] = [
+  { id: 'gemini', label: 'Google Gemini API Key', placeholder: 'AIza...', keyUrl: 'https://aistudio.google.com/apikey' },
+  { id: 'deepseek', label: 'DeepSeek API Key', placeholder: 'sk-...', keyUrl: 'https://platform.deepseek.com/api_keys' },
+  { id: 'kimi', label: 'Kimi (Moonshot) API Key', placeholder: 'sk-...', keyUrl: 'https://platform.moonshot.cn/console/api-keys' },
+  { id: 'qwen', label: 'Qwen (DashScope) API Key', placeholder: 'sk-...', keyUrl: 'https://bailian.console.aliyun.com/?apiKey=1' },
+];
 
 // Helper for ID generation
 const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -199,9 +208,11 @@ const App: React.FC = () => {
 
   // Compute available models based on configured keys
   const visibleModels = useMemo(() => {
-    // 1. Google models (always available via env key)
-    const models = [...AVAILABLE_MODELS];
-    
+    const hasGeminiKey = !!apiKeys.gemini?.trim();
+    // 1. Google models: shown when a Gemini key is set, or when no key is set yet
+    //    (so first-time users see the default models and get a friendly "add a key" prompt)
+    const models: typeof AVAILABLE_MODELS = hasGeminiKey || !hasAnyApiKey(apiKeys) ? [...AVAILABLE_MODELS] : [];
+
     // 2. Add third party models if key exists
     THIRD_PARTY_MODELS.forEach(m => {
        const providerKey = apiKeys[m.provider as keyof ApiKeys];
@@ -209,9 +220,19 @@ const App: React.FC = () => {
           models.push(m as any);
        }
     });
-    
+
     return models;
   }, [apiKeys]);
+
+  // Keep the selected model valid when keys change (e.g. only a DeepSeek key is configured)
+  useEffect(() => {
+    if (visibleModels.length > 0 && !visibleModels.some(m => m.value === selectedModel)) {
+      setSelectedModel(visibleModels[0].value);
+    }
+  }, [visibleModels, selectedModel]);
+
+  const noApiKey = !hasAnyApiKey(apiKeys);
+  const openKeySettings = () => { setSettingsTab('general'); setIsSettingsOpen(true); };
 
   useEffect(() => {
     const handleClickOutside = () => setExportMenuOpenId(null);
@@ -266,6 +287,12 @@ const App: React.FC = () => {
     const newKeys = { ...apiKeys, [provider]: value };
     setApiKeys(newKeys);
     localStorage.setItem('app_api_keys', JSON.stringify(newKeys));
+  };
+
+  const clearApiKeys = () => {
+    if (!window.confirm(t.clearKeysConfirm)) return;
+    setApiKeys({});
+    localStorage.removeItem('app_api_keys');
   };
 
   const handleSaveProfile = () => {
@@ -437,6 +464,14 @@ const App: React.FC = () => {
     let textToSend = overrideInput || input;
     if ((!textToSend.trim() && attachments.length === 0) || isLoading) return;
 
+    // BYOK: without any key, keep the draft and guide the user to Settings instead of failing
+    if (!hasAnyApiKey(apiKeys)) {
+      if (overrideInput) setInput(overrideInput);
+      showToast(t.noKeyToast, 'error');
+      openKeySettings();
+      return;
+    }
+
     let contextAddition = "";
     notes.forEach(note => {
       if (textToSend.includes(`@${note.title}`)) {
@@ -493,7 +528,7 @@ const App: React.FC = () => {
       // If recognized as an image request, force usage of the image generation path regardless of selected model
       if (isImageGenRequest) {
         setLoadingStatus("Generating image...");
-        const imageMarkdown = await generateImage(userMessage.text);
+        const imageMarkdown = await generateImage(userMessage.text, apiKeys);
         setMessages(prev => prev.map(msg => msg.id === aiMessageId ? { ...msg, text: imageMarkdown, isStreaming: false } : msg));
       } else {
         const historyForApi = [...messages, { ...userMessage, text: finalPrompt }];
@@ -528,11 +563,13 @@ const App: React.FC = () => {
 
     } catch (error: any) {
       console.error("Error:", error);
-      setMessages(prev => [...prev, { 
-        id: Date.now().toString(), 
-        role: Role.MODEL, 
-        text: "", 
+      // Drop the empty streaming placeholder, then show the error (or a friendly key prompt)
+      setMessages(prev => [...prev.filter(m => !(m.role === Role.MODEL && m.isStreaming && !m.text)), {
+        id: Date.now().toString(),
+        role: Role.MODEL,
+        text: "",
         errorMessage: error.message || t.errorProcessing,
+        errorCode: isMissingApiKeyError(error) ? 'NO_API_KEY' : undefined,
         timestamp: Date.now(),
         isError: true
       }]);
@@ -632,7 +669,7 @@ const App: React.FC = () => {
 
       {/* Settings Modal */}
       {isSettingsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm animate-fade-in" onClick={() => setIsSettingsOpen(false)}>
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/20 backdrop-blur-sm animate-fade-in" onClick={() => setIsSettingsOpen(false)}>
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white shrink-0">
@@ -684,39 +721,43 @@ const App: React.FC = () => {
                         <Key size={16} /> {t.apiKeys}
                     </h4>
                     <p className="text-xs text-gray-500 mb-4">{t.apiKeysDesc}</p>
-                    
-                    <div className="space-y-4">
-                        <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1.5">DeepSeek API Key</label>
-                          <input 
-                            type="password" 
-                            value={apiKeys.deepseek || ''}
-                            onChange={(e) => updateApiKey('deepseek', e.target.value)}
-                            placeholder="sk-..."
-                            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:ring-2 focus:ring-black/5 focus:border-gray-400 outline-none transition-all"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1.5">Kimi (Moonshot) API Key</label>
-                          <input 
-                            type="password" 
-                            value={apiKeys.kimi || ''}
-                            onChange={(e) => updateApiKey('kimi', e.target.value)}
-                            placeholder="sk-..."
-                            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:ring-2 focus:ring-black/5 focus:border-gray-400 outline-none transition-all"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1.5">Qwen (DashScope) API Key</label>
-                          <input 
-                            type="password" 
-                            value={apiKeys.qwen || ''}
-                            onChange={(e) => updateApiKey('qwen', e.target.value)}
-                            placeholder="sk-..."
-                            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:ring-2 focus:ring-black/5 focus:border-gray-400 outline-none transition-all"
-                          />
-                        </div>
+
+                    <div className="flex items-start gap-2.5 p-3 mb-5 rounded-xl bg-gray-50 border border-gray-100 text-xs text-gray-600 leading-relaxed">
+                      <ShieldCheck size={16} className="text-gray-500 shrink-0 mt-0.5" />
+                      <span>{t.keysPrivacyNote}</span>
                     </div>
+
+                    <div className="space-y-4">
+                      {API_KEY_PROVIDERS.map(p => (
+                        <div key={p.id}>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label htmlFor={`key-${p.id}`} className="block text-xs font-medium text-gray-600">{p.label}</label>
+                            <a href={p.keyUrl} target="_blank" rel="noopener noreferrer" className="text-[11px] text-gray-400 hover:text-gray-700 flex items-center gap-1">
+                              {t.getKey} <ExternalLink size={10} />
+                            </a>
+                          </div>
+                          <input
+                            id={`key-${p.id}`}
+                            type="password"
+                            autoComplete="off"
+                            spellCheck={false}
+                            value={apiKeys[p.id] || ''}
+                            onChange={(e) => updateApiKey(p.id, e.target.value)}
+                            placeholder={p.placeholder}
+                            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:ring-2 focus:ring-black/5 focus:border-gray-400 outline-none transition-all"
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    {!noApiKey && (
+                      <button
+                        onClick={clearApiKeys}
+                        className="mt-4 text-xs text-gray-400 hover:text-red-600 transition-colors flex items-center gap-1.5"
+                      >
+                        <Trash2 size={12} /> {t.clearKeys}
+                      </button>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -975,6 +1016,7 @@ const App: React.FC = () => {
              language={language}
              apiKeys={apiKeys}
              userProfile={userProfile}
+             onOpenSettings={openKeySettings}
            />
         ) : currentView === 'academic' ? (
            <AcademicView 
@@ -982,6 +1024,7 @@ const App: React.FC = () => {
              apiKeys={apiKeys}
              userProfile={userProfile}
              onSaveNote={handleCreateNote}
+             onOpenSettings={openKeySettings}
            />
         ) : currentView === 'painting' ? (
             <div className="w-full h-full bg-white relative flex flex-col">
@@ -1128,6 +1171,17 @@ const App: React.FC = () => {
                      </div>
                   </div>
 
+                  {noApiKey && (
+                    <button
+                      onClick={openKeySettings}
+                      className="mt-5 flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                    >
+                      <Key size={14} className="text-gray-500" />
+                      <span>{t.noKeyHint}</span>
+                      <ChevronRight size={14} className="text-gray-400" />
+                    </button>
+                  )}
+
                   <div className="flex flex-wrap gap-3 justify-center w-full mt-8">
                      {[
                        { icon: <Layout size={14} />, text: t.createPresentation, val: "Create presentation" },
@@ -1179,7 +1233,18 @@ const App: React.FC = () => {
                             <div className="whitespace-pre-wrap break-words">{msg.text}</div>
                           ) : (
                             <div className="min-h-[24px]">
-                               {msg.isError ? (
+                               {msg.isError && msg.errorCode === 'NO_API_KEY' ? (
+                                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700">
+                                   <Key size={18} className="text-gray-500 shrink-0" />
+                                   <div className="flex-1">
+                                     <div className="font-semibold text-gray-900">{t.noKeyTitle}</div>
+                                     <div className="text-gray-500">{msg.errorMessage}</div>
+                                   </div>
+                                   <button onClick={openKeySettings} className="px-4 py-2 rounded-lg bg-gray-900 text-white font-medium hover:bg-black transition-colors">
+                                     {t.openSettings}
+                                   </button>
+                                 </div>
+                               ) : msg.isError ? (
                                  <div className="flex flex-col gap-1 p-3 bg-red-50 rounded-lg text-red-600 text-sm">
                                    <span className="font-semibold flex items-center gap-2"><Trash2 size={16}/> Error</span>
                                    <span>{msg.errorMessage || t.errorProcessing}</span>

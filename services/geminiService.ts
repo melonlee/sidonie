@@ -3,12 +3,33 @@ import { GoogleGenAI } from "@google/genai";
 import { DEFAULT_MODEL, IMAGE_GEN_MODEL, SYSTEM_INSTRUCTION, THIRD_PARTY_MODELS } from "../constants";
 import { Message, Role, ApiKeys, UserProfile } from "../types";
 
-// Initialize API Client
-const getClient = () => {
-  if (!process.env.API_KEY) {
-    throw new Error("API_KEY is missing from environment variables.");
+/**
+ * Thrown when no usable API key has been entered in Settings.
+ * UI code checks for this to show a friendly "add a key" prompt instead of an error.
+ */
+export class MissingApiKeyError extends Error {
+  readonly code = 'NO_API_KEY';
+  constructor(message = 'No API key configured. Add one in Settings to get started.') {
+    super(message);
+    this.name = 'MissingApiKeyError';
   }
-  return new GoogleGenAI({ apiKey: process.env.API_KEY });
+}
+
+export const isMissingApiKeyError = (e: unknown): boolean =>
+  e instanceof MissingApiKeyError || (e as any)?.code === 'NO_API_KEY';
+
+const hasKey = (value?: string) => !!value && value.trim().length > 0;
+
+/** True if the user has entered at least one provider key. */
+export const hasAnyApiKey = (apiKeys: ApiKeys): boolean =>
+  Object.values(apiKeys || {}).some(v => hasKey(v));
+
+// Keys are user-entered (BYOK) and live only in the browser; nothing is baked into the bundle.
+const getClient = (apiKey?: string) => {
+  if (!hasKey(apiKey)) {
+    throw new MissingApiKeyError();
+  }
+  return new GoogleGenAI({ apiKey: apiKey!.trim() });
 };
 
 // --- Token Management Constants ---
@@ -280,16 +301,26 @@ export const streamChatResponse = async (
   if (thirdPartyModel) {
     const provider = thirdPartyModel.provider as keyof ApiKeys;
     const key = apiKeys[provider];
-    
-    if (!key) {
-      throw new Error(`Please configure the API Key for ${thirdPartyModel.label} in Settings.`);
+
+    if (!hasKey(key)) {
+      throw new MissingApiKeyError(`Please add your ${thirdPartyModel.label} API key in Settings.`);
     }
 
-    return await streamOpenAICompatibleResponse(history, onChunk, key, thirdPartyModel, userProfile);
+    return await streamOpenAICompatibleResponse(history, onChunk, key!.trim(), thirdPartyModel, userProfile);
   }
 
-  // Default to Gemini (Google)
-  return await streamGeminiResponse(history, onChunk, onMetadata, modelId, useSearch, userProfile);
+  // Gemini requested but only another provider is configured (e.g. Study / Paper Radar,
+  // which default to Gemini): use the first model whose provider has a key.
+  if (!hasKey(apiKeys.gemini)) {
+    const fallback = THIRD_PARTY_MODELS.find(m => hasKey(apiKeys[m.provider as keyof ApiKeys]));
+    if (fallback) {
+      const key = apiKeys[fallback.provider as keyof ApiKeys]!.trim();
+      return await streamOpenAICompatibleResponse(history, onChunk, key, fallback, userProfile);
+    }
+    throw new MissingApiKeyError();
+  }
+
+  return await streamGeminiResponse(history, onChunk, onMetadata, modelId, useSearch, userProfile, apiKeys.gemini);
 };
 
 
@@ -302,9 +333,10 @@ export const streamGeminiResponse = async (
   onMetadata: (metadata: any) => void,
   modelId: string = DEFAULT_MODEL,
   useSearch: boolean = false,
-  userProfile?: UserProfile
+  userProfile?: UserProfile,
+  apiKey?: string
 ): Promise<string> => {
-  const ai = getClient();
+  const ai = getClient(apiKey);
   const selectedMessages = getSmartContext(history);
   const contents = formatHistory(selectedMessages);
   
@@ -380,8 +412,11 @@ export const streamGeminiResponse = async (
 /**
  * Generates an image using Gemini image generation model.
  */
-export const generateImage = async (prompt: string): Promise<string> => {
-  const ai = getClient();
+export const generateImage = async (prompt: string, apiKeys: ApiKeys): Promise<string> => {
+  if (!hasKey(apiKeys.gemini)) {
+    throw new MissingApiKeyError('Image generation uses Gemini. Please add your Gemini API key in Settings.');
+  }
+  const ai = getClient(apiKeys.gemini);
 
   let aspectRatio = '1:1';
   if (prompt.includes('16:9')) aspectRatio = '16:9';

@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { Language, Paper, ApiKeys, UserProfile, Role, Message } from '../types';
 import { TRANSLATIONS, DEFAULT_MODEL } from '../constants';
-import { streamChatResponse } from '../services/geminiService';
+import { streamChatResponse, isMissingApiKeyError } from '../services/geminiService';
 import MarkdownRenderer from './MarkdownRenderer';
 
 interface AcademicViewProps {
@@ -27,6 +27,7 @@ interface AcademicViewProps {
   apiKeys: ApiKeys;
   userProfile: UserProfile;
   onSaveNote: (title: string, content: string) => void;
+  onOpenSettings?: () => void;
 }
 
 const CATEGORY_TAGS = [
@@ -38,7 +39,7 @@ const CATEGORY_TAGS = [
   { id: 'cs.LG', label: 'Machine Learning', query: 'cat:cs.LG' },
 ];
 
-const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProfile, onSaveNote }) => {
+const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProfile, onSaveNote, onOpenSettings }) => {
   const t = TRANSLATIONS[language];
   const [query, setQuery] = useState('');
   const [papers, setPapers] = useState<Paper[]>([]);
@@ -210,7 +211,12 @@ const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProf
       );
     } catch (e) {
       console.error(e);
-      setAnalysisContent("Analysis failed. Please check your API keys.");
+      if (isMissingApiKeyError(e)) {
+        setAnalysisContent(t.noKeyToast);
+        onOpenSettings?.();
+      } else {
+        setAnalysisContent("Analysis failed. Please check your API keys.");
+      }
     } finally {
       setIsAnalyzing(false);
     }
@@ -254,7 +260,12 @@ const AcademicView: React.FC<AcademicViewProps> = ({ language, apiKeys, userProf
             userProfile
         );
     } catch (e) {
-        setBriefingContent("Could not generate briefing.");
+        if (isMissingApiKeyError(e)) {
+            setBriefingContent(t.noKeyToast);
+            onOpenSettings?.();
+        } else {
+            setBriefingContent("Could not generate briefing.");
+        }
     } finally {
         setIsGeneratingBriefing(false);
     }

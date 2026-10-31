@@ -32,7 +32,8 @@ import {
   AlertCircle,
   RefreshCw,
   Brain,
-  Timer
+  Timer,
+  Key
 } from 'lucide-react';
 import { StudyState, StudyTopic, Message, Role, ApiKeys, UserProfile, Language, StudyActivity, SchoolNote, Course, TopicReviewData } from '../types';
 import { 
@@ -45,7 +46,7 @@ import {
   ALLOWED_MIME_TYPES, 
   MAX_FILE_SIZE 
 } from '../constants';
-import { streamChatResponse } from '../services/geminiService';
+import { streamChatResponse, isMissingApiKeyError } from '../services/geminiService';
 import MarkdownRenderer from './MarkdownRenderer';
 import PlanWidget from './PlanWidget';
 import Confetti from 'react-canvas-confetti';
@@ -54,6 +55,7 @@ interface StudyViewProps {
   language: Language;
   apiKeys: ApiKeys;
   userProfile: UserProfile;
+  onOpenSettings?: () => void;
 }
 
 // Helper to parse XML tags from the model response
@@ -84,7 +86,7 @@ const parseMessageWithPlan = (rawText: string) => {
   return { plan: planContent, thought: thoughtContent, text: cleanText.trim() };
 };
 
-const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile }) => {
+const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, onOpenSettings }) => {
   const t = TRANSLATIONS[language];
   
   // --- State ---
@@ -122,6 +124,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile })
   const [currentPlan, setCurrentPlan] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasGenerationError, setHasGenerationError] = useState(false);
+  const [isKeyMissing, setIsKeyMissing] = useState(false);
   const [contentType, setContentType] = useState<'concept' | 'quiz' | 'visual'>('concept');
   
   // Chat State (For Concept Interaction)
@@ -307,7 +310,12 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile })
 
       } catch (e) {
           console.error("Course Generation Failed", e);
-          alert("Failed to generate course. Please try again or simplify your request.");
+          if (isMissingApiKeyError(e)) {
+              setIsCreatingCourse(false);
+              onOpenSettings?.();
+          } else {
+              alert("Failed to generate course. Please try again or simplify your request.");
+          }
       } finally {
           setIsGeneratingCourse(false);
       }
@@ -453,7 +461,8 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile })
 
     } catch (e) {
       console.error(e);
-      setSchoolNoteAiStream("Error generating response. Please try again.");
+      if (isMissingApiKeyError(e)) onOpenSettings?.();
+      else alert("Error generating response. Please try again.");
     } finally {
       setIsAnalyzingNote(false);
       setSchoolNoteAiStream('');
@@ -463,6 +472,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile })
   const generateContent = async (topic: StudyTopic, type: 'concept' | 'quiz' | 'visual') => {
     setIsGenerating(true);
     setHasGenerationError(false);
+    setIsKeyMissing(false);
     setCurrentContent('');
     setCurrentPlan(null);
     setSessionMessages([]); // Reset chat for new card
@@ -555,6 +565,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile })
     } catch (e) {
       console.error(e);
       setHasGenerationError(true);
+      setIsKeyMissing(isMissingApiKeyError(e));
       setCurrentContent("Error generating content. Please try again.");
     } finally {
       setIsGenerating(false);
@@ -615,6 +626,9 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile })
 
     } catch (e) {
       console.error(e);
+      if (isMissingApiKeyError(e)) onOpenSettings?.();
+      // Remove the empty streaming placeholder so the UI doesn't spin forever
+      setSessionMessages(prev => prev.filter(m => !(m.isStreaming && !m.text)));
     } finally {
       setIsChatting(false);
     }
@@ -818,16 +832,27 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile })
                         <div className="text-red-500 mb-4 bg-red-50 p-4 rounded-full">
                             <AlertCircle size={32} />
                         </div>
-                        <h3 className="text-gray-900 font-bold text-lg mb-2">Generation Failed</h3>
+                        <h3 className="text-gray-900 font-bold text-lg mb-2">{isKeyMissing ? t.noKeyTitle : 'Generation Failed'}</h3>
                         <p className="text-gray-500 text-sm mb-6 max-w-md">
-                            We couldn't generate the learning content. This might be due to a connection issue or high traffic.
+                            {isKeyMissing
+                              ? t.noKeyToast
+                              : "We couldn't generate the learning content. This might be due to a connection issue or high traffic."}
                         </p>
+                        {isKeyMissing && onOpenSettings ? (
+                          <button
+                              onClick={onOpenSettings}
+                              className="flex items-center gap-2 px-6 py-2.5 bg-black text-white rounded-xl hover:bg-gray-800 transition-all font-medium shadow-lg shadow-gray-200"
+                          >
+                              <Key size={18} /> {t.openSettings}
+                          </button>
+                        ) : (
                         <button 
                             onClick={() => generateContent(activeTopic, contentType)}
                             className="flex items-center gap-2 px-6 py-2.5 bg-black text-white rounded-xl hover:bg-gray-800 transition-all font-medium shadow-lg shadow-gray-200"
                         >
                             <RefreshCw size={18} /> Retry Generation
                         </button>
+                        )}
                     </div>
                  ) : (
                     <div className="p-8 flex-1">
