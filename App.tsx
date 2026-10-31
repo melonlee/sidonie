@@ -1082,14 +1082,32 @@ const App: React.FC = () => {
               </div>
               
               <div className="flex-1 w-full relative bg-gray-100">
-                  <iframe 
-                    id="painting-iframe"
-                    src="http://draw.fantasyailab.com/"
-                    className="w-full h-full border-none block"
-                    title="Painting Tool"
-                    // Sandbox permissions to be permissive but explicit
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-                  />
+                  {/* Browsers block http:// iframes on https:// pages (e.g. the GitHub Pages demo). */}
+                  {window.location.protocol === 'https:' ? (
+                    <div className="h-full flex flex-col items-center justify-center gap-4 text-center px-6">
+                      <p className="text-sm text-gray-600 max-w-md">
+                        {language === 'zh'
+                          ? '绘画工具暂时只支持 HTTP，无法嵌入到 HTTPS 页面中，请在新标签页打开。'
+                          : 'The painting tool is served over HTTP and cannot be embedded in an HTTPS page. Open it in a new tab instead.'}
+                      </p>
+                      <a
+                        href="http://draw.fantasyailab.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-900 text-white text-sm hover:bg-gray-800"
+                      >
+                        {language === 'zh' ? '在新标签页打开' : 'Open in new tab'} <ExternalLink size={14} />
+                      </a>
+                    </div>
+                  ) : (
+                    <iframe
+                      id="painting-iframe"
+                      src="http://draw.fantasyailab.com/"
+                      className="w-full h-full border-none block"
+                      title="Painting Tool"
+                      sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+                    />
+                  )}
               </div>
             </div>
         ) : (
