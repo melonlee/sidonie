@@ -112,7 +112,7 @@ describe('reader & export', () => {
   };
 
   it('puts the metadata abstract first and skips the extracted abstract', () => {
-    const doc = { sections: [sec('Abstract', 'dup'), sec('1 Introduction', 'intro')], pageCount: 1, source: 'arxiv' as const, extractedAt: 0 };
+    const doc = { sections: [sec('Attention Is All You Need', 'Ashish Vaswani'), sec('Abstract', 'dup'), sec('1 Introduction', 'intro')], pageCount: 1, source: 'arxiv' as const, extractedAt: 0 };
     const s = buildReaderSections(paper, doc, '摘要');
     expect(s.map(x => x.title)).toEqual(['摘要', '1 Introduction']);
     expect(s[0].paragraphs.map(p => p.id)).toEqual(['a-p0', 'a-p1']);

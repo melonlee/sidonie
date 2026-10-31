@@ -29,6 +29,7 @@ import { computeStreak, dueCards, papersReadThisWeek } from './paper/stats';
 import ReadingList from './paper/ReadingList';
 import PaperWorkspace from './paper/PaperWorkspace';
 import { ReviewSession } from './paper/FlashcardsPanel';
+import { PaperErrorBoundary } from './paper/ui';
 
 interface AcademicViewProps {
   language: Language;
@@ -273,22 +274,28 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
   );
 
   if (openPaper) {
+    const back = () => { setOpenPaperId(null); setTab('library'); };
     return (
-      <>
+      <PaperErrorBoundary key={openPaper.id} fallback={() => (
+        <div className="flex h-full flex-col items-center justify-center gap-4 bg-gray-50 text-sm text-gray-600">
+          <p>{t.paperCrashed}</p>
+          <button onClick={back} className="rounded-lg bg-gray-900 px-4 py-2 text-white hover:bg-gray-800">{t.paperBack}</button>
+        </div>
+      )}>
         <PaperWorkspace
           paper={openPaper}
           study={study}
           language={language}
           apiKeys={apiKeys}
           userProfile={userProfile}
-          onBack={() => { setOpenPaperId(null); setTab('library'); }}
+          onBack={back}
           onSaveNote={onSaveNote}
           onOpenSettings={onOpenSettings}
           notify={notify}
           onStartReview={ids => setReviewIds(ids)}
         />
         {reviewSession}
-      </>
+      </PaperErrorBoundary>
     );
   }
 

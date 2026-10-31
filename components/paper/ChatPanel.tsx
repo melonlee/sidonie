@@ -98,7 +98,7 @@ const ChatPanel: React.FC<{
               {turn.role === 'user' ? (
                 <div className="max-w-[80%] rounded-2xl rounded-br-md bg-gray-900 px-4 py-2.5 text-sm text-white">{turn.text}</div>
               ) : (
-                <div data-testid="chat-answer" className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                <div data-testid="chat-answer" className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm [&_.prose]:text-[15px]">
                   <MarkdownRenderer content={turn.text} language={language} />
                   {turn.sources?.length ? (
                     <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-gray-100 pt-2 text-[11px] text-gray-500">

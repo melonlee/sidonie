@@ -404,7 +404,7 @@ const ReaderPanel: React.FC<ReaderPanelProps> = ({
             <p className="mb-2 line-clamp-3 border-l-2 border-amber-300 pl-2 text-xs italic text-gray-500">{assist.source}</p>
             {assist.noKey ? <NoKeyPrompt t={t} onOpenSettings={onOpenSettings} />
               : assist.error ? <ErrorNote message={assist.error} />
-                : <div className="text-[13px] text-gray-800"><MarkdownRenderer content={assist.output || '…'} language={language} isStreaming={assist.running} /></div>}
+                : <div className="text-gray-800 [&_.prose]:text-[13px] [&_.prose]:leading-relaxed"><MarkdownRenderer content={assist.output || '…'} language={language} isStreaming={assist.running} /></div>}
             {assist.kind === 'explain' && assist.output && !assist.running && (
               <button data-testid="assist-save-card" onClick={saveAssistAsCard} className="mt-2 flex items-center gap-1 text-[11px] font-medium text-amber-900 hover:underline">
                 <BookmarkPlus size={12} /> {t.paperMakeCard}

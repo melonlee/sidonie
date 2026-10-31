@@ -18,10 +18,11 @@ export function buildReaderSections(paper: SavedPaper, doc: ExtractedDoc | null 
   if (abstractParas.length) {
     sections.push({ id: 'a', title: abstractTitle, paragraphs: abstractParas.map((text, i) => ({ id: `a-p${i}`, text })) });
   }
-  for (const s of doc?.sections || []) {
-    if (abstractParas.length && ABSTRACT_TITLE.test(s.title.trim())) continue;
-    sections.push(s);
-  }
+  const docSections = doc?.sections || [];
+  // With metadata available, drop the extracted front matter (title, authors, licence notice)
+  // up to and including the PDF's own abstract.
+  const abstractAt = abstractParas.length ? docSections.findIndex(s => ABSTRACT_TITLE.test(s.title.trim())) : -1;
+  sections.push(...docSections.slice(abstractAt + 1));
   return sections;
 }
 

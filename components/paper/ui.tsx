@@ -54,3 +54,16 @@ export const describeAIError = (e: unknown, t: T): { noKey: boolean; message: st
 export const ErrorNote: React.FC<{ message: string }> = ({ message }) => (
   <div role="alert" className="rounded-xl border border-red-100 bg-red-50 p-3 text-sm text-red-700">{message}</div>
 );
+
+/** Keeps a rendering bug in the workspace from blanking the whole app. */
+export class PaperErrorBoundary extends React.Component<
+  { fallback: (reset: () => void) => React.ReactNode; children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  componentDidCatch(error: unknown) { console.error('Paper workspace crashed', error); }
+  render() {
+    return this.state.failed ? this.props.fallback(() => this.setState({ failed: false })) : this.props.children;
+  }
+}
