@@ -828,7 +828,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                         <div className="text-red-500 mb-4 bg-red-50 p-4 rounded-full">
                             <AlertCircle size={32} />
                         </div>
-                        <h3 className="text-gray-900 font-bold text-lg mb-2">{isKeyMissing ? t.noKeyTitle : 'Generation Failed'}</h3>
+                        <h3 className="text-gray-900 font-bold text-lg mb-2">{isKeyMissing ? t.noKeyTitle : t.generationFailed}</h3>
                         <p className="text-gray-500 text-sm mb-6 max-w-md">
                             {isKeyMissing
                               ? t.noKeyToast
@@ -846,7 +846,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                             onClick={() => generateContent(activeTopic, contentType)}
                             className="flex items-center gap-2 px-6 py-2.5 bg-black text-white rounded-xl hover:bg-gray-800 transition-all font-medium shadow-lg shadow-gray-200"
                         >
-                            <RefreshCw size={18} /> Retry Generation
+                            <RefreshCw size={18} /> {t.retryGeneration}
                         </button>
                         )}
                     </div>
@@ -860,7 +860,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                                 </div>
                                 <div>
                                    <h3 className="text-2xl font-bold text-gray-900 mb-2 leading-tight">{quizData.question}</h3>
-                                   <p className="text-gray-500 text-sm">Select the best answer.</p>
+                                   <p className="text-gray-500 text-sm">{t.selectBestAnswer}</p>
                                 </div>
                              </div>
                              
@@ -896,7 +896,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
 
                              {quizStatus !== 'unanswered' && (
                                 <div className={`p-6 rounded-2xl text-base leading-relaxed animate-fade-in ${quizStatus === 'correct' ? 'bg-green-50 text-green-900 border border-green-100' : 'bg-red-50 text-red-900 border border-red-100'}`}>
-                                   <strong className="block mb-1 opacity-70 uppercase tracking-wider text-xs">Explanation</strong>
+                                   <strong className="block mb-1 opacity-70 uppercase tracking-wider text-xs">{t.explanation}</strong>
                                    {quizData.explanation}
                                 </div>
                              )}
@@ -1031,11 +1031,11 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                       })}
                    </div>
                    <div className="p-4 bg-gray-100 rounded-xl mt-4 text-sm text-gray-700">
-                      <strong>Explanation:</strong> {selectedActivity.quizData.explanation}
+                      <strong>{t.explanation}:</strong> {selectedActivity.quizData.explanation}
                    </div>
                    {selectedActivity.score === 100 && (
                       <div className="mt-4 flex items-center gap-2 text-green-600 font-bold bg-green-50 px-4 py-2 rounded-lg inline-block">
-                         <Star size={16} fill="currentColor" /> Mastery Achieved
+                         <Star size={16} fill="currentColor" /> {t.masteryAchieved}
                       </div>
                    )}
                 </div>
@@ -1311,8 +1311,8 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                    
                    <div className="flex items-center justify-between pt-4 border-t border-gray-50 mt-auto">
                       <div className="flex gap-2">
-                         {note.aiAnalysis && <div className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-bold border border-blue-100 flex items-center gap-1"><Sparkles size={10} /> Analysis</div>}
-                         {note.aiPractice && <div className="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded font-bold border border-green-100 flex items-center gap-1"><CheckCircle2 size={10} /> Practice</div>}
+                         {note.aiAnalysis && <div className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-bold border border-blue-100 flex items-center gap-1"><Sparkles size={10} /> {t.aiAnalysis}</div>}
+                         {note.aiPractice && <div className="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded font-bold border border-green-100 flex items-center gap-1"><CheckCircle2 size={10} /> {t.aiPractice}</div>}
                       </div>
                       <button 
                          onClick={(e) => { e.stopPropagation(); deleteSchoolNote(note.id); }}
@@ -1391,7 +1391,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
         {/* Achievements Section */}
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
             <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Trophy className="text-yellow-500" size={20} /> Achievements
+                <Trophy className="text-yellow-500" size={20} /> {t.achievements}
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 {studyState.badges.map(badge => (
@@ -1399,7 +1399,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                         <div className="text-3xl mb-2">{badge.icon}</div>
                         <div className="font-bold text-sm text-gray-800">{badge.name[language === 'zh' ? 'zh' : 'en']}</div>
                         <div className="text-[10px] text-gray-500 mt-1">{badge.description[language === 'zh' ? 'zh' : 'en']}</div>
-                        {!badge.unlocked && <div className="mt-2 text-[10px] bg-gray-200 px-2 py-0.5 rounded text-gray-600 font-medium">Locked</div>}
+                        {!badge.unlocked && <div className="mt-2 text-[10px] bg-gray-200 px-2 py-0.5 rounded text-gray-600 font-medium">{t.locked}</div>}
                     </div>
                 ))}
             </div>
@@ -1572,7 +1572,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                              `}>
                                 {isReviewDue ? <Timer size={20} className="animate-pulse" /> : isMastered ? <Star size={20} fill="currentColor" /> : <BookOpen size={20} />}
                              </div>
-                             {isReviewDue && <div className="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider rounded-md animate-pulse">Review Due</div>}
+                             {isReviewDue && <div className="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider rounded-md animate-pulse">{t.reviewDue}</div>}
                              {!isReviewDue && isMastered && <div className="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider rounded-md">{t.mastered}</div>}
                              {!isReviewDue && isInProgress && <div className="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider rounded-md">{t.continueLearning}</div>}
                           </div>
@@ -1586,7 +1586,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                           <div className={`mt-4 flex items-center text-xs font-bold uppercase tracking-wider transition-colors
                              ${isReviewDue ? 'text-amber-600' : isMastered ? 'text-green-600' : isInProgress ? 'text-blue-600' : 'text-gray-300 group-hover:text-blue-500'}
                           `}>
-                             {isReviewDue ? 'Review Now' : isMastered ? 'Review' : isInProgress ? 'Continue' : 'Start'} <ChevronRight size={12} className="ml-1" />
+                             {isReviewDue ? t.reviewNow : isMastered ? t.review : isInProgress ? t.continueLearning : t.startLearning} <ChevronRight size={12} className="ml-1" />
                           </div>
                        </button>
                      );
@@ -1623,7 +1623,7 @@ const StudyView: React.FC<StudyViewProps> = ({ language, apiKeys, userProfile, o
                              {Object.values(studyState.reviewData || {}).filter((d: TopicReviewData) => Date.now() >= d.nextReview).length}
                           </div>
                           <div className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center justify-center gap-1">
-                             <Brain size={12} /> Reviews Due
+                             <Brain size={12} /> {t.reviewsDue}
                           </div>
                        </div>
 

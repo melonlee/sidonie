@@ -374,7 +374,7 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                     >
                         <div className="flex items-center gap-3 text-blue-800 font-bold">
                             <Radar size={20} />
-                            Research Radar: Daily Briefing
+                            {t.radarBriefing}
                         </div>
                         <div className="flex items-center gap-2 text-sm text-gray-500">
                             {isGeneratingBriefing ? <Loader2 size={16} className="animate-spin" /> : null}
@@ -406,14 +406,14 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
             {loading && papers.length === 0 ? (
                <div className="flex flex-col items-center justify-center h-64 text-gray-400">
                   <Loader2 size={32} className="animate-spin mb-4 text-black" />
-                  <p>Fetching latest research...</p>
+                  <p>{t.fetchingPapers}</p>
                </div>
             ) : error ? (
                <div className="flex flex-col items-center justify-center h-64 text-gray-400 text-center">
                   <p className="text-red-500 font-medium mb-2">{error}</p>
                   <p className="text-xs text-gray-400 mb-4 max-w-lg">{t.radarFetchHint}</p>
                   <button onClick={() => fetchPapers(activeCategory === 'custom' ? query : CATEGORY_TAGS.find(c => c.id === activeCategory)?.query || '')} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 shadow-sm">
-                     <RefreshCw size={16} /> Retry
+                     <RefreshCw size={16} /> {t.retry}
                   </button>
                </div>
             ) : papers.length === 0 ? (
@@ -448,7 +448,7 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                             </p>
 
                             <div className="flex items-center justify-end text-xs font-medium text-gray-400 gap-2 border-t border-gray-50 pt-3 mt-auto">
-                               <span className="group-hover:text-black transition-colors">Read More</span>
+                               <span className="group-hover:text-black transition-colors">{t.readMore}</span>
                                <ExternalLink size={14} />
                             </div>
                          </div>
@@ -463,7 +463,7 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                         className="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-all shadow-sm flex items-center gap-2 disabled:opacity-50"
                       >
                         {loading ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
-                        Load More Papers
+                        {t.loadMorePapers}
                       </button>
                    </div>
                </>
@@ -519,7 +519,7 @@ ${analysisContent ? `## AI Analysis\n${analysisContent}` : ''}
                         onClick={handleSaveToNote}
                         className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm"
                      >
-                        <Bookmark size={16} /> Save Note
+                        <Bookmark size={16} /> {t.saveNote}
                      </button>
 
                      <button 
