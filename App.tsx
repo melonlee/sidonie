@@ -187,6 +187,12 @@ const App: React.FC = () => {
 
   const t = TRANSLATIONS[language];
 
+  // Keep the tab title and <html lang> in sync with the UI language
+  useEffect(() => {
+    document.title = t.docTitle;
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+  }, [language, t.docTitle]);
+
   // Initialize chat sessions (once, even under StrictMode's double effects)
   const didInitSessions = useRef(false);
   useEffect(() => {
@@ -857,7 +863,7 @@ const App: React.FC = () => {
           <div className="px-2 py-2 mb-4 flex items-center justify-between">
              <div className="flex items-center gap-2.5 text-gray-900">
                 <BrandMark size={32} className="rounded-lg shadow-lg shadow-black/20" />
-                <span className="text-xl font-semibold tracking-tight">Sidonie</span>
+                <span className="text-xl font-semibold tracking-tight">{t.appName}</span>
              </div>
              <button onClick={() => setIsSidebarOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-lg">
                 <PanelLeftClose size={20} />
@@ -1007,7 +1013,7 @@ const App: React.FC = () => {
                   <Menu size={20} />
                 </button>
                 <BrandMark size={22} className="rounded-md" />
-                <span className="font-semibold tracking-tight text-gray-900">Sidonie</span>
+                <span className="font-semibold tracking-tight text-gray-900">{t.appName}</span>
               </div>
             )}
             <div className="flex-1 min-h-0">

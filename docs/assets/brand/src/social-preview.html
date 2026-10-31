@@ -9,6 +9,8 @@
   .brand { display: flex; align-items: center; gap: 16px; }
   .brand img { width: 60px; height: 60px; }
   .brand span { font-size: 48px; font-weight: 600; }
+  .brand .sep { width: 2px; height: 30px; background: var(--stone-300); border-radius: 2px; margin: 0 2px; }
+  .brand .zh { font-family: 'Songti SC', 'STSong', serif; font-weight: 700; font-size: 36px; letter-spacing: .04em; color: var(--stone-700); }
   h1 { margin-top: 40px; font-size: 58px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
   h1 em { font-style: normal; color: var(--amber); }
   ul { list-style: none; margin-top: 36px; display: grid; gap: 16px; }
@@ -23,7 +25,7 @@
 </style></head>
 <body>
   <div class="left">
-    <div class="brand"><img src="../logo-mark.svg"><span class="serif">Sidonie</span></div>
+    <div class="brand"><img src="../logo-mark.svg"><span class="serif">Sidonie</span><i class="sep"></i><span class="zh">伴学</span></div>
     <h1 class="serif">An AI learning<br>companion for <em>families</em>.</h1>
     <ul>
       <li><span class="dot"></span><span><b>Help Child</b> — curriculum, quizzes, spaced review</span></li>
@@ -31,7 +33,7 @@
       <li><span class="dot"></span><span><b>Private by design</b> — local-first, your own key</span></li>
     </ul>
   </div>
-  <div class="foot"><span>Open source · MIT</span><span>github.com/melonlee/FantasyAILab</span></div>
+  <div class="foot"><span>Open source · MIT</span><span>github.com/melonlee/sidonie</span></div>
   <div class="shot window"><div class="bar"><i></i><i></i><i></i></div><img src="../../../screenshots/help-child.png"></div>
   <div class="quiz"><img src="img/quiz-card-en.png"></div>
 </body></html>

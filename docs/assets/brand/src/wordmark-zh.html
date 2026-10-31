@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- Chinese wordmark "Sidonie 伴学" · 64px tall, render the #mark element with a transparent background at 4x.
+     ?dark renders the light-on-dark variant (logo-wordmark-zh-dark.png). -->
+<html lang="zh-CN"><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+  html, body { background: transparent; overflow: visible; }
+  body { padding: 0; }
+  #mark { display: inline-flex; align-items: center; height: 64px; gap: 0; color: var(--stone-900); }
+  #mark img { width: 64px; height: 64px; display: block; }
+  .en { margin-left: 18px; font-family: 'Fraunces', serif; font-weight: 600; font-size: 54px; line-height: 1; letter-spacing: -0.005em; transform: translateY(-1px); }
+  .sep { width: 2px; height: 30px; margin: 0 18px 0 20px; background: var(--stone-300); border-radius: 2px; }
+  .zh { font-family: 'Songti SC', 'STSong', serif; font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: 0.04em; transform: translateY(1px); }
+  .dark #mark { color: var(--cream); }
+  .dark .sep { background: var(--stone-600); }
+</style></head>
+<body>
+  <div id="mark"><img id="logo" src="../logo-mark.svg" alt=""><span class="en">Sidonie</span><span class="sep"></span><span class="zh">伴学</span></div>
+  <script>
+    if (location.search.includes('dark')) {
+      document.body.classList.add('dark');
+      document.getElementById('logo').src = '../logo-mark-light.svg';
+    }
+  </script>
+</body></html>

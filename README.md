@@ -7,13 +7,15 @@
 Help your child learn a little every day and keep the grown-ups' research within reach.<br />
 It all runs in your browser with your own API key. No account, no server.
 
-[![CI](https://github.com/melonlee/FantasyAILab/actions/workflows/ci.yml/badge.svg)](https://github.com/melonlee/FantasyAILab/actions/workflows/ci.yml)
+[![CI](https://github.com/melonlee/sidonie/actions/workflows/ci.yml/badge.svg)](https://github.com/melonlee/sidonie/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-1C1917.svg)](./LICENSE)
-[![Live demo](https://img.shields.io/badge/Live_demo-GitHub_Pages-E79A3B.svg)](https://melonlee.github.io/FantasyAILab/)
+[![Live demo](https://img.shields.io/badge/Live_demo-GitHub_Pages-E79A3B.svg)](https://melonlee.github.io/sidonie/)
 ![React 19](https://img.shields.io/badge/React-19-57534E.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-57534E.svg)
 
-**[Live demo](https://melonlee.github.io/FantasyAILab/)** · [Features](#features) · [Privacy](#privacy--your-data) · [Quick start](#quick-start) · [FAQ](#faq) · [中文](./README_zh.md)
+**[Live demo](https://melonlee.github.io/sidonie/)** · [Features](#features) · [Privacy](#privacy--your-data) · [Quick start](#quick-start) · [FAQ](#faq) · [中文](./README_zh.md)
+
+<sub>by <a href="https://fantasyailab.com/">FantasyAI Lab</a></sub>
 
 </div>
 
@@ -21,7 +23,7 @@ It all runs in your browser with your own API key. No account, no server.
 
 ## Why Sidonie
 
-Sidonie is named after my wife and inspired by our child. Every day I watched the two of them use AI tools that weren't really built for them. The tools were too generic for a child's homework and too scattered for a parent who still wants to keep up with research. So I built one place for both. It started with the people closest to me, and if it works for them it may work for your family too.
+Sidonie (Chinese name: 伴学, "learning companion") is named after my wife and inspired by our child. Every day I watched the two of them use AI tools that weren't really built for them. The tools were too generic for a child's homework and too scattered for a parent who still wants to keep up with research. So I built one place for both. It started with the people closest to me, and if it works for them it may work for your family too.
 
 What makes it different:
 
@@ -109,8 +111,8 @@ Tips: use API keys with spending limits. On a shared computer, use **Settings �
 Requirements: Node.js 20+ and an API key from at least one provider.
 
 ```bash
-git clone https://github.com/melonlee/FantasyAILab.git
-cd FantasyAILab
+git clone https://github.com/melonlee/sidonie.git
+cd sidonie
 npm install
 npm run dev        # http://localhost:3000
 ```
@@ -153,7 +155,7 @@ components/AcademicView.tsx  Paper Radar (arXiv)
 components/NotesView.tsx     Notes
 services/geminiService.ts    model routing, streaming, BYOK key handling
 constants.ts                 models, prompts, default curriculum, en/zh strings
-docs/assets/brand/           logo, banner, posters (+ HTML/SVG sources)
+docs/assets/brand/           logo (incl. 伴学 wordmark), banner, posters (+ HTML/SVG sources)
 ```
 
 ## Roadmap
@@ -219,7 +221,7 @@ Sidonie is built by **Melon (李辉)**, an AI full-stack engineer and the founde
 
 ## Star history
 
-[![Star History Chart](https://api.star-history.com/svg?repos=melonlee/FantasyAILab&type=Date)](https://star-history.com/#melonlee/FantasyAILab&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=melonlee/sidonie&type=Date)](https://star-history.com/#melonlee/sidonie&Date)
 
 ## License
 

@@ -372,6 +372,8 @@ export const TRANSLATIONS = {
     customInstructionsPlaceholder: "How do you want Sidonie to respond? e.g. 'Focus on Python best practices', 'Keep professional tone', or 'Always cite sources for important claims'.",
     cancel: "Cancel",
     // Landing Page
+    appName: "Sidonie",
+    docTitle: "Sidonie · AI learning companion for families",
     landingTitle: "Sidonie",
     landingSubtitle: "A local-first AI learning companion for families.",
     landingTagline: "Help your child learn a little every day, keep research within reach, and keep everything in your own browser.",
@@ -576,7 +578,9 @@ export const TRANSLATIONS = {
     customInstructionsPlaceholder: "您希望 Sidonie 如何回应？例如：\"专注于 Python 的最佳实践\"、\"保持专业的语气\"或\"始终为重要结论提供来源\"。",
     cancel: "取消",
     // Landing Page
-    landingTitle: "Sidonie",
+    appName: "Sidonie 伴学",
+    docTitle: "Sidonie 伴学 · 家庭 AI 学习伴侣",
+    landingTitle: "Sidonie 伴学",
     landingSubtitle: "本地优先的家庭 AI 学习伴侣",
     landingTagline: "陪孩子每天学一点，大人的研究也不落下 —— 所有数据都留在你自己的浏览器里。",
     features: "核心能力",
@@ -595,8 +599,8 @@ export const TRANSLATIONS = {
     useCase1: "放学后：一张概念卡、一道小测验，到期了再复习",
     useCase2: "把老师发的作业要求变成几道练习题",
     useCase3: "孩子睡着后，补上最新的研究进展",
-    storyTitle: "为什么做 Sidonie",
-    storyBody: "Sidonie 以我太太的名字命名，灵感来自我们的孩子。它最先是为我身边最亲近的两个人做的 —— 让孩子有一个安静学习的地方，也让大人能继续思考。如果它对她们有用，也许对你的家庭也有用。",
+    storyTitle: "为什么叫 Sidonie",
+    storyBody: "Sidonie 伴学以我太太的名字命名，灵感来自我们的孩子。它最先是为我身边最亲近的两个人做的 —— 让孩子有一个安静学习的地方，也让大人能继续思考。如果它对她们有用，也许对你的家庭也有用。",
     storySign: "—— Melon（李辉），FantasyAI Lab",
     footerOpenSource: "基于 MIT 协议开源",
     // Study / Help Child

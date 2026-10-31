@@ -1,27 +1,29 @@
 <div align="center">
 
-<img src="docs/assets/brand/readme-banner.png" alt="Sidonie：家庭 AI 学习伴侣" width="100%" />
+<img src="docs/assets/brand/readme-banner-zh.png" alt="Sidonie 伴学：家庭 AI 学习伴侣" width="100%" />
 
-<h3>Sidonie：本地优先的家庭 AI 学习伴侣</h3>
+<h3>Sidonie 伴学：本地优先的家庭 AI 学习伴侣</h3>
 
 陪孩子每天学一点，大人的研究也不落下。<br />
 全部运行在你的浏览器里，用你自己的 API Key，无需账号，没有服务器。
 
-[![CI](https://github.com/melonlee/FantasyAILab/actions/workflows/ci.yml/badge.svg)](https://github.com/melonlee/FantasyAILab/actions/workflows/ci.yml)
+[![CI](https://github.com/melonlee/sidonie/actions/workflows/ci.yml/badge.svg)](https://github.com/melonlee/sidonie/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-1C1917.svg)](./LICENSE)
-[![在线体验](https://img.shields.io/badge/在线体验-GitHub_Pages-E79A3B.svg)](https://melonlee.github.io/FantasyAILab/)
+[![在线体验](https://img.shields.io/badge/在线体验-GitHub_Pages-E79A3B.svg)](https://melonlee.github.io/sidonie/)
 ![React 19](https://img.shields.io/badge/React-19-57534E.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-57534E.svg)
 
-**[在线体验](https://melonlee.github.io/FantasyAILab/)** · [功能](#功能) · [隐私](#隐私与数据) · [快速开始](#快速开始) · [常见问题](#常见问题) · [English](./README.md)
+**[在线体验](https://melonlee.github.io/sidonie/)** · [功能](#功能) · [隐私](#隐私与数据) · [快速开始](#快速开始) · [常见问题](#常见问题) · [English](./README.md)
+
+<sub>由 <a href="https://fantasyailab.com/">FantasyAI Lab</a> 出品</sub>
 
 </div>
 
 ---
 
-## 为什么做 Sidonie
+## 为什么做 Sidonie 伴学
 
-Sidonie 以我太太的名字命名，灵感来自我们的孩子。每天看着她们用 AI，我发现这些工具并不是为她们设计的：辅导孩子功课时太泛，想跟上研究进展的大人又要在好几个工具间来回切换。所以我把这些需求收进了一个地方。它最先服务的是我身边最亲近的人；如果对她们有用，也许对你的家庭也有用。
+Sidonie 伴学（英文名 Sidonie）以我太太的名字命名，灵感来自我们的孩子。每天看着她们用 AI，我发现这些工具并不是为她们设计的：辅导孩子功课时太泛，想跟上研究进展的大人又要在好几个工具间来回切换。所以我把这些需求收进了一个地方。它最先服务的是我身边最亲近的人；如果对她们有用，也许对你的家庭也有用。
 
 它的不同之处：
 
@@ -107,8 +109,8 @@ Sidonie 是一个纯静态网页应用：**没有 Sidonie 后端，不需要账�
 环境要求：Node.js 20+，以及至少一家服务商的 API Key。
 
 ```bash
-git clone https://github.com/melonlee/FantasyAILab.git
-cd FantasyAILab
+git clone https://github.com/melonlee/sidonie.git
+cd sidonie
 npm install
 npm run dev        # http://localhost:3000
 ```
@@ -151,7 +153,7 @@ components/AcademicView.tsx  学术雷达（arXiv）
 components/NotesView.tsx     笔记
 services/geminiService.ts    模型路由、流式输出、BYOK Key 处理
 constants.ts                 模型、提示词、默认课程、中英文文案
-docs/assets/brand/           Logo、横幅、海报（含 HTML/SVG 源文件）
+docs/assets/brand/           Logo（含中文字标）、横幅、海报（含 HTML/SVG 源文件）
 ```
 
 ## 路线图
@@ -213,11 +215,11 @@ npm run typecheck && npm run build
 
 ## 关于作者
 
-Sidonie 由 **Melon（李辉）** 开发。他是一名 AI 全栈工程师，也是 [FantasyAI Lab](https://fantasyailab.com/) 的创始人，专注于可靠的 AI Agent、多智能体系统和实用 AI 产品。更多信息见 [fantasyailab.com](https://fantasyailab.com/) 与 [Melon（李辉）个人页](https://fantasyailab.com/melon-lihui.html)。
+Sidonie 伴学由 **Melon（李辉）** 开发。他是一名 AI 全栈工程师，也是 [FantasyAI Lab](https://fantasyailab.com/) 的创始人，专注于可靠的 AI Agent、多智能体系统和实用 AI 产品。更多信息见 [fantasyailab.com](https://fantasyailab.com/) 与 [Melon（李辉）个人页](https://fantasyailab.com/melon-lihui.html)。
 
 ## Star 趋势
 
-[![Star History Chart](https://api.star-history.com/svg?repos=melonlee/FantasyAILab&type=Date)](https://star-history.com/#melonlee/FantasyAILab&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=melonlee/sidonie&type=Date)](https://star-history.com/#melonlee/sidonie&Date)
 
 ## 许可证
 

@@ -2,7 +2,7 @@ import path from 'path';
 import { defineConfig, type ProxyOptions } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Public base path for static hosting, e.g. VITE_BASE=/FantasyAILab/ for GitHub Pages.
+// Public base path for static hosting, e.g. VITE_BASE=/sidonie/ for GitHub Pages.
 const base = process.env.VITE_BASE || '/';
 
 // arXiv's API sends no CORS headers, so the browser can't call it directly.

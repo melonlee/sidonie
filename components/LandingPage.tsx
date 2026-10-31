@@ -11,7 +11,7 @@ interface LandingPageProps {
   language: Language;
 }
 
-const REPO_URL = 'https://github.com/melonlee/FantasyAILab';
+const REPO_URL = 'https://github.com/melonlee/sidonie';
 
 const LandingPage: React.FC<LandingPageProps> = ({ isOpen, onClose, language }) => {
   if (!isOpen) return null;
@@ -37,7 +37,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isOpen, onClose, language }) 
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
              <BrandMark size={32} className="rounded-lg shadow-lg" />
-             <span className="text-xl font-bold tracking-tight text-gray-900">Sidonie</span>
+             <span className="text-xl font-bold tracking-tight text-gray-900">{t.appName}</span>
           </div>
           <button
             onClick={onClose}

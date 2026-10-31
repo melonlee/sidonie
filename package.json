@@ -17,13 +17,13 @@
   ],
   "author": "Melon (李辉) (https://fantasyailab.com/)",
   "license": "MIT",
-  "homepage": "https://melonlee.github.io/FantasyAILab/",
+  "homepage": "https://melonlee.github.io/sidonie/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/melonlee/FantasyAILab.git"
+    "url": "git+https://github.com/melonlee/sidonie.git"
   },
   "bugs": {
-    "url": "https://github.com/melonlee/FantasyAILab/issues"
+    "url": "https://github.com/melonlee/sidonie/issues"
   },
   "type": "module",
   "engines": {
