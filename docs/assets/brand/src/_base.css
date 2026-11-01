@@ -23,4 +23,6 @@ body { font-family: 'Inter', 'PingFang SC', -apple-system, sans-serif; color: va
 .window .bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--stone-300); display: block; }
 .window img { display: block; width: 100%; }
 .chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--stone-200); font-size: 15px; color: var(--stone-700); font-weight: 500; }
+/* the moon rabbit rising from an edge: its bottom is cut flat, paws resting on whatever it sits on */
+.rabbit { position: absolute; display: block; pointer-events: none; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); display: inline-block; }
