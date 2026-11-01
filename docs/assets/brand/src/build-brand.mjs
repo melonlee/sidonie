@@ -1,9 +1,9 @@
-// Regenerates every Sidonie 伴学 icon, favicon and logo lockup from the moon-rabbit (玉兔) masters.
+// Regenerates every Sidonie 伴学 icon, favicon and logo lockup from the reading-rabbit (玉兔) masters.
 //
 // Masters (./mascot, part of the FantasyAI Lab mascot family; edit these, not the outputs):
-//   rabbit-moon.svg        full-detail icon: cream rabbit rising from the bottom edge, amber moon behind
-//   rabbit-moon-small.svg  head-only glyph for 16–48 px (favicons, in-app mark, header logo)
-//   rabbit-moon-flat.svg   two-tone version for one-colour-ish print / embroidery / stickers
+//   rabbit-book.svg        full-detail icon: cream rabbit reading an open book in front of the amber moon
+//   rabbit-book-small.svg  simplified glyph for 16–48 px (big head + book edge; favicons, in-app mark, header logo)
+//   rabbit-book-flat.svg   two-tone version for one-colour-ish print / embroidery / stickers
 //
 // usage (from this folder):
 //   npm i --no-save playwright-core opentype.js@1 && node build-brand.mjs
@@ -25,9 +25,9 @@ const repo = path.join(brand, '..', '..', '..');
 const master = (name) => fs.readFileSync(path.join(here, 'mascot', `${name}.svg`), 'utf8');
 const write = (name, text) => fs.writeFileSync(path.join(brand, name), text);
 
-const FULL = master('rabbit-moon');
-const SMALL = master('rabbit-moon-small');
-const FLAT = master('rabbit-moon-flat');
+const FULL = master('rabbit-book');
+const SMALL = master('rabbit-book-small');
+const FLAT = master('rabbit-book-flat');
 
 // ------------------------------------------------------------------ derived SVGs
 const TITLE = '<title>Sidonie 伴学</title>';
@@ -41,7 +41,7 @@ const titled = (svg) => svg.replace(/<svg [^>]*>/, (tag) =>
 /** Full-bleed square (iOS / Android apply their own mask): tile → square, no rim light. */
 const square = (svg) => svg.replace(SQUIRCLE_D, '$1M100 100 H924 V924 H100 Z"').replace(RIM, '');
 
-/** Maskable: square tile, art scaled about the bottom centre so the ears and moon sit in the 80 % safe zone. */
+/** Maskable: square tile, art scaled about the bottom centre so the ears, moon and book sit in the 80 % safe zone. */
 const maskable = (svg) => {
   const s = square(svg).replace('<g clip-path="url(#clip)">',
     '<g clip-path="url(#clip)"><g transform="translate(512 924) scale(0.8) translate(-512 -924)">');
@@ -50,12 +50,14 @@ const maskable = (svg) => {
 };
 
 /**
- * The rabbit without its tile: transparent, cut straight along the bottom edge so it can "rise"
- * out of any section edge (website, banners, poster). Same 824×824 frame as the icon.
+ * The reading rabbit without its tile: transparent, moon disc behind (no glow halo), the whole
+ * rounded body visible so it can sit on any light surface (website, banners, poster).
  */
-const rise = (svg) => svg
-  .replace(SQUIRCLE_D, '$1M60 40 H964 V924 H60 Z"')
+const READING_VIEWBOX = '190 96 644 884';
+const reading = (svg) => svg
+  .replace(SQUIRCLE_D, '$1M0 0 H1024 V1024 H0 Z"')
   .replace(/<use href="#squircle" fill="url\(#bg\)"\/>\n?/, '')
+  .replace(/<circle [^>]*fill="url\(#glow\)"\/>\n?/, '')
   .replace(RIM, '');
 
 /** Nest a master as a sized child <svg> (used by the wordmark lockups). */
@@ -69,7 +71,7 @@ write('app-icon-maskable.svg', titled(maskable(FULL)));
 write('favicon.svg', titled(SMALL));
 write('logo-mark.svg', titled(SMALL));
 write('logo-mark-flat.svg', titled(FLAT));
-write('mascot-rise.svg', titled(rise(FULL)).replace(/ viewBox="[^"]+"/, ' viewBox="60 40 904 884"'));
+write('mascot-reading.svg', titled(reading(FULL)).replace(/ viewBox="[^"]+"/, ` viewBox="${READING_VIEWBOX}"`));
 
 // "Sidonie" in Fraunces SemiBold as outlines, mark on the left (64 units tall)
 const ttf = fs.readFileSync(path.join(here, 'fonts/Fraunces-SemiBold.ttf'));
@@ -101,7 +103,7 @@ const jobs = [
   ['favicon.svg', 'favicon-16.png', 16],
   ['logo-mark.svg', 'logo-mark.png', 512],
   ['logo-mark-flat.svg', 'logo-mark-flat.png', 512],
-  ['mascot-rise.svg', 'mascot-rise.png', 1024],
+  ['mascot-reading.svg', 'mascot-reading.png', 1024],
   ['logo-wordmark.svg', 'logo-wordmark.png', 1024],
   ['logo-wordmark-dark.svg', 'logo-wordmark-dark.png', 1024],
 ];
@@ -158,5 +160,5 @@ copy('favicon.ico', 'public/favicon.ico', 'website/favicon.ico');
 copy('apple-touch-icon.png', 'public/apple-touch-icon.png', 'website/apple-touch-icon.png');
 copy('logo-mark.svg', 'website/assets/logo-mark.svg');
 copy('app-icon.svg', 'website/assets/app-icon.svg');
-copy('mascot-rise.svg', 'website/assets/mascot-rise.svg');
+copy('mascot-reading.svg', 'website/assets/mascot-reading.svg');
 console.log('copied web icons to public/ and website/');

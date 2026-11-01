@@ -25,7 +25,7 @@
     <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="b2"/>
     <feOffset in="b2" dx="10" dy="12" result="o2"/>
     <feComposite in="SourceAlpha" in2="o2" operator="out" result="edge2"/>
-    <feFlood flood-color="#ffffff" flood-opacity="0.9"/>
+    <feFlood flood-color="#ffe3bd" flood-opacity="0.9"/>
     <feComposite in2="edge2" operator="in" result="shine"/>
     <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="shade"/><feMergeNode in="shine"/></feMerge>
   </filter>
@@ -40,13 +40,48 @@
     <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="s"/></feMerge>
   </filter>
   <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
-<radialGradient id="moon" cx="0.38" cy="0.34" r="0.75"><stop offset="0" stop-color="#ffd596"/><stop offset="0.6" stop-color="#f0a948"/><stop offset="1" stop-color="#e79a3b"/></radialGradient>
+  <filter id="cast2" x="-80%" y="-80%" width="260%" height="260%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="22"/><feOffset dx="10" dy="6"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.7"/></feComponentTransfer>
+  </filter>  <linearGradient id="earPink" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e9c4bc" stop-opacity="0.95"/><stop offset="0.7" stop-color="#ead2cb" stop-opacity="0.75"/><stop offset="1" stop-color="#f3e6e0" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="moon" cx="0.38" cy="0.34" r="0.75">
+    <stop offset="0" stop-color="#ffd596"/><stop offset="0.45" stop-color="#f2b25a"/><stop offset="0.85" stop-color="#e79a3b"/><stop offset="1" stop-color="#cf7f25"/>
+  </radialGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0.45" stop-color="#e79a3b" stop-opacity="0.32"/><stop offset="1" stop-color="#e79a3b" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="crater" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+  <radialGradient id="blush" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#eaa595" stop-opacity="0.45"/><stop offset="1" stop-color="#eaa595" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="page" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#efe4d4"/>
+  </linearGradient>
+  <linearGradient id="pageR" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f6ede0"/><stop offset="1" stop-color="#e2d4c1"/>
+  </linearGradient>
+  <linearGradient id="cover" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#d9893a"/><stop offset="1" stop-color="#a95f1f"/>
+  </linearGradient>
+  <linearGradient id="spine" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#8a6a4e" stop-opacity="0"/><stop offset="0.5" stop-color="#8a6a4e" stop-opacity="0.45"/><stop offset="1" stop-color="#8a6a4e" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="cardGlow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0.35" stop-color="#ffc56e" stop-opacity="0.55"/><stop offset="1" stop-color="#e79a3b" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="card" x1="0" y1="0" x2="0.4" y2="1">
+    <stop offset="0" stop-color="#fffaf0"/><stop offset="1" stop-color="#fbe7c6"/>
+  </linearGradient>
+  <radialGradient id="star" cx="0.4" cy="0.35" r="0.7">
+    <stop offset="0" stop-color="#ffd18a"/><stop offset="0.6" stop-color="#e79a3b"/><stop offset="1" stop-color="#cf7f25"/>
+  </radialGradient>
 </defs>
 <use href="#squircle" fill="url(#bg)"/>
 <g clip-path="url(#clip)">
-<circle cx="282" cy="270" r="132" fill="url(#moon)"/>
-<g transform="translate(512 1040) scale(1.12) translate(-512 -1000) rotate(6 512 760)"><g filter="url(#sculpt)"><g fill="url(#body)"><path d="M 350 560 C 300 440 290 260 330 168 Q 372 92 430 152 C 476 240 494 420 484 540 Z"/><path d="M 674 560 C 724 440 734 260 694 168 Q 652 92 594 152 C 548 240 530 420 540 540 Z"/><path d="M 112 1110 C 112 884 152 766 228 692 C 216 544 352 440 512 440 C 672 440 808 544 796 692 C 872 766 912 884 912 1110 Z"/></g></g><path d="M 368 500 C 334 400 330 260 362 196 Q 384 160 406 200 C 436 270 446 400 440 500 Z" fill="#e6bdb4"/><path d="M 656 500 C 690 400 694 260 662 196 Q 640 160 618 200 C 588 270 578 400 584 500 Z" fill="#e6bdb4"/><rect x="366" y="584" width="88" height="136" rx="44" fill="#120f0d"/><circle cx="424" cy="620" r="18" fill="#fff"/><rect x="570" y="584" width="88" height="136" rx="44" fill="#120f0d"/><circle cx="628" cy="620" r="18" fill="#fff"/><path d="M 486 744 Q 512 732 538 744 Q 532 764 512 772 Q 492 764 486 744 Z" fill="#b98580"/></g>
-</g>
+<circle cx="512" cy="300" r="230" fill="url(#moon)"/><g transform="translate(512 560) rotate(-3) scale(0.82) translate(-512 -600)"><g filter="url(#sculpt)"><g fill="url(#body)"><path d="M 350 560 C 300 440 290 260 330 168 Q 372 92 430 152 C 476 240 494 420 484 540 Z"/><path d="M 572 500 C 566 404 588 290 652 236 C 712 186 806 196 852 262 C 892 320 902 420 894 524 Q 888 578 854 574 Q 822 568 824 520 C 826 440 816 366 776 324 C 738 286 694 314 684 372 C 676 420 678 470 674 512 Z"/><path d="M 228 692 C 216 544 352 440 512 440 C 672 440 808 544 796 692 C 802 828 682 902 512 902 C 342 902 222 828 228 692 Z"/></g></g><path d="M 368 500 C 334 400 330 260 362 196 Q 384 160 406 200 C 436 270 446 400 440 500 Z" fill="#e6bdb4"/><path d="M 600 480 C 598 400 618 318 662 280 C 700 250 748 248 780 272 C 734 282 702 322 692 372 C 684 412 682 448 676 484 Q 638 496 600 480 Z" fill="#e6bdb4"/><rect x="364" y="584" width="92" height="138" rx="46" fill="#120f0d"/><circle cx="425" cy="684" r="19" fill="#fff"/><rect x="568" y="584" width="92" height="138" rx="46" fill="#120f0d"/><circle cx="629" cy="684" r="19" fill="#fff"/><path d="M 484 750 Q 512 736 540 750 Q 534 772 512 780 Q 490 772 484 750 Z" fill="#b98580"/></g>
+<path d="M 512 812 C 420 776 300 772 190 790 L 196 960 L 828 960 L 834 790 C 724 772 604 776 512 812 Z" fill="#000" filter="url(#cast2)"/><path d="M 512 812 C 420 776 300 772 190 790 L 196 960 L 828 960 L 834 790 C 724 772 604 776 512 812 Z" fill="url(#cover)"/><path d="M 512 800 C 424 766 312 762 214 778 L 220 960 L 512 960 Z" fill="url(#page)"/><path d="M 512 800 C 600 766 712 762 810 778 L 804 960 L 512 960 Z" fill="url(#pageR)"/></g>
 <use href="#squircle" fill="none" stroke="url(#rim)" stroke-width="3"/>
 </svg>
 
