@@ -10,11 +10,11 @@
 
 [![CI](https://github.com/melonlee/sidonie/actions/workflows/ci.yml/badge.svg)](https://github.com/melonlee/sidonie/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-1C1917.svg)](./LICENSE)
-[![在线体验](https://img.shields.io/badge/在线体验-GitHub_Pages-E79A3B.svg)](https://melonlee.github.io/sidonie/)
+[![在线体验](https://img.shields.io/badge/在线体验-GitHub_Pages-E79A3B.svg)](https://melonlee.github.io/sidonie/app/)
 ![React 19](https://img.shields.io/badge/React-19-57534E.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-57534E.svg)
 
-**[在线体验](https://melonlee.github.io/sidonie/)** · [功能](#功能) · [论文学习](#大人的论文学习从雷达到引用) · [隐私](#隐私与数据) · [快速开始](#快速开始) · [常见问题](#常见问题) · [English](./README.md)
+**[在线体验](https://melonlee.github.io/sidonie/app/)** · [官网](https://melonlee.github.io/sidonie/) · [功能](#功能) · [论文学习](#大人的论文学习从雷达到引用) · [隐私](#隐私与数据) · [快速开始](#快速开始) · [常见问题](#常见问题) · [English](./README.md)
 
 <sub>由 <a href="https://fantasyailab.com/">FantasyAI Lab</a> 出品</sub>
 
@@ -181,7 +181,7 @@ npm test           # vitest（间隔复习、BM25、引用格式、章节切分�
 - **其他平台**：运行 `VITE_BASE=/你的子路径/ npm run build`。部署在根路径时不用设置。
 - **可选**：把 `VITE_ARXIV_PROXY` 设为你自己的 CORS 代理（代理地址前缀，后面会拼接编码后的 arXiv URL），这样学术雷达就不依赖公共代理。在 GitHub 上把它添加为仓库 *Variable* 即可。
 
-**项目官网**：中英文官网位于 [`website/`](./website/)，纯 HTML/CSS，无需构建，可以单独部署，详见 [website/README.md](./website/README.md)。
+**项目官网**：<https://melonlee.github.io/sidonie/>（中英文）。源码在 [`website/`](./website/)，纯 HTML/CSS，无需构建。同一个 GitHub Pages 部署把官网放在根路径、应用放在 `/app/`，详见 [website/README.md](./website/README.md)。
 
 ## 技术栈
 

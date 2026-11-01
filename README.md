@@ -10,11 +10,11 @@ It all runs in your browser with your own API key. No account, no server.
 
 [![CI](https://github.com/melonlee/sidonie/actions/workflows/ci.yml/badge.svg)](https://github.com/melonlee/sidonie/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-1C1917.svg)](./LICENSE)
-[![Live demo](https://img.shields.io/badge/Live_demo-GitHub_Pages-E79A3B.svg)](https://melonlee.github.io/sidonie/)
+[![Live demo](https://img.shields.io/badge/Live_demo-GitHub_Pages-E79A3B.svg)](https://melonlee.github.io/sidonie/app/)
 ![React 19](https://img.shields.io/badge/React-19-57534E.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-57534E.svg)
 
-**[Live demo](https://melonlee.github.io/sidonie/)** · [Features](#features) · [Paper study](#paper-study-from-radar-to-citation) · [Privacy](#privacy--your-data) · [Quick start](#quick-start) · [FAQ](#faq) · [中文](./README_zh.md)
+**[Live demo](https://melonlee.github.io/sidonie/app/)** · [Website](https://melonlee.github.io/sidonie/) · [Features](#features) · [Paper study](#paper-study-from-radar-to-citation) · [Privacy](#privacy--your-data) · [Quick start](#quick-start) · [FAQ](#faq) · [中文](./README_zh.md)
 
 <sub>by <a href="https://fantasyailab.com/">FantasyAI Lab</a></sub>
 
@@ -183,7 +183,7 @@ The app is fully static, so any static host works.
 - **Elsewhere:** run `VITE_BASE=/your/sub/path/ npm run build`, or leave `VITE_BASE` unset to serve from the root.
 - **Optional:** set `VITE_ARXIV_PROXY` to a CORS proxy you control (a prefix to which the encoded arXiv URL is appended) so Paper Radar doesn't depend on a public proxy. On GitHub, add it as a repository *variable*.
 
-**Project website:** the marketing site (Chinese + English) lives in [`website/`](./website/). It is plain HTML/CSS with no build step and deploys on its own; see [website/README.md](./website/README.md).
+**Project website:** <https://melonlee.github.io/sidonie/> (Chinese + English). Source in [`website/`](./website/), plain HTML/CSS with no build step. One GitHub Pages deployment serves the website at the root and the app under `/app/`; see [website/README.md](./website/README.md).
 
 ## Tech stack
 

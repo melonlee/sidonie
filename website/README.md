@@ -1,6 +1,6 @@
 # Sidonie 伴学 · project website
 
-A standalone, static marketing site for Sidonie. It is separate from the app itself (the app lives at the repo root and is deployed to GitHub Pages by `.github/workflows/deploy-pages.yml`).
+A standalone, static marketing site for Sidonie. Live at <https://melonlee.github.io/sidonie/>. `.github/workflows/deploy-pages.yml` publishes this folder at the Pages root and the app build under `/app/` in one deployment.
 
 - `index.html`: Chinese (primary audience: parents)
 - `en/index.html`: English
@@ -28,17 +28,10 @@ Publish the `website/` folder as-is.
 | **Vercel** | New Project → import the repo → Framework preset *Other*, **Root Directory** `website`, no build command, output directory `.` |
 | **Netlify** | Add new site → import the repo → base directory empty, build command empty, **Publish directory** `website` (or drag and drop the folder in the Netlify UI) |
 | **Cloudflare Pages** | Create → Pages → connect the repo → framework *None*, build command empty, **Build output directory** `website` |
-| **GitHub Pages** | The repo's Pages site already serves the app demo, so host the website from a separate repo (copy `website/` to its root) or use one of the hosts above. Pages only allows one site per repo. |
+| **GitHub Pages** (current) | Automatic on push to `main`: the website at `/<repo>/`, the app at `/<repo>/app/` (demo buttons link to `app/` relatively). |
 
 A custom domain (for example `sidonie.fantasyailab.com`) is up to the owner: add it in the host's dashboard and create the CNAME record it asks for.
 
-## After choosing a domain
+## Moving to a custom domain
 
-Social crawlers need absolute URLs. `og:image` and `twitter:image` currently point at the copy of `assets/og-image.jpg` on GitHub (`raw.githubusercontent.com/melonlee/sidonie/main/...`), which works once this folder is on `main`. When the site has its own domain:
-
-1. Replace that URL in both pages with `https://<your-domain>/assets/og-image.jpg`.
-2. Optionally add `<link rel="canonical">` and make the `hreflang` links absolute.
-
-## Updating screenshots
-
-The images in `assets/img/` are copies of the app screenshots, cropped and quantised (256-colour PNG) or saved as WebP (the `*-paper-*.webp` paper study shots, from `docs/screenshots/paper-*.png`) to keep the page light. When the UI changes, re-capture them from `docs/screenshots/` (or the app) at 2× and keep each file under about 200 KB. The AI panels in the paper study shots show hand-written demo text, and the page says so.
+`og:image`, `twitter:image`, `og:url`, `canonical` and the `hreflang` links are absolute URLs pointing at `https://melonlee.github.io/sidonie/`. If you move the site to its own domain (for example `sidonie.fantasyailab.com`), replace that prefix in both pages; the demo buttons are relative and keep working.
