@@ -24,11 +24,11 @@
 
 ## 为什么做 Sidonie 伴学
 
-<img src="docs/assets/brand/app-icon-256.png" alt="Sidonie 伴学的玉兔" width="112" align="right" />
+<img src="docs/assets/brand/app-icon-256.png" alt="Sidonie 伴学的读书玉兔" width="112" align="right" />
 
 Sidonie 伴学（英文名 Sidonie）以我太太的名字命名，灵感来自我们的孩子。每天看着她们用 AI，我发现这些工具并不是为她们设计的：辅导孩子功课时太泛，想跟上研究进展的大人又要在好几个工具间来回切换。所以我把这些需求收进了一个地方。它最先服务的是我身边最亲近的人；如果对她们有用，也许对你的家庭也有用。
 
-吉祥物是一只玉兔：我太太最喜欢兔子，所以专门为 Sidonie 选了它。它在满月前从窗台探出头来，也是 [FantasyAI Lab](https://fantasyailab.com/) 吉祥物家族的一员。
+吉祥物是一只玉兔：我太太最喜欢兔子，所以专门为 Sidonie 选了它。它是一只陪孩子一起读书的玉兔：在月亮前捧着一本打开的书，也是 [FantasyAI Lab](https://fantasyailab.com/) 吉祥物家族的一员。
 
 两大支柱，一个共同的基础：
 

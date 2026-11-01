@@ -9,6 +9,7 @@ All notable changes to Sidonie 伴学 are documented here. The format is based o
 ### Changed
 
 - **New mascot and icon: the moon rabbit (玉兔).** A cream rabbit rising in front of an amber full moon, chosen for Sidonie and part of the FantasyAI Lab mascot family, replaces the sun-and-book mark in the app (sidebar, mobile header, about page), favicons and touch icons, the website, README banners, social preview, share card and poster. Screenshots that show the logo were recaptured. Sources and build scripts live in `docs/assets/brand/src/`.
+- **The moon rabbit now reads.** The mascot holds an open book in front of the moon (陪孩子一起读书的玉兔) in the app mark, icons, favicons, website, banners, social preview, share card and poster; screenshots that show the logo were recaptured.
 
 ## 0.2.0 - 2026-11-01
 

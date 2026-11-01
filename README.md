@@ -24,11 +24,11 @@ It all runs in your browser with your own API key. No account, no server.
 
 ## Why Sidonie
 
-<img src="docs/assets/brand/app-icon-256.png" alt="The Sidonie moon rabbit" width="112" align="right" />
+<img src="docs/assets/brand/app-icon-256.png" alt="The Sidonie moon rabbit reading a book" width="112" align="right" />
 
 Sidonie (Chinese name: 伴学, "learning companion") is named after my wife and inspired by our child. Every day I watched the two of them use AI tools that weren't really built for them. The tools were too generic for a child's homework and too scattered for a parent who still wants to keep up with research. So I built one place for both. It started with the people closest to me, and if it works for them it may work for your family too.
 
-The mascot is a moon rabbit (玉兔), chosen for Sidonie because my wife loves rabbits; it peeks over the ledge in front of a full moon and belongs to the [FantasyAI Lab](https://fantasyailab.com/) mascot family.
+The mascot is a moon rabbit (玉兔), chosen for Sidonie because my wife loves rabbits; it reads an open book in front of the moon, the rabbit that reads along with your child (陪孩子一起读书的玉兔), and belongs to the [FantasyAI Lab](https://fantasyailab.com/) mascot family.
 
 Two pillars, one shared foundation:
 
