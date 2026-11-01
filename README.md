@@ -24,7 +24,11 @@ It all runs in your browser with your own API key. No account, no server.
 
 ## Why Sidonie
 
+<img src="docs/assets/brand/app-icon-256.png" alt="The Sidonie moon rabbit" width="112" align="right" />
+
 Sidonie (Chinese name: 伴学, "learning companion") is named after my wife and inspired by our child. Every day I watched the two of them use AI tools that weren't really built for them. The tools were too generic for a child's homework and too scattered for a parent who still wants to keep up with research. So I built one place for both. It started with the people closest to me, and if it works for them it may work for your family too.
+
+The mascot is a moon rabbit (玉兔), chosen for Sidonie because my wife loves rabbits; it peeks over the ledge in front of a full moon and belongs to the [FantasyAI Lab](https://fantasyailab.com/) mascot family.
 
 Two pillars, one shared foundation:
 
@@ -198,7 +202,7 @@ services/srs.ts              spaced-repetition scheduler shared by Help Child an
 components/NotesView.tsx     Notes
 services/geminiService.ts    model routing, streaming, BYOK key handling
 constants.ts                 models, prompts, default curriculum, en/zh strings
-docs/assets/brand/           logo (incl. 伴学 wordmark), banner, posters (+ HTML/SVG sources)
+docs/assets/brand/           moon-rabbit icons and favicons, logo (incl. 伴学 wordmark), banners, posters (+ SVG masters and build scripts in src/)
 website/                     static project website, deployable on its own (see website/README.md)
 ```
 
