@@ -153,7 +153,9 @@ html[lang="en"] .hero h1 { letter-spacing: -.012em; line-height: 1.08; }
 .hero-note span { display: inline-flex; align-items: center; gap: 7px; }
 .hero-note svg { width: 15px; height: 15px; color: var(--amber-ink); }
 
-.stage { position: relative; max-width: 1080px; margin: 64px auto 0; padding: 0 0 72px; }
+.stage { position: relative; isolation: isolate; max-width: 1080px; margin: 64px auto 0; padding: 0 0 72px; }
+/* the moon rabbit sits on the window's top edge, reading; its body is tucked behind the window */
+.stage-rabbit { position: absolute; z-index: -1; right: 10%; top: 0; width: 168px; height: auto; transform: translateY(-90%); pointer-events: none; }
 .window {
   background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--stone-200); box-shadow: var(--shadow-lg);
 }
@@ -368,9 +370,9 @@ html[lang="en"] .feature-text h3 { letter-spacing: -.005em; line-height: 1.2; }
 }
 .closing-card h2 { font-family: var(--serif); font-size: clamp(28px, 3.4vw, 42px); line-height: 1.3; }
 .closing-card p { margin: 16px auto 0; max-width: 560px; color: var(--stone-600); }
-/* the moon rabbit rises from the bottom edge of the card, paws on the ledge */
+/* the moon rabbit sits at the bottom edge of the card reading its book, body tucked below the edge */
 .closing-card > :not(.closing-rabbit) { position: relative; z-index: 1; }
-.closing-rabbit { position: absolute; right: 6%; bottom: 0; width: 196px; height: auto; pointer-events: none; }
+.closing-rabbit { position: absolute; right: 7%; bottom: -16px; width: 156px; height: auto; pointer-events: none; }
 
 /* Footer */
 .site-footer { border-top: 1px solid var(--stone-200); padding: 56px 0 44px; font-size: 15px; color: var(--stone-500); }
@@ -412,7 +414,7 @@ html[lang="en"] .feature-text h3 { letter-spacing: -.005em; line-height: 1.2; }
   .story { grid-template-columns: 1fr; gap: 36px; }
   .story-mark { width: 160px; border-radius: 28px; }
   .closing-card { padding-bottom: 200px; }
-  .closing-rabbit { right: auto; left: 50%; width: 180px; transform: translateX(-50%); }
+  .closing-rabbit { right: auto; left: 50%; width: 132px; transform: translateX(-50%); }
   .data-flow { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .footer-about { grid-column: 1 / -1; }
@@ -428,7 +430,8 @@ html[lang="en"] .feature-text h3 { letter-spacing: -.005em; line-height: 1.2; }
   .hero { padding-top: 52px; }
   .hero h1 { margin-top: 20px; }
   .cta-row .btn { flex: 1 1 100%; }
-  .stage { margin-top: 44px; padding-bottom: 150px; }
+  .stage { margin-top: 150px; padding-bottom: 150px; }
+  .stage-rabbit { right: auto; left: 50%; width: 112px; transform: translate(-50%, -90%); }
   .stage .window { width: 100%; }
   .window .bar { height: 22px; padding: 0 10px; gap: 5px; }
   .window .bar i { width: 7px; height: 7px; }
@@ -460,7 +463,7 @@ html[lang="en"] .feature-text h3 { letter-spacing: -.005em; line-height: 1.2; }
   .flow li { padding: 12px 12px 14px; }
   .closing { padding-bottom: 72px; }
   .closing-card { padding: 52px 18px 168px; border-radius: 24px; }
-  .closing-rabbit { right: auto; left: 50%; width: 150px; transform: translateX(-50%); }
+  .closing-rabbit { right: auto; left: 50%; width: 118px; transform: translateX(-50%); }
   .closing-card h2 { font-size: 25px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
 }
