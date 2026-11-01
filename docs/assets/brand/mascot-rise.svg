@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 40 904 884" role="img" aria-label="Sidonie 伴学"><title>Sidonie 伴学</title>
+<defs>
+  <path id="squircle" d="M60 40 H964 V924 H60 Z"/>
+  <clipPath id="clip"><use href="#squircle"/></clipPath>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3f3833"/><stop offset="0.55" stop-color="#292524"/><stop offset="1" stop-color="#1c1917"/>
+  </linearGradient>
+  <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff" stop-opacity="0.22"/><stop offset="0.35" stop-color="#fff" stop-opacity="0.04"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+  </linearGradient>
+  <!-- glossy white body, key light from the upper left (same ramp as 喵想) -->
+  <radialGradient id="body" cx="0.30" cy="0.18" r="0.95">
+    <stop offset="0" stop-color="#fffcf9"/><stop offset="0.38" stop-color="#f7f1ec"/><stop offset="0.62" stop-color="#e2d9d1"/><stop offset="0.86" stop-color="#bfb4aa"/><stop offset="1" stop-color="#958a80"/>
+  </radialGradient>
+  <linearGradient id="eye" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#050506"/><stop offset="1" stop-color="#26272c"/>
+  </linearGradient>
+  <filter id="sculpt" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="30" result="b1"/>
+    <feOffset in="b1" dx="-34" dy="-26" result="o1"/>
+    <feComposite in="SourceAlpha" in2="o1" operator="out" result="edge1"/>
+    <feFlood flood-color="#463d36" flood-opacity="0.55"/>
+    <feComposite in2="edge1" operator="in" result="shade"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="b2"/>
+    <feOffset in="b2" dx="10" dy="12" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="out" result="edge2"/>
+    <feFlood flood-color="#ffe3bd" flood-opacity="0.9"/>
+    <feComposite in2="edge2" operator="in" result="shine"/>
+    <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="shade"/><feMergeNode in="shine"/></feMerge>
+  </filter>
+  <filter id="cast" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="22"/><feOffset dx="10" dy="6"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.7"/></feComponentTransfer>
+  </filter>
+  <filter id="eyeInset" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="b"/><feOffset in="b" dx="4" dy="7" result="o"/>
+    <feComposite in="SourceAlpha" in2="o" operator="out" result="e"/>
+    <feFlood flood-color="#000" flood-opacity="0.9"/><feComposite in2="e" operator="in" result="s"/>
+    <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="s"/></feMerge>
+  </filter>
+  <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
+  <linearGradient id="earPink" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e9c4bc" stop-opacity="0.95"/><stop offset="0.7" stop-color="#ead2cb" stop-opacity="0.75"/><stop offset="1" stop-color="#f3e6e0" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="moon" cx="0.38" cy="0.34" r="0.75">
+    <stop offset="0" stop-color="#ffd596"/><stop offset="0.45" stop-color="#f2b25a"/><stop offset="0.85" stop-color="#e79a3b"/><stop offset="1" stop-color="#cf7f25"/>
+  </radialGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0.45" stop-color="#e79a3b" stop-opacity="0.32"/><stop offset="1" stop-color="#e79a3b" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="crater" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+  <radialGradient id="blush" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#eaa595" stop-opacity="0.45"/><stop offset="1" stop-color="#eaa595" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<g clip-path="url(#clip)">
+<circle cx="296" cy="290" r="252" fill="url(#glow)"/>
+<circle cx="296" cy="290" r="120" fill="url(#moon)"/>
+<g fill="#b8691c" opacity="0.13" filter="url(#crater)"><circle cx="328" cy="270" r="26"/><circle cx="258" cy="324" r="18"/></g>
+<g transform="rotate(6 512 760)">
+<g fill="#000" filter="url(#cast)"><path d="M 356 522 C 316 424 300 272 332 182 Q 366 110 416 158 C 456 236 474 392 466 498 Z"/><path d="M 566 496 C 566 396 586 268 630 206 Q 656 170 694 178 C 748 192 790 234 798 276 Q 800 302 772 296 C 738 286 712 296 702 340 C 694 400 688 462 670 522 Z"/><path d="M 112 1110 C 112 884 152 766 228 692 C 216 544 352 440 512 440 C 672 440 808 544 796 692 C 872 766 912 884 912 1110 Z"/></g>
+<g filter="url(#sculpt)"><g fill="url(#body)"><path d="M 356 522 C 316 424 300 272 332 182 Q 366 110 416 158 C 456 236 474 392 466 498 Z"/><path d="M 566 496 C 566 396 586 268 630 206 Q 656 170 694 178 C 748 192 790 234 798 276 Q 800 302 772 296 C 738 286 712 296 702 340 C 694 400 688 462 670 522 Z"/><path d="M 112 1110 C 112 884 152 766 228 692 C 216 544 352 440 512 440 C 672 440 808 544 796 692 C 872 766 912 884 912 1110 Z"/></g></g>
+<path d="M 368 472 C 344 392 336 272 360 210 Q 378 180 398 210 C 422 272 432 382 428 472 Q 398 488 368 472 Z" fill="url(#earPink)"/><path d="M 604 472 C 606 394 622 290 648 242 Q 664 216 688 220 C 722 228 750 250 762 272 C 734 266 700 278 686 322 C 678 382 674 432 666 476 Q 634 490 604 472 Z" fill="url(#earPink)"/>
+<path d="M 690 236 Q 712 252 716 290" stroke="#a8988c" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.5"/>
+<ellipse cx="410" cy="746" rx="56" ry="30" fill="url(#blush)"/><ellipse cx="614" cy="746" rx="56" ry="30" fill="url(#blush)"/><g filter="url(#eyeInset)"><rect x="372" y="588" width="76" height="128" rx="38" fill="url(#eye)"/><rect x="576" y="588" width="76" height="128" rx="38" fill="url(#eye)"/></g><ellipse cx="424" cy="618" rx="12" ry="16" fill="#fff" opacity="0.92"/><ellipse cx="628" cy="618" rx="12" ry="16" fill="#fff" opacity="0.92"/>
+<path d="M 494 742 Q 512 734 530 742 Q 526 756 512 762 Q 498 756 494 742 Z" fill="#b98580"/><path d="M 512 762 L 512 774 M 512 774 Q 500 788 488 780 M 512 774 Q 524 788 536 780" stroke="#a79a90" stroke-width="6" stroke-linecap="round" fill="none"/>
+</g>
+<g>
+  <g filter="url(#cast)"><ellipse cx="292" cy="934" rx="100" ry="92" fill="#000"/><ellipse cx="738" cy="934" rx="100" ry="92" fill="#000"/></g>
+  <g filter="url(#sculpt)"><ellipse cx="292" cy="934" rx="100" ry="92" fill="url(#body)"/><ellipse cx="738" cy="934" rx="100" ry="92" fill="url(#body)"/></g>
+  <g stroke="#a89c92" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.8"><path d="M 264 852 L 264 884"/><path d="M 318 852 L 318 884"/><path d="M 712 852 L 712 884"/><path d="M 766 852 L 766 884"/></g>
+</g>
+</g>
+</svg>
