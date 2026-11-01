@@ -36,7 +36,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ isOpen, onClose, language }) 
       <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-             <BrandMark size={32} className="rounded-lg shadow-lg" />
+             <BrandMark size={32} className="drop-shadow-sm" />
              <span className="text-xl font-bold tracking-tight text-gray-900">{t.appName}</span>
           </div>
           <button

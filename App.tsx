@@ -862,7 +862,7 @@ const App: React.FC = () => {
         <div className="p-4 min-w-[260px]">
           <div className="px-2 py-2 mb-4 flex items-center justify-between">
              <div className="flex items-center gap-2.5 text-gray-900">
-                <BrandMark size={32} className="rounded-lg shadow-lg shadow-black/20" />
+                <BrandMark size={32} className="drop-shadow-sm" />
                 <span className="text-xl font-semibold tracking-tight">{t.appName}</span>
              </div>
              <button onClick={() => setIsSidebarOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-lg">
@@ -1012,7 +1012,7 @@ const App: React.FC = () => {
                 >
                   <Menu size={20} />
                 </button>
-                <BrandMark size={22} className="rounded-md" />
+                <BrandMark size={24} className="drop-shadow-sm" />
                 <span className="font-semibold tracking-tight text-gray-900">{t.appName}</span>
               </div>
             )}
